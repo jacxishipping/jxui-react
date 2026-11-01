@@ -12,6 +12,9 @@ import {
   Zap,
   BookOpen,
   History,
+  Smartphone,
+  Tablet,
+  Monitor,
 } from 'lucide-react';
 import { UNIFIED_COMPONENTS_351, UnifiedComponentSpec } from '../data/unifiedCatalog';
 import { InteractiveComponentPreview } from './InteractiveComponentPreview';
@@ -564,6 +567,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
   const [controlMode, setControlMode] = useState<'split' | 'props' | 'css' | 'changelog'>('split');
   const [codeTab, setCodeTab] = useState<'jsx' | 'css' | 'changelog'>('jsx');
   const [stageBackdrop, setStageBackdrop] = useState<'grid' | 'dots' | 'glass' | 'contrast'>('grid');
+  const [stageViewport, setStageViewport] = useState<'responsive' | 'mobile' | 'tablet' | 'desktop'>('responsive');
   const [copiedCode, setCopiedCode] = useState<boolean>(false);
 
   const liveJsxCode = useMemo(
@@ -786,7 +790,38 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                 </span>
               </div>
 
-              <div className="flex items-center gap-1.5">
+              <div className="flex flex-wrap items-center gap-1.5">
+                {/* Viewport Switcher */}
+                <div className="inline-flex items-center rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 text-[10px] font-mono">
+                  {(
+                    [
+                      { id: 'responsive', label: 'Fluid', icon: Monitor },
+                      { id: 'mobile', label: '375px', icon: Smartphone },
+                      { id: 'tablet', label: '768px', icon: Tablet },
+                      { id: 'desktop', label: '1024px', icon: Monitor },
+                    ] as const
+                  ).map((vp) => {
+                    const Icon = vp.icon;
+                    return (
+                      <button
+                        key={vp.id}
+                        type="button"
+                        aria-label={`Viewport ${vp.label}`}
+                        onClick={() => setStageViewport(vp.id)}
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded cursor-pointer transition-colors ${
+                          stageViewport === vp.id
+                            ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 font-semibold shadow-2xs'
+                            : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
+                        }`}
+                      >
+                        <Icon className="w-3 h-3" />
+                        <span>{vp.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Stage Backdrop Switcher */}
                 <div className="inline-flex items-center rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 text-[10px] font-mono">
                   {(
                     [
@@ -831,8 +866,20 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
             >
               <div
                 data-testid="live-playground-stage"
-                style={stageStyle}
-                className="w-full max-w-lg border border-slate-200/80 dark:border-slate-700/80 bg-white/90 dark:bg-slate-900/90 flex flex-col items-center justify-center"
+                style={{
+                  ...stageStyle,
+                  width:
+                    stageViewport === 'mobile'
+                      ? '375px'
+                      : stageViewport === 'tablet'
+                      ? '768px'
+                      : stageViewport === 'desktop'
+                      ? '1024px'
+                      : '100%',
+                  maxWidth: '100%',
+                  transition: 'width 250ms cubic-bezier(0.22, 1, 0.36, 1)',
+                }}
+                className="border border-slate-200/80 dark:border-slate-700/80 bg-white/90 dark:bg-slate-900/90 flex flex-col items-center justify-center"
               >
                 <InteractiveComponentPreview
                   spec={activeSpec}

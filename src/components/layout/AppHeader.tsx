@@ -54,9 +54,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           type="button"
           onClick={onOpenMobileSidebar}
           aria-label="Open navigation sidebar"
-          className="lg:hidden p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 cursor-pointer"
+          className="lg:hidden min-h-[44px] min-w-[44px] p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 cursor-pointer flex items-center justify-center touch-manipulation active:scale-95 transition-transform"
         >
-          <Menu className="w-4 h-4" />
+          <Menu className="w-5 h-5" />
         </button>
 
         {/* Quick Find / Cmd+K Search Trigger */}
@@ -139,7 +139,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           aria-label={`Switch to ${mode === 'light' ? 'Dark' : 'Light'} mode (current: ${mode})`}
           aria-pressed={mode === 'dark'}
           title={`Switch to ${mode === 'light' ? 'Dark Obsidian' : 'Light Alabaster'} (Saved to localStorage)`}
-          className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+          className="min-h-[44px] min-w-[44px] rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer touch-manipulation active:scale-95"
         >
           {mode === 'light' ? (
             <Sun className="w-4 h-4 text-amber-500" />
@@ -153,13 +153,13 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           type="button"
           onClick={onToggleView}
           title={currentView === 'workbench' ? 'Switch to GitHub Showcase Page' : 'Return to Interactive Workbench'}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
+          className={`min-h-[44px] flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer touch-manipulation active:scale-95 ${
             currentView === 'github-page'
               ? 'bg-[#238636] text-white shadow-sm'
               : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/70 dark:hover:bg-slate-700/70 text-slate-700 dark:text-slate-200'
           }`}
         >
-          <Github className="w-3.5 h-3.5" />
+          <Github className="w-4 h-4" />
           <span>{currentView === 'github-page' ? 'Workbench' : 'GitHub Page'}</span>
         </button>
       </div>
