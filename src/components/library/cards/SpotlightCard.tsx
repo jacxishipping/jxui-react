@@ -43,21 +43,21 @@ export const SpotlightCard: React.FC<SpotlightCardProps> = ({
           ? `radial-gradient(240px circle at ${pos.x}px ${pos.y}px, ${spotlightColor}, transparent 80%)`
           : undefined,
       }}
-      className={`relative overflow-hidden p-5 bg-slate-950 text-white border border-slate-800 ${getRadiusClass(
+      className={`relative overflow-hidden p-5 bg-white dark:bg-[#111827] text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 jx-elevation-1 ${getRadiusClass(
         'card'
-      )} shadow-xl hover:border-slate-700 transition-colors cursor-pointer select-none space-y-2 ${className}`}
+      )} shadow-xl hover:border-slate-300 dark:hover:border-slate-700 transition-colors cursor-pointer select-none space-y-2 ${className}`}
     >
       <div className="flex items-center justify-between">
-        <span className="text-xs font-mono font-bold text-indigo-400 flex items-center gap-1.5">
+        <span className="text-xs font-mono font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5" />
           <span>Spotlight Spec</span>
         </span>
-        <span className="text-[10px] font-mono text-slate-500">
+        <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500">
           X: {Math.round(pos.x)}, Y: {Math.round(pos.y)}
         </span>
       </div>
-      <h4 className="font-bold text-sm text-white">{title}</h4>
-      <p className="text-xs text-slate-400 leading-relaxed">{subtitle}</p>
+      <h4 className="font-bold text-sm text-slate-900 dark:text-white">{title}</h4>
+      <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{subtitle}</p>
     </div>
   );
 };

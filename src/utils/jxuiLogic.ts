@@ -838,7 +838,8 @@ export function generateDesignTokensJSON(config: DesignTokenExportConfig): strin
       },
       surface: {
         canvas: { $value: isDark ? '#0B0F19' : '#F8FAFC', $type: 'color' },
-        elevatedCard: { $value: isDark ? '#0F172A' : '#FFFFFF', $type: 'color' },
+        elevatedCard: { $value: isDark ? '#111827' : '#FFFFFF', $type: 'color' },
+        subtle: { $value: isDark ? '#1E293B' : '#F1F5F9', $type: 'color' },
         translucentGlass: {
           $value: isDark ? 'rgba(15, 23, 42, 0.82)' : 'rgba(255, 255, 255, 0.82)',
           $type: 'color',
@@ -934,7 +935,8 @@ ${stopLines}
 
   /* 2. Active Surface & Luminance Tokens (${config.mode} mode) */
   --jx-surface-canvas: ${isDark ? '#0B0F19' : '#F8FAFC'};
-  --jx-surface-card: ${isDark ? '#0F172A' : '#FFFFFF'};
+  --jx-surface-card: ${isDark ? '#111827' : '#FFFFFF'};
+  --jx-surface-subtle: ${isDark ? '#1E293B' : '#F1F5F9'};
   --jx-surface-glass: ${isDark ? 'rgba(15, 23, 42, 0.82)' : 'rgba(255, 255, 255, 0.82)'};
   --jx-border-hairline: 1px solid ${isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 23, 42, 0.07)'};
   --jx-specular-top: ${isDark ? 'inset 0 1px 0 0 rgba(255, 255, 255, 0.06)' : 'inset 0 1px 0 0 rgba(255, 255, 255, 0.80)'};

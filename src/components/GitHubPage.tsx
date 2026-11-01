@@ -127,21 +127,21 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
             />
             <Github className="w-5 h-5 text-white shrink-0" />
             <a
-              href="https://github.com/iam-shakir"
+              href="https://github.com/jacxishipping"
               target="_blank"
               rel="noreferrer"
               className="text-[#58a6ff] hover:underline font-normal truncate"
             >
-              iam-shakir
+              jacxishipping
             </a>
             <span className="text-[#8b949e]">/</span>
             <a
-              href="https://github.com/iam-shakir/JXUI-react"
+              href="https://github.com/jacxishipping/jxui-react"
               target="_blank"
               rel="noreferrer"
               className="text-white hover:underline font-semibold flex items-center gap-2 truncate"
             >
-              <span>JXUI-react</span>
+              <span>jxui-react</span>
               <span className="px-2 py-0.5 text-[11px] font-medium rounded-full border border-[#30363d] text-[#8b949e] bg-[#21262d] shrink-0">
                 Public
               </span>
@@ -696,7 +696,7 @@ jobs:
                 Interactive Workbench
               </button>
             )}
-            <a href="https://github.com/iam-shakir/JXUI-react" target="_blank" rel="noreferrer" className="hover:text-white py-1">
+            <a href="https://github.com/jacxishipping/jxui-react" target="_blank" rel="noreferrer" className="hover:text-white py-1">
               GitHub Repository
             </a>
             <a href="https://www.npmjs.com/package/jxui-react" target="_blank" rel="noreferrer" className="hover:text-white py-1">

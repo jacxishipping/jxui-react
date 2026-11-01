@@ -27,6 +27,7 @@ import {
   saveRecentlyViewedIds,
 } from '../utils/jxuiLogic';
 import { useJXTheme } from '../context/JXThemeContext';
+import { tactile } from '../utils/tactileAudio';
 
 export interface SpotlightQuickLink {
   id: string;
@@ -411,7 +412,7 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
       onClick={onClose}
     >
       <div
-        className={`w-full max-w-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 jx-elevation-3 overflow-hidden shadow-2xl ${getRadiusClass(
+        className={`w-full max-w-2xl bg-white/95 dark:bg-[#111827]/95 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 jx-elevation-3 overflow-hidden shadow-2xl ${getRadiusClass(
           'card'
         )}`}
         onClick={(e) => e.stopPropagation()}
@@ -442,11 +443,11 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Close command palette"
-            className="sm:hidden min-h-[44px] min-w-[44px] flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white rounded-lg bg-slate-100 dark:bg-slate-800 cursor-pointer touch-manipulation active:scale-95 shrink-0"
+            className="sm:hidden min-h-[44px] min-w-[44px] flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white rounded-lg bg-slate-100 dark:bg-[#1E293B] cursor-pointer touch-manipulation active:scale-95 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
           >
             <X className="w-4 h-4" />
           </button>
-          <kbd className="hidden sm:inline-flex px-2 py-0.5 text-[11px] font-mono bg-slate-100 dark:bg-slate-800 text-slate-500 rounded border border-slate-200 dark:border-slate-700 shrink-0">
+          <kbd className="hidden sm:inline-flex px-2 py-0.5 text-[11px] font-mono bg-slate-100 dark:bg-[#1E293B] text-slate-500 rounded border border-slate-200 dark:border-slate-700 shrink-0">
             ESC
           </kbd>
         </div>
@@ -485,7 +486,7 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
           {resolvedRecentItems.length === 0 ? (
             <div
               data-testid="recently-viewed-empty"
-              className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg bg-white/70 dark:bg-slate-900/60 border border-dashed border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400"
+              className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg bg-white/70 dark:bg-[#111827]/60 border border-dashed border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400"
             >
               <span className="flex items-center gap-1.5">
                 <Clock className="w-3 h-3 text-slate-400 shrink-0" />
@@ -506,18 +507,19 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
                   <div
                     key={compId}
                     data-testid={`recent-item-${compId}`}
-                    className="group inline-flex items-center gap-1 pl-2.5 pr-1.5 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-500 shadow-2xs transition-all shrink-0"
+                    className="group inline-flex items-center gap-1 pl-2.5 pr-1.5 py-1 rounded-lg bg-white dark:bg-[#111827] border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-500 shadow-2xs transition-all shrink-0"
                   >
                     <button
                       type="button"
                       onClick={() => {
+                        tactile.playClick();
                         if (entry.kind === 'spec290') {
                           handleSelectAndRecord290(entry.item);
                         } else {
                           handleSelectAndRecordComponent(entry.item);
                         }
                       }}
-                      className="min-h-[36px] inline-flex items-center gap-1.5 text-left cursor-pointer touch-manipulation active:scale-95"
+                      className="min-h-[44px] inline-flex items-center gap-1.5 text-left cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                     >
                       <span className="font-semibold text-xs text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                         {compName}
@@ -532,8 +534,11 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
                     <button
                       type="button"
                       aria-label={`Remove ${compName} from recently viewed`}
-                      onClick={(e) => handleRemoveSingleRecent(e, compId)}
-                      className="min-h-[36px] min-w-[32px] flex items-center justify-center p-1 rounded text-slate-400 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer touch-manipulation active:scale-95"
+                      onClick={(e) => {
+                        tactile.playClick();
+                        handleRemoveSingleRecent(e, compId);
+                      }}
+                      className="min-h-[44px] min-w-[32px] flex items-center justify-center p-1 rounded text-slate-400 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-[#1E293B] transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
@@ -546,7 +551,7 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
 
         {/* Quick Navigation Shelf (Visible when query is empty) */}
         {!query && (
-          <div className="px-3.5 py-2.5 bg-slate-50/70 dark:bg-slate-950/40 border-b border-slate-200/70 dark:border-slate-800/80">
+          <div className="px-3.5 py-2.5 bg-slate-50/70 dark:bg-[#0B0F19]/40 border-b border-slate-200/70 dark:border-slate-800/80">
             <div className="flex items-center justify-between pb-1.5">
               <span className="text-[11px] font-bold tracking-wider text-slate-400 flex items-center gap-1.5">
                 <Sparkles className="w-3 h-3 text-indigo-500" />
@@ -561,8 +566,11 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
                   <button
                     key={link.id}
                     type="button"
-                    onClick={() => handleExecuteQuickLink(link)}
-                    className="min-h-[40px] px-3 py-1.5 rounded-lg text-left border bg-white/80 dark:bg-slate-900/70 border-slate-200/80 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 hover:bg-white dark:hover:bg-slate-900 transition-all cursor-pointer inline-flex items-center gap-1.5 group touch-manipulation active:scale-95"
+                    onClick={() => {
+                      tactile.playClick();
+                      handleExecuteQuickLink(link);
+                    }}
+                    className="min-h-[44px] px-3.5 py-2 rounded-lg text-left border bg-white/80 dark:bg-[#111827]/70 border-slate-200/80 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 hover:bg-white dark:hover:bg-[#111827] transition-all cursor-pointer inline-flex items-center gap-1.5 group touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                   >
                     <Icon className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
                     <span className="font-semibold text-xs text-slate-800 dark:text-slate-100 whitespace-nowrap">
@@ -594,13 +602,16 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
                     key={link.id}
                     type="button"
                     onMouseEnter={() => setSelectedIndex(idx)}
-                    onClick={() => handleExecuteQuickLink(link)}
-                    className={`w-full text-left min-h-[44px] px-3.5 py-2.5 flex items-center justify-between gap-4 transition-colors cursor-pointer touch-manipulation active:scale-[0.98] ${getRadiusClass(
+                    onClick={() => {
+                      tactile.playClick();
+                      handleExecuteQuickLink(link);
+                    }}
+                    className={`w-full text-left min-h-[44px] px-3.5 py-2.5 flex items-center justify-between gap-4 transition-colors cursor-pointer touch-manipulation active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${getRadiusClass(
                       'control'
                     )} ${
                       isSelected
-                        ? 'bg-slate-100 dark:bg-slate-800/90 text-slate-900 dark:text-slate-100'
-                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/40'
+                        ? 'bg-slate-100 dark:bg-[#1E293B] text-slate-900 dark:text-slate-100'
+                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-[#1E293B]/40'
                     }`}
                   >
                     <div className="flex items-center gap-3 min-w-0">
@@ -638,13 +649,16 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
                     key={`${entry.isRecent ? 'recent-' : ''}${item.id}`}
                     type="button"
                     onMouseEnter={() => setSelectedIndex(idx)}
-                    onClick={() => handleSelectAndRecord290(item)}
-                    className={`w-full text-left min-h-[44px] px-3.5 py-2.5 flex items-center justify-between gap-4 transition-colors cursor-pointer touch-manipulation active:scale-[0.98] ${getRadiusClass(
+                    onClick={() => {
+                      tactile.playClick();
+                      handleSelectAndRecord290(item);
+                    }}
+                    className={`w-full text-left min-h-[44px] px-3.5 py-2.5 flex items-center justify-between gap-4 transition-colors cursor-pointer touch-manipulation active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${getRadiusClass(
                       'control'
                     )} ${
                       isSelected
-                        ? 'bg-slate-100 dark:bg-slate-800/90 text-slate-900 dark:text-slate-100'
-                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/40'
+                        ? 'bg-slate-100 dark:bg-[#1E293B] text-slate-900 dark:text-slate-100'
+                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-[#1E293B]/40'
                     }`}
                   >
                     <div className="flex items-center gap-3 min-w-0">
@@ -689,13 +703,16 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
                   key={`${entry.isRecent ? 'recent-' : ''}${item.id}`}
                   type="button"
                   onMouseEnter={() => setSelectedIndex(idx)}
-                  onClick={() => handleSelectAndRecordComponent(item)}
-                  className={`w-full text-left min-h-[44px] px-3.5 py-2.5 flex items-center justify-between gap-4 transition-colors cursor-pointer touch-manipulation active:scale-[0.98] ${getRadiusClass(
+                  onClick={() => {
+                    tactile.playClick();
+                    handleSelectAndRecordComponent(item);
+                  }}
+                  className={`w-full text-left min-h-[44px] px-3.5 py-2.5 flex items-center justify-between gap-4 transition-colors cursor-pointer touch-manipulation active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${getRadiusClass(
                     'control'
                   )} ${
                     isSelected
-                      ? 'bg-slate-100 dark:bg-slate-800/90 text-slate-900 dark:text-slate-100'
-                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/40'
+                      ? 'bg-slate-100 dark:bg-[#1E293B] text-slate-900 dark:text-slate-100'
+                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-[#1E293B]/40'
                   }`}
                 >
                   <div className="min-w-0">
@@ -738,7 +755,7 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
         </div>
 
         {/* Footer Hints */}
-        <div className="px-4 py-2.5 bg-slate-50 dark:bg-slate-950/60 border-t border-slate-200/80 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
+        <div className="px-4 py-2.5 bg-slate-50 dark:bg-[#0B0F19]/60 border-t border-slate-200/80 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
           <div className="flex items-center gap-3">
             <span className="inline-flex items-center gap-1">
               <ArrowUpDown className="w-3 h-3" /> Navigate

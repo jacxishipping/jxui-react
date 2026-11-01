@@ -3,11 +3,14 @@ import React, { useState } from 'react';
 import { useJXTheme } from '../../../context/JXThemeContext';
 import { Sparkles, Maximize2, Minimize2, ChevronRight, Activity, ArrowUpRight } from 'lucide-react';
 
+import { tactile } from '../../../utils/tactileAudio';
+
 export const MorphingCard: React.FC = () => {
   const { palette, getRadiusClass } = useJXTheme();
   const [layout, setLayout] = useState<'compact' | 'expanded' | 'detail'>('compact');
 
   const cycleLayout = () => {
+    tactile.playClick();
     setLayout((curr) => {
       if (curr === 'compact') return 'expanded';
       if (curr === 'expanded') return 'detail';
@@ -18,8 +21,8 @@ export const MorphingCard: React.FC = () => {
   return (
     <div
       onClick={cycleLayout}
-      className={`w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer overflow-hidden ${getRadiusClass('card')} ${
-        layout === 'detail' ? 'p-4 ring-2 ring-indigo-500/30' : layout === 'expanded' ? 'p-3.5' : 'p-3'
+      className={`w-full bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 jx-elevation-1 hover:shadow-md transition-all duration-300 cursor-pointer overflow-hidden touch-manipulation active:scale-[0.99] ${getRadiusClass('card')} ${
+        layout === 'detail' ? 'p-4 ring-2 ring-[var(--jx-accent-halo)]' : layout === 'expanded' ? 'p-3.5' : 'p-3'
       }`}
     >
       <div className="flex items-center justify-between gap-2">
@@ -31,7 +34,7 @@ export const MorphingCard: React.FC = () => {
             Morphing Card
           </span>
         </div>
-        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 capitalize">
+        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-[#1E293B] text-slate-500 capitalize">
           {layout}
         </span>
       </div>
@@ -43,7 +46,7 @@ export const MorphingCard: React.FC = () => {
             <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400">99.98%</span>
           </div>
           {layout === 'detail' && (
-            <div className="flex flex-col gap-1 text-[10px] text-slate-500 font-mono bg-slate-50 dark:bg-slate-950 p-2 rounded-lg">
+            <div className="flex flex-col gap-1 text-[10px] text-slate-500 font-mono bg-slate-50 dark:bg-[#0B0F19] p-2 rounded-lg">
               <span>Latency: 4.2ms</span>
               <span>Memory: 18.4 MB</span>
               <span>Zero CLS Guarantee: Active</span>

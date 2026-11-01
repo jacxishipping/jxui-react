@@ -71,7 +71,7 @@ export default defineConfig(() => {
   }
 
   const isGitHubPages = Boolean(process.env.GITHUB_ACTIONS);
-  const base = process.env.BASE_PATH || (isGitHubPages ? '/JXUI-react/' : '/');
+  const base = process.env.BASE_PATH || (isGitHubPages ? '/jxui-react/' : '/');
 
   return {
     base,

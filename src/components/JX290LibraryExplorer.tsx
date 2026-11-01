@@ -25,6 +25,7 @@ import {
   importCollectionsJSON,
   JXCollectionsState,
 } from '../utils/jxuiCollections';
+import { tactile } from '../utils/tactileAudio';
 import { 
   Search, 
   Sparkles, 
@@ -264,6 +265,8 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
   const hasMore = visibleCount < filteredComponents.length;
 
   const handleCopyCode = (spec: UnifiedComponentSpec) => {
+    tactile.playClick(950);
+    tactile.triggerHaptic('light');
     navigator.clipboard.writeText(spec.jsxSnippet);
     setCopiedId(spec.id);
     pushToast({
@@ -275,6 +278,8 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
   };
 
   const handleToggleFav = (spec: UnifiedComponentSpec) => {
+    tactile.playClick(850);
+    tactile.triggerHaptic('light');
     const next = toggleFavorite(spec.id, collectionsState);
     setCollectionsState(next);
     const isNowFav = isFavorite(spec.id, next);
@@ -392,8 +397,11 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => setShowManageCollections(!showManageCollections)}
-            className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2 shadow-xs transition-colors cursor-pointer"
+            onClick={() => {
+              tactile.playClick();
+              setShowManageCollections(!showManageCollections);
+            }}
+            className="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-[#1E293B] flex items-center gap-2 shadow-xs transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] touch-manipulation active:scale-95"
           >
             <FolderPlus className="w-4 h-4 text-indigo-500" />
             <span>Collections ({collectionsState.collections.length})</span>
@@ -406,7 +414,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
 
       {/* 2. Collections Management Panel (Expandable) */}
       {showManageCollections && (
-        <div className={`p-5 mb-8 bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 ${getRadiusClass('card')} shadow-sm animate-fade-in`}>
+        <div className={`p-5 mb-8 bg-slate-50 dark:bg-[#111827]/80 border border-slate-200 dark:border-slate-800 ${getRadiusClass('card')} shadow-sm animate-fade-in`}>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
             <div>
               <h3 className="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
@@ -420,13 +428,16 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={handleExportCollections}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-1.5 cursor-pointer"
+                onClick={() => {
+                  tactile.playClick();
+                  handleExportCollections();
+                }}
+                className="min-h-[44px] px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#111827] flex items-center gap-1.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] touch-manipulation active:scale-95"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Export JSON</span>
               </button>
-              <label className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-1.5 cursor-pointer">
+              <label className="min-h-[44px] px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#111827] flex items-center gap-1.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] touch-manipulation active:scale-95">
                 <Upload className="w-3.5 h-3.5" />
                 <span>Import JSON</span>
                 <input
@@ -438,8 +449,11 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
               </label>
               <button
                 type="button"
-                onClick={() => setShowManageCollections(false)}
-                className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                onClick={() => {
+                  tactile.playClick();
+                  setShowManageCollections(false);
+                }}
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] rounded-lg touch-manipulation"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -458,7 +472,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
                   className={`p-3 rounded-xl border cursor-pointer transition-colors flex items-center justify-between ${
                     collectionFilter === 'favorites'
                       ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-200'
-                      : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200'
+                      : 'bg-white dark:bg-[#1E293B] border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -480,7 +494,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
                     className={`p-3 rounded-xl border cursor-pointer transition-colors flex items-center justify-between ${
                       collectionFilter === col.id
                         ? 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-700 text-indigo-900 dark:text-indigo-200'
-                        : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200'
+                        : 'bg-white dark:bg-[#1E293B] border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200'
                     }`}
                   >
                     <div>
@@ -488,7 +502,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
                       <p className="text-[10px] text-slate-400 line-clamp-1">{col.description}</p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+                      <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#0B0F19] text-slate-600 dark:text-slate-300">
                         {col.componentIds.length}
                       </span>
                       {!col.isDefault && (
@@ -498,7 +512,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
                             e.stopPropagation();
                             handleDeleteCollection(col.id, col.name);
                           }}
-                          className="p-1 text-slate-400 hover:text-rose-500 transition-colors"
+                          className="min-h-[32px] min-w-[32px] flex items-center justify-center p-1 text-slate-400 hover:text-rose-500 transition-colors rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -520,19 +534,19 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
                   value={newCollectionName}
                   onChange={(e) => setNewCollectionName(e.target.value)}
                   placeholder="Collection Name (e.g., Marketing Landing Kit)"
-                  className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+                  className="w-full min-h-[44px] px-3 py-2 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#1E293B] text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                 />
                 <input
                   type="text"
                   value={newCollectionDesc}
                   onChange={(e) => setNewCollectionDesc(e.target.value)}
                   placeholder="Optional description..."
-                  className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+                  className="w-full min-h-[44px] px-3 py-2 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#1E293B] text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                 />
                 <button
                   type="submit"
                   disabled={!newCollectionName.trim()}
-                  className="w-full py-2 px-3 text-xs font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-500 disabled:opacity-50 transition-colors cursor-pointer"
+                  className="w-full min-h-[44px] py-2 px-3 text-xs font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-500 disabled:opacity-50 transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                 >
                   Save New Collection
                 </button>
@@ -543,7 +557,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
       )}
 
       {/* 3. Comprehensive Filter & Search Bar */}
-      <div className={`p-4 mb-6 bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 ${getRadiusClass('card')} shadow-sm space-y-3`}>
+      <div className={`p-4 mb-6 bg-slate-50 dark:bg-[#111827]/60 border border-slate-200 dark:border-slate-800 ${getRadiusClass('card')} shadow-sm space-y-3`}>
         {/* Top Search Input & Tier Pills */}
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
           {/* Main Search Input */}
@@ -554,7 +568,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search components by name, category, tags, or mui upgrade..."
-              className="w-full pl-9 pr-8 py-2 text-xs rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+              className="w-full pl-9 pr-8 py-2 text-xs rounded-xl bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
             />
             {searchQuery && (
               <button
@@ -568,13 +582,16 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
           </div>
 
           {/* Tier Switcher (All / Showcase / Primitive) */}
-          <div className="flex items-center p-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold shrink-0">
+          <div className="flex items-center p-1 bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold shrink-0">
             {(['all', 'showcase', 'primitive'] as const).map((tier) => (
               <button
                 key={tier}
                 type="button"
-                onClick={() => setSelectedSuite(tier)}
-                className={`px-3 py-1.5 rounded-lg capitalize transition-colors cursor-pointer ${
+                onClick={() => {
+                  tactile.playClick();
+                  setSelectedSuite(tier);
+                }}
+                className={`min-h-[44px] px-3 py-1.5 rounded-lg capitalize transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                   selectedSuite === tier
                     ? `${palette.bg} text-white font-bold shadow-xs`
                     : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
@@ -597,7 +614,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
           <select
             value={selectedCatId}
             onChange={(e) => setSelectedCatId(e.target.value)}
-            className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer"
+            className="min-h-[44px] px-2.5 py-1.5 rounded-lg bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] cursor-pointer"
           >
             <option value="all">All 18 Categories</option>
             {UNIFIED_CATEGORIES_18.map((cat) => (
@@ -611,7 +628,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
           <select
             value={selectedDifficulty}
             onChange={(e) => setSelectedDifficulty(e.target.value)}
-            className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer capitalize"
+            className="min-h-[44px] px-2.5 py-1.5 rounded-lg bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] cursor-pointer capitalize"
           >
             <option value="all">All Difficulties</option>
             {ALL_DIFFICULTIES.map((diff) => (
@@ -625,7 +642,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
           <select
             value={selectedFramework}
             onChange={(e) => setSelectedFramework(e.target.value)}
-            className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer"
+            className="min-h-[44px] px-2.5 py-1.5 rounded-lg bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] cursor-pointer"
           >
             <option value="all">All Frameworks</option>
             {ALL_FRAMEWORKS.map((fw) => (
@@ -639,7 +656,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
           <select
             value={selectedTag}
             onChange={(e) => setSelectedTag(e.target.value)}
-            className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer"
+            className="min-h-[44px] px-2.5 py-1.5 rounded-lg bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] cursor-pointer"
           >
             <option value="all">All Tags</option>
             {ALL_TAGS.map((t) => (
@@ -653,7 +670,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
           <select
             value={collectionFilter}
             onChange={(e) => setCollectionFilter(e.target.value)}
-            className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer"
+            className="min-h-[44px] px-2.5 py-1.5 rounded-lg bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] cursor-pointer"
           >
             <option value="all">All Components</option>
             <option value="favorites">★ Starred Favorites ({collectionsState.favorites.length})</option>
@@ -668,8 +685,11 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
           {isFiltered && (
             <button
               type="button"
-              onClick={handleResetFilters}
-              className="ml-auto px-2.5 py-1 rounded-lg text-[11px] font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-1 cursor-pointer"
+              onClick={() => {
+                tactile.playClick();
+                handleResetFilters();
+              }}
+              className="ml-auto min-h-[44px] px-2.5 py-1 rounded-lg text-[11px] font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-1 cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
             >
               <RotateCcw className="w-3 h-3" />
               <span>Reset Filters</span>
@@ -694,11 +714,14 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
         <div className="flex items-center gap-2 min-w-max">
           <button
             type="button"
-            onClick={() => setSelectedCatId('all')}
-            className={`px-3.5 py-1.5 text-xs font-semibold rounded-full border transition-all cursor-pointer ${
+            onClick={() => {
+              tactile.playClick();
+              setSelectedCatId('all');
+            }}
+            className={`min-h-[44px] px-3.5 py-1.5 text-xs font-semibold rounded-full border transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
               selectedCatId === 'all'
                 ? `${palette.bg} text-white border-transparent shadow-sm font-bold`
-                : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700'
+                : 'bg-white dark:bg-[#111827] border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700'
             }`}
           >
             All Categories ({UNIFIED_STATS.totalComponents})
@@ -709,11 +732,14 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
               <button
                 key={cat.id}
                 type="button"
-                onClick={() => setSelectedCatId(cat.id)}
-                className={`px-3.5 py-1.5 text-xs font-semibold rounded-full border transition-all cursor-pointer flex items-center gap-1.5 ${
+                onClick={() => {
+                  tactile.playClick();
+                  setSelectedCatId(cat.id);
+                }}
+                className={`min-h-[44px] px-3.5 py-1.5 text-xs font-semibold rounded-full border transition-all cursor-pointer flex items-center gap-1.5 touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                   isSelected
                     ? `${palette.bg} text-white border-transparent shadow-sm font-bold`
-                    : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700'
+                    : 'bg-white dark:bg-[#111827] border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700'
                 }`}
               >
                 <span>{cat.shortTitle}</span>
@@ -725,8 +751,8 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
 
       {/* 6. Component Cards Grid */}
       {displayedComponents.length === 0 ? (
-        <div className="p-12 text-center bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3">
-          <div className="w-12 h-12 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center mx-auto text-slate-400">
+        <div className="p-12 text-center bg-slate-50 dark:bg-[#111827]/40 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3">
+          <div className="w-12 h-12 rounded-full bg-slate-200 dark:bg-[#1E293B] flex items-center justify-center mx-auto text-slate-400">
             <Search className="w-6 h-6" />
           </div>
           <h3 className="font-bold text-slate-800 dark:text-slate-200 text-sm">
@@ -737,8 +763,11 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
           </p>
           <button
             type="button"
-            onClick={handleResetFilters}
-            className="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-500 cursor-pointer"
+            onClick={() => {
+              tactile.playClick();
+              handleResetFilters();
+            }}
+            className="min-h-[44px] px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-500 cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
           >
             Reset All Filters
           </button>
@@ -755,11 +784,11 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
               <div
                 key={spec.id}
                 id={`spec-${spec.id}`}
-                className={`p-5 bg-white dark:bg-slate-900 border transition-all duration-300 ${
+                className={`p-5 bg-white dark:bg-[#111827] border jx-elevation-1 transition-all duration-300 ${
                   isHighlighted
-                    ? 'border-indigo-500 ring-4 ring-indigo-500/30 scale-[1.02] shadow-2xl'
+                    ? 'border-indigo-500 ring-4 ring-[var(--jx-accent-halo)] scale-[1.02] shadow-2xl'
                     : isShowcase
-                    ? 'border-indigo-200 dark:border-indigo-900/60 shadow-md ring-1 ring-indigo-500/10'
+                    ? 'border-indigo-200 dark:border-indigo-900/60 shadow-md ring-1 ring-[var(--jx-accent-halo)]'
                     : 'border-slate-200 dark:border-slate-800 shadow-xs'
                 } ${getRadiusClass(
                   'card'
@@ -786,12 +815,15 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
                       {/* Star Bookmark Button */}
                       <button
                         type="button"
-                        onClick={() => handleToggleFav(spec)}
+                        onClick={() => {
+                          tactile.playClick();
+                          handleToggleFav(spec);
+                        }}
                         title={isFav ? 'Remove from favorites' : 'Bookmark to favorites'}
-                        className={`p-1.5 rounded-md border transition-colors cursor-pointer ${
+                        className={`min-h-[44px] min-w-[44px] flex items-center justify-center p-1.5 rounded-lg border transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                           isFav
                             ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700 text-amber-500'
-                            : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 hover:text-slate-700 dark:hover:text-white'
+                            : 'bg-slate-50 dark:bg-[#1E293B] border-slate-200 dark:border-slate-700 text-slate-400 hover:text-slate-700 dark:hover:text-white'
                         }`}
                       >
                         <Star className={`w-3.5 h-3.5 ${isFav ? 'fill-amber-400' : ''}`} />
@@ -800,7 +832,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
                       <span className={`px-2 py-0.5 text-[10px] font-mono font-semibold rounded shrink-0 ${
                         isShowcase
                           ? 'bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800'
-                          : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                          : 'bg-slate-100 dark:bg-[#1E293B] text-slate-600 dark:text-slate-400'
                       }`}>
                         {spec.badge}
                       </span>
@@ -820,7 +852,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
                       <ShieldCheck className="w-3 h-3" />
                       <span>{spec.quality.wcagScore}</span>
                     </span>
-                    <span className="px-1.5 py-0.2 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 uppercase font-semibold">
+                    <span className="px-1.5 py-0.2 rounded bg-slate-100 dark:bg-[#1E293B] text-slate-600 dark:text-slate-300 uppercase font-semibold">
                       {spec.difficulty}
                     </span>
                     <span className="px-1.5 py-0.2 rounded bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 font-semibold">
@@ -829,7 +861,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
                   </div>
 
                   {/* Interactive Live Component Viewport */}
-                  <div className="my-3 p-4 bg-slate-50/80 dark:bg-slate-950/60 border border-slate-200/60 dark:border-slate-800/80 rounded-xl min-h-[96px] flex items-center justify-center overflow-hidden">
+                  <div className="my-3 p-4 bg-slate-50/80 dark:bg-[#0B0F19]/60 border border-slate-200/60 dark:border-slate-800/80 rounded-xl min-h-[96px] flex items-center justify-center overflow-hidden">
                     <InteractiveComponentPreview
                       spec={spec}
                       onJumpToShowcase={onJumpToShowcase}
@@ -853,8 +885,11 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
                 <div className="pt-3 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between gap-2">
                   <button
                     type="button"
-                    onClick={() => setActiveDocSpec(spec)}
-                    className="px-2.5 py-1 text-xs font-semibold rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 flex items-center gap-1.5 transition-colors cursor-pointer"
+                    onClick={() => {
+                      tactile.playClick();
+                      setActiveDocSpec(spec);
+                    }}
+                    className="min-h-[44px] px-3 py-1.5 text-xs font-semibold rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 flex items-center gap-1.5 transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                   >
                     <BookOpen className="w-3.5 h-3.5" />
                     <span>Docs &amp; Props</span>
@@ -862,11 +897,14 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
 
                   <button
                     type="button"
-                    onClick={() => handleCopyCode(spec)}
-                    className={`px-2.5 py-1 text-xs font-semibold rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 ${
+                    onClick={() => {
+                      tactile.playClick();
+                      handleCopyCode(spec);
+                    }}
+                    className={`min-h-[44px] px-3 py-1.5 text-xs font-semibold rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                       isCopied
                         ? 'bg-emerald-600 text-white border-transparent'
-                        : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700'
+                        : 'bg-slate-100 dark:bg-[#1E293B] border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-[#111827]'
                     }`}
                   >
                     {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
@@ -884,8 +922,11 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
         <div className="mt-10 flex flex-col items-center justify-center gap-3">
           <button
             type="button"
-            onClick={() => setVisibleCount((prev) => prev + ITEMS_PER_PAGE)}
-            className="px-6 py-2.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-md hover:bg-indigo-500 transition-colors flex items-center gap-2 cursor-pointer"
+            onClick={() => {
+              tactile.playClick();
+              setVisibleCount((prev) => prev + ITEMS_PER_PAGE);
+            }}
+            className="min-h-[44px] px-6 py-2.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-md hover:bg-indigo-500 transition-colors flex items-center gap-2 cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
           >
             <ChevronDown className="w-4 h-4" />
             <span>Load More Components ({filteredComponents.length - visibleCount} remaining)</span>

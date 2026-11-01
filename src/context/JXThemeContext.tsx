@@ -42,7 +42,7 @@ export const ACCENT_PALETTES: Record<AccentColor, AccentPalette> = {
     text: 'text-indigo-600 dark:text-indigo-400',
     border: 'border-indigo-500/40 dark:border-indigo-400/40',
     softBg: 'bg-indigo-500/10 dark:bg-indigo-400/15',
-    ring: 'focus-visible:ring-indigo-500/30',
+    ring: 'focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]',
     gradient: 'from-indigo-600 to-violet-600',
   },
   violet: {
@@ -53,7 +53,7 @@ export const ACCENT_PALETTES: Record<AccentColor, AccentPalette> = {
     text: 'text-violet-600 dark:text-violet-400',
     border: 'border-violet-500/40 dark:border-violet-400/40',
     softBg: 'bg-violet-500/10 dark:bg-violet-400/15',
-    ring: 'focus-visible:ring-violet-500/30',
+    ring: 'focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]',
     gradient: 'from-violet-600 to-fuchsia-600',
   },
   emerald: {
@@ -64,7 +64,7 @@ export const ACCENT_PALETTES: Record<AccentColor, AccentPalette> = {
     text: 'text-emerald-600 dark:text-emerald-400',
     border: 'border-emerald-500/40 dark:border-emerald-400/40',
     softBg: 'bg-emerald-500/10 dark:bg-emerald-400/15',
-    ring: 'focus-visible:ring-emerald-500/30',
+    ring: 'focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]',
     gradient: 'from-emerald-600 to-teal-600',
   },
   rose: {
@@ -75,7 +75,7 @@ export const ACCENT_PALETTES: Record<AccentColor, AccentPalette> = {
     text: 'text-rose-600 dark:text-rose-400',
     border: 'border-rose-500/40 dark:border-rose-400/40',
     softBg: 'bg-rose-500/10 dark:bg-rose-400/15',
-    ring: 'focus-visible:ring-rose-500/30',
+    ring: 'focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]',
     gradient: 'from-rose-600 to-orange-500',
   },
   ocean: {
@@ -86,7 +86,7 @@ export const ACCENT_PALETTES: Record<AccentColor, AccentPalette> = {
     text: 'text-sky-600 dark:text-sky-400',
     border: 'border-sky-500/40 dark:border-sky-400/40',
     softBg: 'bg-sky-500/10 dark:bg-sky-400/15',
-    ring: 'focus-visible:ring-sky-500/30',
+    ring: 'focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]',
     gradient: 'from-sky-600 to-cyan-500',
   },
 };
@@ -228,6 +228,14 @@ export const JXThemeProvider: React.FC<JXThemeProviderProps> = ({
   useEffect(() => {
     try {
       localStorage.setItem('jxui-theme-accent', accent);
+      if (typeof document !== 'undefined') {
+        const pal = ACCENT_PALETTES[accent];
+        if (pal) {
+          document.documentElement.style.setProperty('--jx-accent', pal.hex);
+          document.documentElement.style.setProperty('--jx-accent-halo', `${pal.hex}33`);
+          document.documentElement.style.setProperty('--jx-accent-soft', `${pal.hex}1f`);
+        }
+      }
     } catch {
       // ignore
     }

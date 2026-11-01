@@ -46,7 +46,7 @@ export const MagneticCard: React.FC<MagneticCardProps> = ({
         transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,
         transition: offset.x === 0 ? 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)' : 'transform 0.08s ease-out',
       }}
-      className={`p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-md hover:shadow-xl ${getRadiusClass(
+      className={`p-5 bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 jx-elevation-1 hover:shadow-xl ${getRadiusClass(
         'card'
       )} cursor-pointer select-none space-y-2 ${className}`}
     >

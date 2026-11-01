@@ -14,6 +14,7 @@ import {
   serializePlaygroundJsx,
 } from '../utils/jxuiLogic';
 import { resolveRawComponentSource, getCachedRawSource, copyTextToClipboard } from '../utils/rawSourceLoader';
+import { tactile } from '../utils/tactileAudio';
 import {
   X,
   Copy,
@@ -123,6 +124,8 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
         : spec.jsxSnippet;
     }
 
+    tactile.playClick(950);
+    tactile.triggerHaptic('light');
     await copyTextToClipboard(textToCopy);
     setCopiedCode(true);
     pushToast({
@@ -137,6 +140,8 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
   };
 
   const handleCopyInstall = async () => {
+    tactile.playClick(950);
+    tactile.triggerHaptic('light');
     await copyTextToClipboard(spec.doc.installation);
     setCopiedInstall(true);
     pushToast({
@@ -148,6 +153,8 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
   };
 
   const handleToggleFav = () => {
+    tactile.playClick(850);
+    tactile.triggerHaptic('light');
     const next = toggleFavorite(spec.id, collectionsState);
     onUpdateCollectionsState(next);
     pushToast({
@@ -158,6 +165,8 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
   };
 
   const handleAddToCollection = (colId: string, colName: string) => {
+    tactile.playClick(850);
+    tactile.triggerHaptic('light');
     const next = addComponentToCollection(colId, spec.id, collectionsState);
     onUpdateCollectionsState(next);
     setShowCollectionDropdown(false);
@@ -169,6 +178,8 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
   };
 
   const handleCopyShareLink = () => {
+    tactile.playClick(900);
+    tactile.triggerHaptic('light');
     try {
       const url = new URL(window.location.href);
       url.searchParams.set('doc', spec.id);
@@ -191,12 +202,12 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-md animate-fade-in"
     >
       <div
-        className={`relative w-full max-w-4xl max-h-[92vh] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col overflow-hidden ${getRadiusClass(
+        className={`relative w-full max-w-4xl max-h-[92vh] bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 shadow-2xl jx-elevation-2 flex flex-col overflow-hidden ${getRadiusClass(
           'card'
         )}`}
       >
         {/* Modal Top Bar */}
-        <div className="px-4 py-3 sm:px-6 sm:py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-950/60 shrink-0">
+        <div className="px-4 py-3 sm:px-6 sm:py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-[#1E293B]/70 shrink-0">
           <div className="flex items-center gap-3">
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-sm shrink-0 ${palette.bg}`}>
               <BookOpen className="w-4 h-4" />
@@ -211,7 +222,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                   <span className={`hidden sm:inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
                     spec.tier === 'showcase'
                       ? 'bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                      : 'bg-slate-100 dark:bg-[#1E293B] text-slate-600 dark:text-slate-400'
                   }`}>
                     {spec.tier === 'showcase' ? `Showcase #${spec.showcaseNumber}` : 'Atomic Primitive'}
                   </span>
@@ -230,10 +241,10 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
               type="button"
               onClick={handleToggleFav}
               title={isFav ? 'Remove from favorites' : 'Bookmark to favorites'}
-              className={`min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg border transition-colors cursor-pointer touch-manipulation active:scale-95 ${
+              className={`min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg border transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                 isFav
                   ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700 text-amber-500'
-                  : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 hover:text-slate-700 dark:hover:text-white'
+                  : 'bg-white dark:bg-[#1E293B] border-slate-200 dark:border-slate-700 text-slate-400 hover:text-slate-700 dark:hover:text-white'
               }`}
             >
               <Star className={`w-4 h-4 ${isFav ? 'fill-amber-400' : ''}`} />
@@ -243,15 +254,18 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
             <div className="relative">
               <button
                 type="button"
-                onClick={() => setShowCollectionDropdown(!showCollectionDropdown)}
-                className="min-h-[44px] px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center gap-1.5 cursor-pointer touch-manipulation active:scale-95"
+                onClick={() => {
+                  tactile.playClick();
+                  setShowCollectionDropdown(!showCollectionDropdown);
+                }}
+                className="min-h-[44px] px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1E293B] text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#111827] transition-colors flex items-center gap-1.5 cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Add to Collection</span>
               </button>
 
               {showCollectionDropdown && (
-                <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-30 p-2 space-y-1">
+                <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-30 p-2 space-y-1">
                   <div className="px-2 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
                     Select Collection
                   </div>
@@ -260,7 +274,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                       key={col.id}
                       type="button"
                       onClick={() => handleAddToCollection(col.id, col.name)}
-                      className="w-full text-left px-2 py-1.5 rounded-lg text-xs hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center justify-between text-slate-800 dark:text-slate-200 cursor-pointer"
+                      className="w-full text-left px-2 py-2 rounded-lg text-xs hover:bg-slate-100 dark:hover:bg-[#111827] flex items-center justify-between text-slate-800 dark:text-slate-200 cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                     >
                       <span className="truncate">{col.name}</span>
                       <span className="text-[10px] font-mono text-slate-400">
@@ -277,7 +291,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
               type="button"
               onClick={handleCopyShareLink}
               title="Copy deep link to this component"
-              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer touch-manipulation active:scale-95"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1E293B] text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
             >
               <Share2 className="w-4 h-4" />
             </button>
@@ -285,9 +299,12 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
             {/* Close Button */}
             <button
               type="button"
-              onClick={onClose}
+              onClick={() => {
+                tactile.playClick();
+                onClose();
+              }}
               aria-label="Close documentation modal"
-              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors touch-manipulation active:scale-95"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1E293B] cursor-pointer transition-colors touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
             >
               <X className="w-5 h-5" />
             </button>
@@ -295,7 +312,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
         </div>
 
         {/* Quality Indicators Ribbon */}
-        <div className="px-4 sm:px-6 py-2.5 bg-slate-100/70 dark:bg-slate-800/50 border-b border-slate-200/80 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs shrink-0">
+        <div className="px-4 sm:px-6 py-2.5 bg-slate-100/70 dark:bg-[#1E293B]/50 border-b border-slate-200/80 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs shrink-0">
           <div className="flex flex-wrap items-center gap-2 font-mono text-[11px]">
             {/* WCAG AA / AAA badge */}
             <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 font-semibold flex items-center gap-1">
@@ -309,7 +326,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
             </span>
 
             {/* Difficulty Badge */}
-            <span className="px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold uppercase text-[10px]">
+            <span className="px-2 py-0.5 rounded-full bg-slate-200 dark:bg-[#1E293B] text-slate-700 dark:text-slate-300 font-semibold uppercase text-[10px]">
               {spec.difficulty}
             </span>
 
@@ -342,7 +359,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
         </div>
 
         {/* Documentation Tab Navigation */}
-        <div className="px-4 sm:px-6 border-b border-slate-200 dark:border-slate-800 flex items-center gap-1 overflow-x-auto text-xs font-semibold bg-white dark:bg-slate-900 shrink-0">
+        <div className="px-4 sm:px-6 border-b border-slate-200 dark:border-slate-800 flex items-center gap-1 overflow-x-auto text-xs font-semibold bg-white dark:bg-[#111827] shrink-0">
           {[
             { id: 'overview', label: 'Overview & Sandbox' },
             { id: 'props', label: 'Props Specification' },
@@ -353,8 +370,11 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
             <button
               key={tab.id}
               type="button"
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`min-h-[44px] px-3.5 py-2.5 flex items-center border-b-2 transition-colors cursor-pointer shrink-0 touch-manipulation active:scale-95 ${
+              onClick={() => {
+                tactile.playClick();
+                setActiveTab(tab.id as any);
+              }}
+              className={`min-h-[44px] px-3.5 py-2.5 flex items-center border-b-2 transition-colors cursor-pointer shrink-0 touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                 activeTab === tab.id
                   ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400 font-bold'
                   : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
@@ -371,20 +391,23 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
           {activeTab === 'overview' && (
             <div className="space-y-6">
               {/* Live Interactive Sandbox Box with Inline Copy Code Controls */}
-              <div className="p-6 bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col items-center justify-center min-h-[160px]">
+              <div className="p-6 bg-slate-50 dark:bg-[#0B0F19]/70 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col items-center justify-center min-h-[160px]">
                 <div className="w-full flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-200/70 dark:border-slate-800/70">
                   <div className="text-xs font-mono text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
                     <Code2 className="w-3.5 h-3.5 text-indigo-500" />
                     <span>Interactive Live Sandbox Preview</span>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <div className="inline-flex rounded-xl bg-slate-200/80 dark:bg-slate-800 p-0.5 text-xs font-mono">
+                    <div className="inline-flex rounded-xl bg-slate-200/80 dark:bg-[#1E293B] p-0.5 text-xs font-mono">
                       <button
                         type="button"
-                        onClick={() => setCodeMode('jsx')}
-                        className={`min-h-[36px] px-3 py-1.5 rounded-lg transition-colors cursor-pointer touch-manipulation active:scale-95 ${
+                        onClick={() => {
+                          tactile.playClick();
+                          setCodeMode('jsx');
+                        }}
+                        className={`min-h-[44px] px-3 py-1.5 rounded-lg transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                           codeMode === 'jsx'
-                            ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-semibold shadow-2xs'
+                            ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white font-semibold shadow-2xs'
                             : 'text-slate-600 dark:text-slate-400'
                         }`}
                       >
@@ -392,10 +415,13 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                       </button>
                       <button
                         type="button"
-                        onClick={() => setCodeMode('raw')}
-                        className={`min-h-[36px] px-3 py-1.5 rounded-lg transition-colors cursor-pointer touch-manipulation active:scale-95 ${
+                        onClick={() => {
+                          tactile.playClick();
+                          setCodeMode('raw');
+                        }}
+                        className={`min-h-[44px] px-3 py-1.5 rounded-lg transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                           codeMode === 'raw'
-                            ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-semibold shadow-2xs'
+                            ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white font-semibold shadow-2xs'
                             : 'text-slate-600 dark:text-slate-400'
                         }`}
                       >
@@ -405,12 +431,15 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
 
                     <button
                       type="button"
-                      onClick={() => setShowLivePlayground((v) => !v)}
+                      onClick={() => {
+                        tactile.playClick();
+                        setShowLivePlayground((v) => !v);
+                      }}
                       aria-expanded={showLivePlayground}
-                      className={`min-h-[36px] px-3 py-1.5 text-xs font-semibold rounded-xl border flex items-center gap-1.5 transition-all cursor-pointer touch-manipulation active:scale-95 ${
+                      className={`min-h-[44px] px-3 py-1.5 text-xs font-semibold rounded-xl border flex items-center gap-1.5 transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                         showLivePlayground
                           ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs'
-                          : 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800'
+                          : 'bg-white dark:bg-[#1E293B] text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800'
                       }`}
                     >
                       <Sliders className="w-3.5 h-3.5" />
@@ -420,7 +449,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                     <button
                       type="button"
                       onClick={() => handleCopySnippet()}
-                      className="min-h-[36px] px-3 py-1.5 text-xs font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white flex items-center gap-1.5 transition-all cursor-pointer shadow-xs touch-manipulation active:scale-95"
+                      className="min-h-[44px] px-3 py-1.5 text-xs font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white flex items-center gap-1.5 transition-all cursor-pointer shadow-xs touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                     >
                       {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
                       <span>{copiedCode ? `Copied ${codeMode === 'raw' ? 'Raw' : 'JSX'}!` : `Copy ${codeMode === 'raw' ? 'Raw' : 'JSX'} Code`}</span>
@@ -463,7 +492,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                   <button
                     type="button"
                     onClick={handleCopyInstall}
-                    className="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                    className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                   >
                     {copiedInstall ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
                   </button>
@@ -477,11 +506,14 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                     <h3 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                       Component Code
                     </h3>
-                    <div className="inline-flex rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700 text-[11px] font-mono">
+                    <div className="inline-flex rounded-lg bg-slate-100 dark:bg-[#1E293B] p-0.5 border border-slate-200 dark:border-slate-700 text-[11px] font-mono">
                       <button
                         type="button"
-                        onClick={() => setCodeMode('jsx')}
-                        className={`px-2.5 py-0.5 rounded-md transition-colors cursor-pointer ${
+                        onClick={() => {
+                          tactile.playClick();
+                          setCodeMode('jsx');
+                        }}
+                        className={`min-h-[36px] px-2.5 py-1 rounded-md transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                           codeMode === 'jsx'
                             ? 'bg-indigo-600 text-white font-semibold'
                             : 'text-slate-600 dark:text-slate-400'
@@ -491,8 +523,11 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                       </button>
                       <button
                         type="button"
-                        onClick={() => setCodeMode('raw')}
-                        className={`px-2.5 py-0.5 rounded-md transition-colors cursor-pointer ${
+                        onClick={() => {
+                          tactile.playClick();
+                          setCodeMode('raw');
+                        }}
+                        className={`min-h-[36px] px-2.5 py-1 rounded-md transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                           codeMode === 'raw'
                             ? 'bg-indigo-600 text-white font-semibold'
                             : 'text-slate-600 dark:text-slate-400'
@@ -504,11 +539,14 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                     {codeMode === 'jsx' && (
                       <button
                         type="button"
-                        onClick={() => setIncludeImports((v) => !v)}
-                        className={`px-2 py-0.5 rounded text-[10px] font-mono border cursor-pointer ${
+                        onClick={() => {
+                          tactile.playClick();
+                          setIncludeImports((v) => !v);
+                        }}
+                        className={`min-h-[36px] px-2 py-1 rounded text-[10px] font-mono border cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                           includeImports
                             ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800'
-                            : 'bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700'
+                            : 'bg-slate-100 dark:bg-[#1E293B] text-slate-500 border-slate-200 dark:border-slate-700'
                         }`}
                       >
                         {includeImports ? 'Imports: On' : 'Imports: Off'}
@@ -518,10 +556,9 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                   <button
                     type="button"
                     onClick={() => handleCopySnippet()}
-                    className="px-3 py-1 text-xs font-semibold rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 flex items-center gap-1.5 transition-colors cursor-pointer"
+                    className="min-h-[44px] px-3 py-1 text-xs font-semibold rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 flex items-center gap-1.5 transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                   >
                     {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{copiedCode ? 'Copied to Clipboard!' : `Copy ${codeMode === 'raw' ? 'Raw Source' : 'JSX Code'}`}</span>
                   </button>
                 </div>
                 <pre className="p-4 bg-slate-900 text-slate-100 rounded-xl font-mono text-xs overflow-x-auto max-h-[320px] overflow-y-auto border border-slate-800 leading-relaxed">
@@ -550,7 +587,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
 
               <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden text-xs">
                 <table className="w-full text-left divide-y divide-slate-200 dark:divide-slate-800">
-                  <thead className="bg-slate-50 dark:bg-slate-800/70 text-slate-700 dark:text-slate-300 font-bold uppercase text-[10px]">
+                  <thead className="bg-slate-50 dark:bg-[#1E293B]/70 text-slate-700 dark:text-slate-300 font-bold uppercase text-[10px]">
                     <tr>
                       <th className="px-4 py-2.5">Prop</th>
                       <th className="px-4 py-2.5">Type</th>
@@ -558,15 +595,15 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                       <th className="px-4 py-2.5">Description</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 bg-white dark:bg-slate-900 font-mono">
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 bg-white dark:bg-[#111827] font-mono">
                     {spec.doc.props.map((p) => (
-                      <tr key={p.name} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40">
+                      <tr key={p.name} className="hover:bg-slate-50/70 dark:hover:bg-[#1E293B]/40">
                         <td className="px-4 py-2.5 font-bold text-indigo-600 dark:text-indigo-400">
                           {p.name}
                           {p.required && <span className="text-rose-500 ml-1">*</span>}
                         </td>
                         <td className="px-4 py-2.5 text-slate-600 dark:text-slate-300 text-[11px]">
-                          <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                          <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700">
                             {p.type}
                           </span>
                         </td>
@@ -605,7 +642,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                 </h4>
                 <div className="flex flex-wrap gap-2 font-mono text-xs">
                   {spec.quality.ariaRoles.map((role) => (
-                    <span key={role} className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                    <span key={role} className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#1E293B] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                       role=&quot;{role}&quot;
                     </span>
                   ))}
@@ -619,7 +656,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                 </h4>
                 <div className="space-y-2 text-xs">
                   {spec.doc.keyboardShortcuts.map((kb) => (
-                    <div key={kb} className="p-2.5 bg-slate-50 dark:bg-slate-850 rounded-lg border border-slate-200/80 dark:border-slate-800 flex items-center gap-2">
+                    <div key={kb} className="p-2.5 bg-slate-50 dark:bg-[#1E293B]/50 rounded-lg border border-slate-200/80 dark:border-slate-800 flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-indigo-500 shrink-0" />
                       <span className="font-mono text-slate-800 dark:text-slate-200">{kb}</span>
                     </div>
@@ -650,7 +687,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                   Responsive Breakpoint Behavior
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700">
                     <span className="font-bold text-slate-900 dark:text-white flex items-center gap-1 mb-1">
                       <Smartphone className="w-3.5 h-3.5 text-indigo-500" /> Mobile (&lt; 640px)
                     </span>
@@ -658,7 +695,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                       44px touch targets, full-width fluid layouts, touch-swipe gestures enabled.
                     </p>
                   </div>
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700">
                     <span className="font-bold text-slate-900 dark:text-white flex items-center gap-1 mb-1">
                       <Tablet className="w-3.5 h-3.5 text-indigo-500" /> Tablet (640 - 1024px)
                     </span>
@@ -666,7 +703,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                       Split multi-column grids, optimized thumb zones, auto-dismiss popovers.
                     </p>
                   </div>
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700">
                     <span className="font-bold text-slate-900 dark:text-white flex items-center gap-1 mb-1">
                       <Monitor className="w-3.5 h-3.5 text-indigo-500" /> Desktop (&gt; 1024px)
                     </span>
@@ -723,7 +760,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
         </div>
 
         {/* Modal Bottom Footer */}
-        <div className="px-6 py-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/60 flex items-center justify-between text-xs shrink-0">
+        <div className="px-6 py-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-[#0B0F19]/60 flex items-center justify-between text-xs shrink-0">
           <div className="flex items-center gap-1.5 text-slate-500 font-mono text-[11px]">
             <span>Category {spec.categoryNumber}:</span>
             <span className="font-semibold text-slate-800 dark:text-slate-200">{spec.categoryTitle}</span>
@@ -733,15 +770,18 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
             <button
               type="button"
               onClick={() => handleCopySnippet()}
-              className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white shadow-sm hover:bg-indigo-500 transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="min-h-[44px] px-3.5 py-2 rounded-lg text-xs font-semibold bg-indigo-600 text-white shadow-sm hover:bg-indigo-500 transition-colors flex items-center gap-1.5 cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
             >
               <Copy className="w-3.5 h-3.5" />
               <span>Copy JSX</span>
             </button>
             <button
               type="button"
-              onClick={onClose}
-              className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+              onClick={() => {
+                tactile.playClick();
+                onClose();
+              }}
+              className="min-h-[44px] px-3.5 py-2 rounded-lg text-xs font-semibold bg-slate-200 dark:bg-[#1E293B] text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
             >
               Close
             </button>

@@ -24,6 +24,7 @@ import {
   evaluateAccessibilityAudit,
   AccessibilityCheckOverride,
 } from '../utils/jxuiLogic';
+import { tactile } from '../utils/tactileAudio';
 
 export interface AccessibilityAriaSectionProps {
   onJumpToComponent?: (spec: ComponentSpec) => void;
@@ -133,7 +134,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
     <section
       id="jx-accessibility-aria-standards"
       aria-label="Accessibility and ARIA Standards Documentation"
-      className={`p-5 sm:p-7 bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800/80 jx-elevation-2 space-y-6 scroll-mt-24 ${getRadiusClass('card')}`}
+      className={`p-5 sm:p-7 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-2 space-y-6 scroll-mt-24 ${getRadiusClass('card')}`}
     >
       {/* Top Section Header */}
       <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4 border-b border-slate-200/70 dark:border-slate-800 pb-5">
@@ -165,18 +166,24 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
         <div className="flex flex-wrap items-center gap-2 shrink-0">
           <button
             type="button"
-            onClick={handleSimulateAuditFailure}
+            onClick={() => {
+              tactile.playClick();
+              handleSimulateAuditFailure();
+            }}
             data-testid="a11y-simulate-fail-btn"
-            className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-300/80 dark:border-amber-800 hover:bg-amber-100/80 transition-all cursor-pointer ${getRadiusClass('control')}`}
+            className={`min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-300/80 dark:border-amber-800 hover:bg-amber-100/80 transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${getRadiusClass('control')}`}
           >
             <FlaskConical className="w-3.5 h-3.5" />
             <span>Simulate Failure State</span>
           </button>
           <button
             type="button"
-            onClick={handleResetAllPass}
+            onClick={() => {
+              tactile.playClick();
+              handleResetAllPass();
+            }}
             data-testid="a11y-reset-pass-btn"
-            className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700 hover:bg-slate-200/70 transition-all cursor-pointer ${getRadiusClass('control')}`}
+            className={`min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold bg-slate-100 dark:bg-[#1E293B] text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700 hover:bg-slate-200/70 transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${getRadiusClass('control')}`}
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset All Pass (61/61)</span>
@@ -186,7 +193,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
 
       {/* Live WCAG 2.1 AA Telemetry & Score Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5">
-        <div className="p-4 rounded-xl bg-slate-50/90 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800 flex flex-col justify-between gap-2">
+        <div className="p-4 rounded-xl bg-slate-50/90 dark:bg-[#0B0F19]/60 border border-slate-200/70 dark:border-slate-800 flex flex-col justify-between gap-2">
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
             <span>WCAG 2.1 AA Audit Score</span>
             {auditSummary.overallStatus === 'WCAG 2.1 AA Certified' ? (
@@ -215,7 +222,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
           </div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-50/90 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800 flex flex-col justify-between gap-2">
+        <div className="p-4 rounded-xl bg-slate-50/90 dark:bg-[#0B0F19]/60 border border-slate-200/70 dark:border-slate-800 flex flex-col justify-between gap-2">
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
             <span>Keyboard Navigation (2.1.1)</span>
             <Keyboard className="w-4 h-4 text-indigo-500 shrink-0" />
@@ -233,7 +240,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
           </div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-50/90 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800 flex flex-col justify-between gap-2">
+        <div className="p-4 rounded-xl bg-slate-50/90 dark:bg-[#0B0F19]/60 border border-slate-200/70 dark:border-slate-800 flex flex-col justify-between gap-2">
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
             <span>Screen Reader Support (4.1.2)</span>
             <Volume2 className="w-4 h-4 text-violet-500 shrink-0" />
@@ -251,7 +258,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
           </div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-50/90 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800 flex flex-col justify-between gap-2">
+        <div className="p-4 rounded-xl bg-slate-50/90 dark:bg-[#0B0F19]/60 border border-slate-200/70 dark:border-slate-800 flex flex-col justify-between gap-2">
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
             <span>Contrast &amp; Focus Halo (1.4.3)</span>
             <Eye className="w-4 h-4 text-sky-500 shrink-0" />
@@ -273,11 +280,14 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
         <div className="flex flex-wrap items-center gap-1.5">
           <button
             type="button"
-            onClick={() => setCategoryFilter('all')}
-            className={`min-h-[36px] px-3 py-1.5 text-xs font-semibold transition-all cursor-pointer touch-manipulation active:scale-95 ${getRadiusClass('control')} ${
+            onClick={() => {
+              tactile.playClick();
+              setCategoryFilter('all');
+            }}
+            className={`min-h-[44px] px-3.5 py-2 text-xs font-semibold transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${getRadiusClass('control')} ${
               categoryFilter === 'all'
                 ? `${palette.bg} text-white`
-                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200/70'
+                : 'bg-slate-100 dark:bg-[#1E293B] text-slate-600 dark:text-slate-300 hover:bg-slate-200/70 dark:hover:bg-[#1E293B]/80'
             }`}
           >
             All ({allSpecs.length})
@@ -286,11 +296,14 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
             <button
               key={cat.id}
               type="button"
-              onClick={() => setCategoryFilter(cat.id)}
-              className={`min-h-[36px] px-3 py-1.5 text-xs font-medium transition-all cursor-pointer touch-manipulation active:scale-95 ${getRadiusClass('control')} ${
+              onClick={() => {
+                tactile.playClick();
+                setCategoryFilter(cat.id);
+              }}
+              className={`min-h-[44px] px-3.5 py-2 text-xs font-medium transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${getRadiusClass('control')} ${
                 categoryFilter === cat.id
                   ? `${palette.bg} text-white font-semibold`
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200/70'
+                  : 'bg-slate-100 dark:bg-[#1E293B] text-slate-600 dark:text-slate-300 hover:bg-slate-200/70 dark:hover:bg-[#1E293B]/80'
               }`}
             >
               {cat.shortTitle}
@@ -303,14 +316,17 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
           <div
             role="group"
             aria-label="Filter checklist by pass or fail status"
-            className="inline-flex self-start p-1 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 text-xs font-semibold"
+            className="inline-flex self-start p-1 rounded-xl bg-slate-100 dark:bg-[#1E293B] border border-slate-200/80 dark:border-slate-700 text-xs font-semibold"
           >
             <button
               type="button"
-              onClick={() => setStatusFilter('all')}
-              className={`min-h-[36px] px-3.5 py-1.5 rounded-lg cursor-pointer transition-all touch-manipulation active:scale-95 ${
+              onClick={() => {
+                tactile.playClick();
+                setStatusFilter('all');
+              }}
+              className={`min-h-[44px] px-3.5 py-2 rounded-lg cursor-pointer transition-all touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                 statusFilter === 'all'
-                  ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xs font-bold'
+                  ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white shadow-2xs font-bold'
                   : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
               }`}
             >
@@ -318,8 +334,11 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
             </button>
             <button
               type="button"
-              onClick={() => setStatusFilter('pass')}
-              className={`min-h-[36px] px-3.5 py-1.5 rounded-lg cursor-pointer transition-all touch-manipulation active:scale-95 ${
+              onClick={() => {
+                tactile.playClick();
+                setStatusFilter('pass');
+              }}
+              className={`min-h-[44px] px-3.5 py-2 rounded-lg cursor-pointer transition-all touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                 statusFilter === 'pass'
                   ? 'bg-emerald-600 text-white font-bold'
                   : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
@@ -329,9 +348,12 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
             </button>
             <button
               type="button"
-              onClick={() => setStatusFilter('fail')}
+              onClick={() => {
+                tactile.playClick();
+                setStatusFilter('fail');
+              }}
               data-testid="a11y-filter-fail"
-              className={`min-h-[36px] px-3.5 py-1.5 rounded-lg cursor-pointer transition-all touch-manipulation active:scale-95 ${
+              className={`min-h-[44px] px-3.5 py-2 rounded-lg cursor-pointer transition-all touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                 statusFilter === 'fail'
                   ? 'bg-rose-600 text-white font-bold'
                   : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
@@ -349,7 +371,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search component, ARIA role, or keyboard key..."
               aria-label="Search component accessibility specifications"
-              className="w-full pl-9 pr-3.5 min-h-[44px] text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+              className="w-full pl-9 pr-3.5 min-h-[44px] text-xs bg-slate-50 dark:bg-[#0B0F19] border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--jx-accent-halo)]"
             />
           </div>
         </div>
@@ -381,7 +403,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
                 data-testid={`a11y-row-${item.id}`}
                 className={`p-4 transition-colors ${
                   isFullyCompliant
-                    ? 'bg-white dark:bg-slate-900/60 hover:bg-slate-50/80 dark:hover:bg-slate-900'
+                    ? 'bg-white dark:bg-[#111827] hover:bg-slate-50/80 dark:hover:bg-[#1E293B]'
                     : 'bg-rose-50/40 dark:bg-rose-950/20'
                 }`}
               >
@@ -395,7 +417,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
                       <h3 className="text-sm font-bold text-slate-900 dark:text-white">
                         {item.name}
                       </h3>
-                      <span className="px-2 py-0.5 rounded-md font-mono text-[11px] bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700">
+                      <span className="px-2 py-0.5 rounded-md font-mono text-[11px] bg-slate-100 dark:bg-[#1E293B] text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700">
                         role=&quot;{item.ariaRole}&quot;
                       </span>
                       <span className="px-2 py-0.5 rounded-md font-mono text-[11px] bg-emerald-500/10 text-emerald-700 dark:text-emerald-300">
@@ -404,8 +426,11 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
                       {catalogSpec && onJumpToComponent && (
                         <button
                           type="button"
-                          onClick={() => onJumpToComponent(catalogSpec)}
-                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+                          onClick={() => {
+                            tactile.playClick();
+                            onJumpToComponent(catalogSpec);
+                          }}
+                          className="min-h-[44px] inline-flex items-center gap-1 px-2 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                         >
                           <span>Inspect</span>
                           <ArrowUpRight className="w-3 h-3" />
@@ -426,7 +451,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
                       {item.wcagCriteria.map((crit) => (
                         <span
                           key={crit}
-                          className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800/90 text-slate-600 dark:text-slate-400 text-[10px] font-medium"
+                          className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-[#1E293B] text-slate-600 dark:text-slate-400 text-[10px] font-medium"
                         >
                           WCAG {crit}
                         </span>
@@ -435,7 +460,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
 
                     {/* Detailed Keyboard & Screen Reader Contracts */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 pt-1 text-xs">
-                      <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950/60 border border-slate-200/60 dark:border-slate-800/80">
+                      <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-[#0B0F19]/60 border border-slate-200/60 dark:border-slate-800/80">
                         <div className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1.5 mb-0.5">
                           <Keyboard className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
                           <span>Keyboard Navigation Contract</span>
@@ -445,7 +470,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
                         </p>
                       </div>
 
-                      <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950/60 border border-slate-200/60 dark:border-slate-800/80">
+                      <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-[#0B0F19]/60 border border-slate-200/60 dark:border-slate-800/80">
                         <div className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1.5 mb-0.5">
                           <Volume2 className="w-3.5 h-3.5 text-violet-500 shrink-0" />
                           <span>Screen Reader Announcement</span>
@@ -466,7 +491,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
                       aria-label={`${item.name} Keyboard Navigation Pass Status`}
                       data-testid={`a11y-kb-toggle-${item.id}`}
                       onClick={() => toggleKeyboardCheck(item.id, item.name)}
-                      className={`min-h-[44px] inline-flex items-center justify-between gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer touch-manipulation active:scale-95 ${
+                      className={`min-h-[44px] inline-flex items-center justify-between gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                         checkState.keyboardPass
                           ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border-emerald-300/80 dark:border-emerald-800'
                           : 'bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-800'
@@ -498,7 +523,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
                       aria-label={`${item.name} Screen Reader Support Pass Status`}
                       data-testid={`a11y-sr-toggle-${item.id}`}
                       onClick={() => toggleScreenReaderCheck(item.id, item.name)}
-                      className={`min-h-[44px] inline-flex items-center justify-between gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer touch-manipulation active:scale-95 ${
+                      className={`min-h-[44px] inline-flex items-center justify-between gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                         checkState.screenReaderPass
                           ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border-emerald-300/80 dark:border-emerald-800'
                           : 'bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-800'
@@ -552,13 +577,14 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
                     </div>
                     <button
                       type="button"
-                      onClick={() =>
+                      onClick={() => {
+                        tactile.playClick();
                         setOverrides((prev) => ({
                           ...prev,
                           [item.id]: { keyboardPass: true, screenReaderPass: true },
-                        }))
-                      }
-                      className="px-2.5 py-1 rounded-md bg-white dark:bg-slate-900 text-rose-700 dark:text-rose-300 font-semibold border border-rose-300 dark:border-rose-700 shrink-0 cursor-pointer"
+                        }));
+                      }}
+                      className="min-h-[44px] px-3.5 py-2 rounded-md bg-white dark:bg-[#111827] text-rose-700 dark:text-rose-300 font-semibold border border-rose-300 dark:border-rose-700 shrink-0 cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                     >
                       Mark Remediated (Pass)
                     </button>

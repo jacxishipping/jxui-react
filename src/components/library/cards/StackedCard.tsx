@@ -49,13 +49,13 @@ export const StackedCard: React.FC = () => {
               opacity,
               zIndex,
             }}
-            className={`absolute inset-x-0 h-20 p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-md ${getRadiusClass(
+            className={`absolute inset-x-0 h-20 p-3 bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 jx-elevation-1 shadow-md ${getRadiusClass(
               'card'
             )} transition-all duration-300 group-hover:-translate-y-1 flex flex-col justify-between`}
           >
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-mono text-slate-400">Card #{item.id}</span>
-              <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+              <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-slate-100 dark:bg-[#1E293B] text-slate-600 dark:text-slate-300">
                 {item.tag}
               </span>
             </div>

@@ -2,7 +2,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary: #3525cd;
+  --color-primary: #4f46e5;
   --color-primary-container: #4f46e5;
   --color-on-primary: #ffffff;
   --color-on-primary-container: #dad7ff;
@@ -45,12 +45,13 @@
   --color-status-info: #0EA5E9;
   --color-accent-emerald: #059669;
   --color-accent-rose: #E11D48;
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
   :root {
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
     --jx-radius-sm: 8px;
     --jx-radius-md: 12px;
     --jx-radius-lg: 16px;
@@ -58,6 +59,11 @@
     --jx-accent: #4f46e5;
     --jx-accent-soft: rgba(79, 70, 229, 0.12);
     --jx-accent-halo: rgba(79, 70, 229, 0.2);
+    --jx-canvas: #F8FAFC;
+    --jx-surface-elevated: #ffffff;
+    --jx-surface-subtle: #F1F5F9;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    font-optical-sizing: auto;
   }
 
   .dark {
@@ -69,6 +75,9 @@
     --color-on-surface: #f8fafc;
     --color-on-surface-variant: #94a3b8;
     --color-surface-subtle-light: #1e293b;
+    --jx-canvas: #0B0F19;
+    --jx-surface-elevated: #111827;
+    --jx-surface-subtle: #1E293B;
   }
 
   body {

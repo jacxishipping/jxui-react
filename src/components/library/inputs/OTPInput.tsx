@@ -54,7 +54,7 @@ export const OTPInput: React.FC<OTPInputProps> = ({ length = 6, onComplete, clas
           value={digit}
           onChange={(e) => handleChange(e.target.value, idx)}
           onKeyDown={(e) => handleKeyDown(e, idx)}
-          className={`w-9 h-11 text-center font-mono text-base font-bold bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all ${getRadiusClass(
+          className={`min-h-[44px] min-w-[44px] w-11 h-11 text-center font-mono text-base font-bold bg-white dark:bg-[#111827] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-[var(--jx-accent-halo)] transition-all touch-manipulation ${getRadiusClass(
             'control'
           )}`}
         />

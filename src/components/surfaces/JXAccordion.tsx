@@ -205,7 +205,7 @@ export const JXAccordion: React.FC<JXAccordionProps> = ({
       className={
         isBento
           ? `space-y-3 ${className}`
-          : `divide-y divide-slate-200/80 dark:divide-slate-800 border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden ${getRadiusClass('card')} ${className}`
+          : `divide-y divide-slate-200/80 dark:divide-slate-800 border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-[#111827] jx-elevation-1 overflow-hidden ${getRadiusClass('card')} ${className}`
       }
     >
       {items.map((item) => {
@@ -222,13 +222,13 @@ export const JXAccordion: React.FC<JXAccordionProps> = ({
               isBento
                 ? `border transition-colors overflow-hidden ${getRadiusClass('control')} ${
                     isOpen
-                      ? 'border-indigo-500/40 dark:border-indigo-400/40 bg-white dark:bg-slate-900 jx-elevation-2 ring-3 ring-indigo-500/10'
-                      : 'border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/40 hover:border-slate-300 dark:hover:border-slate-700 jx-elevation-1'
+                      ? 'border-indigo-500/40 dark:border-indigo-400/40 bg-white dark:bg-[#111827] jx-elevation-2 ring-3 ring-[var(--jx-accent-halo)]'
+                      : 'border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-[#0B0F19]/40 hover:border-slate-300 dark:hover:border-slate-700 jx-elevation-1'
                   }`
                 : `transition-colors ${
                     isOpen
                       ? 'bg-indigo-50/20 dark:bg-indigo-950/20'
-                      : 'bg-white dark:bg-slate-900'
+                      : 'bg-white dark:bg-[#111827]'
                   }`
             }
           >

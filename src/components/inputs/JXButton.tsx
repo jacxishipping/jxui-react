@@ -185,9 +185,9 @@ export const JXButton: React.FC<JXButtonProps> = ({
           ? { minWidth: `${Math.max(lockedMinWidth, 180)}px` }
           : undefined
       }
-      className={`relative inline-flex items-center justify-center font-semibold border transition-all duration-200 whitespace-nowrap shrink-0 select-none ${sizeClasses} ${getRadiusClass('control')} ${getVariantColorClasses()} ${
+      className={`relative inline-flex items-center justify-center font-semibold border transition-all duration-200 whitespace-nowrap shrink-0 select-none touch-manipulation min-h-[44px] ${sizeClasses} ${getRadiusClass('control')} ${getVariantColorClasses()} ${
         spring ? 'jx-spring active:scale-[0.98]' : ''
-      } ${halo ? `focus-visible:outline-none focus-visible:ring-3 ${palette.ring}` : ''} ${
+      } ${halo ? `focus-visible:outline-none ${palette.ring}` : ''} ${
         fullWidth ? 'w-full' : ''
       } ${disabled ? 'opacity-50 pointer-events-none' : ''} ${className}`}
       {...rest}

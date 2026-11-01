@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { UNIFIED_CATEGORIES_18, UnifiedCategorySpec } from '../../data/unifiedCatalog';
 import { useJXTheme } from '../../context/JXThemeContext';
+import { tactile } from '../../utils/tactileAudio';
 
 export interface AppSidebarProps {
   activeCategory: string;
@@ -86,10 +87,10 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   const { palette } = useJXTheme();
 
   const content = (
-    <div className="flex flex-col h-full justify-between overflow-hidden bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl">
+    <div className="flex flex-col h-full justify-between overflow-hidden bg-white/95 dark:bg-[#0B0F19]/95 backdrop-blur-xl">
       <div className="flex flex-col flex-1 min-h-0">
         {/* Brand Header */}
-        <div className="h-16 px-4 flex items-center justify-between border-b border-slate-200/70 dark:border-slate-800/80 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shrink-0">
+        <div className="h-16 px-4 flex items-center justify-between border-b border-slate-200/70 dark:border-slate-800/80 bg-white/90 dark:bg-[#0B0F19]/90 backdrop-blur-md shrink-0">
           <div className="flex items-center gap-2.5">
             <img
               src="./favicon.png"
@@ -130,9 +131,9 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               onChange={(e) => onSidebarQueryChange(e.target.value)}
               placeholder="Search all 351 components..."
               aria-label="Search all 351 components"
-              className="w-full pl-9 pr-12 py-2 min-h-[44px] rounded-xl bg-slate-100 dark:bg-slate-800/70 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-slate-900 border border-transparent focus:border-indigo-500/40 transition-colors"
+              className="w-full pl-9 pr-12 py-2 min-h-[44px] rounded-xl bg-slate-100 dark:bg-[#1E293B]/70 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#111827] border border-transparent focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] transition-colors"
             />
-            <span className="absolute right-2.5 px-1.5 py-0.5 rounded bg-slate-200/70 dark:bg-slate-700 text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300">
+            <span className="absolute right-2.5 px-1.5 py-0.5 rounded bg-slate-200/70 dark:bg-[#1E293B] text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300">
               {filteredCount}
             </span>
           </div>
@@ -144,14 +145,15 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           <button
             type="button"
             onClick={() => {
+              tactile.playClick(750);
               onSelectCategory('all');
               onSelectTier('all');
               onCloseMobileSidebar();
             }}
-            className={`w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl font-medium transition-all cursor-pointer touch-manipulation active:scale-[0.98] ${
+            className={`w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl font-medium transition-all cursor-pointer touch-manipulation active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
               activeCategory === 'all' && activeTier === 'all'
-                ? 'bg-indigo-600 text-white font-semibold shadow-sm ring-2 ring-indigo-500/20'
-                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60'
+                ? 'bg-indigo-600 text-white font-semibold shadow-sm ring-2 ring-[var(--jx-accent-halo)]'
+                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#1E293B]/60'
             }`}
           >
             <span className="flex items-center gap-2">
@@ -168,13 +170,14 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             <button
               type="button"
               onClick={() => {
+                tactile.playClick(800);
                 onSelectTier('showcase');
                 onCloseMobileSidebar();
               }}
-              className={`min-h-[44px] px-2 py-1.5 rounded-xl text-[11px] font-medium transition-all text-center cursor-pointer flex items-center justify-center touch-manipulation active:scale-95 ${
+              className={`min-h-[44px] px-2 py-1.5 rounded-xl text-[11px] font-medium transition-all text-center cursor-pointer flex items-center justify-center touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                 activeTier === 'showcase'
-                  ? 'bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold ring-1 ring-indigo-500/30'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50'
+                  ? 'bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold ring-2 ring-[var(--jx-accent-halo)]'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#1E293B]/60'
               }`}
             >
               Showcase (61)
@@ -182,13 +185,14 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             <button
               type="button"
               onClick={() => {
+                tactile.playClick(800);
                 onSelectTier('primitive');
                 onCloseMobileSidebar();
               }}
-              className={`min-h-[44px] px-2 py-1.5 rounded-xl text-[11px] font-medium transition-all text-center cursor-pointer flex items-center justify-center touch-manipulation active:scale-95 ${
+              className={`min-h-[44px] px-2 py-1.5 rounded-xl text-[11px] font-medium transition-all text-center cursor-pointer flex items-center justify-center touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                 activeTier === 'primitive'
-                  ? 'bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold ring-1 ring-indigo-500/30'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50'
+                  ? 'bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold ring-2 ring-[var(--jx-accent-halo)]'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#1E293B]/60'
               }`}
             >
               Primitives (290)
@@ -196,13 +200,14 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             <button
               type="button"
               onClick={() => {
+                tactile.playClick(800);
                 onSelectTier('favorites');
                 onCloseMobileSidebar();
               }}
-              className={`min-h-[44px] px-2 py-1.5 rounded-xl text-[11px] font-medium transition-all text-center cursor-pointer flex items-center justify-center gap-1 touch-manipulation active:scale-95 ${
+              className={`min-h-[44px] px-2 py-1.5 rounded-xl text-[11px] font-medium transition-all text-center cursor-pointer flex items-center justify-center gap-1 touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                 activeTier === 'favorites'
-                  ? 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 font-bold ring-1 ring-amber-500/30'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50'
+                  ? 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 font-bold ring-2 ring-amber-500/30'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#1E293B]/60'
               }`}
             >
               <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-500" />
@@ -227,20 +232,21 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                 key={cat.id}
                 type="button"
                 onClick={() => {
+                  tactile.playClick(750);
                   onSelectCategory(cat.id);
                   onCloseMobileSidebar();
                 }}
-                className={`w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-left transition-all cursor-pointer touch-manipulation active:scale-[0.98] ${
+                className={`w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-left transition-all cursor-pointer touch-manipulation active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                   isCatActive
-                    ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-semibold ring-1 ring-indigo-500/30'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100/80 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
+                    ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-semibold ring-2 ring-[var(--jx-accent-halo)]'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100/80 dark:hover:bg-[#1E293B]/60 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
                     isCatActive
                       ? 'bg-indigo-600 text-white shadow-xs'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
+                      : 'bg-slate-100 dark:bg-[#1E293B] text-slate-500 dark:text-slate-400'
                   }`}>
                     <Icon className="w-3.5 h-3.5" />
                   </div>
@@ -282,10 +288,11 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               <button
                 type="button"
                 onClick={() => {
+                  tactile.playClick(800);
                   onNavigateToSection('jx-live-playground');
                   onCloseMobileSidebar();
                 }}
-                className="w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer text-left touch-manipulation active:scale-[0.98]"
+                className="w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#1E293B]/60 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer text-left touch-manipulation active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
               >
                 <span className="flex items-center gap-2">
                   <Sliders className="w-3.5 h-3.5 text-indigo-500" />
@@ -297,10 +304,11 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               <button
                 type="button"
                 onClick={() => {
+                  tactile.playClick(800);
                   onOpenEncyclopedia();
                   onCloseMobileSidebar();
                 }}
-                className="w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer text-left touch-manipulation active:scale-[0.98]"
+                className="w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#1E293B]/60 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer text-left touch-manipulation active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
               >
                 <span className="flex items-center gap-2">
                   <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
@@ -312,10 +320,11 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               <button
                 type="button"
                 onClick={() => {
+                  tactile.playClick(800);
                   onNavigateToSection('jx-design-token-exporter');
                   onCloseMobileSidebar();
                 }}
-                className="w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer text-left touch-manipulation active:scale-[0.98]"
+                className="w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#1E293B]/60 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer text-left touch-manipulation active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
               >
                 <span className="flex items-center gap-2">
                   <Palette className="w-3.5 h-3.5 text-violet-500" />
@@ -327,10 +336,11 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               <button
                 type="button"
                 onClick={() => {
+                  tactile.playClick(800);
                   onNavigateToSection('jx-accessibility-aria-standards');
                   onCloseMobileSidebar();
                 }}
-                className="w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer text-left touch-manipulation active:scale-[0.98]"
+                className="w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#1E293B]/60 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer text-left touch-manipulation active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
               >
                 <span className="flex items-center gap-2">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
@@ -342,13 +352,14 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               <button
                 type="button"
                 onClick={() => {
+                  tactile.playClick(800);
                   onNavigateToSection('github-page');
                   onCloseMobileSidebar();
                 }}
-                className={`w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl transition-all cursor-pointer text-left touch-manipulation active:scale-[0.98] ${
+                className={`w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl transition-all cursor-pointer text-left touch-manipulation active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                   currentView === 'github-page'
                     ? 'bg-[#238636] text-white font-semibold ring-2 ring-[#238636]/30'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#1E293B]/60 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 <span className="flex items-center gap-2">
@@ -363,7 +374,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       </div>
 
       {/* Bottom Compliance & Framework Footer */}
-      <div className="p-3.5 border-t border-slate-200/70 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/60 space-y-2 shrink-0">
+      <div className="p-3.5 border-t border-slate-200/70 dark:border-slate-800 bg-slate-50/60 dark:bg-[#0B0F19]/60 space-y-2 shrink-0">
         <div className="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-400">
           <span className="flex items-center gap-1.5 font-medium">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
@@ -385,7 +396,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   return (
     <>
       {/* Desktop Persistent Left Nav Rail */}
-      <aside className="hidden lg:block w-72 shrink-0 border-r border-slate-200/70 dark:border-slate-800 bg-white dark:bg-slate-900 h-screen sticky top-0 z-40">
+      <aside className="hidden lg:block w-72 shrink-0 border-r border-slate-200/70 dark:border-slate-800 bg-white dark:bg-[#0B0F19] h-screen sticky top-0 z-40">
         {content}
       </aside>
 
@@ -401,7 +412,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
             onClick={onCloseMobileSidebar}
           />
-          <div className="relative w-80 max-w-[calc(100vw-3.5rem)] bg-white dark:bg-slate-900 shadow-2xl h-full z-10 flex flex-col">
+          <div className="relative w-80 max-w-[calc(100vw-3.5rem)] bg-white dark:bg-[#0B0F19] shadow-2xl h-full z-10 flex flex-col">
             {content}
           </div>
         </div>

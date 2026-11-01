@@ -72,7 +72,7 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({
         <button
           type="button"
           onClick={handleReset}
-          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 shadow-xs cursor-pointer"
+          className="min-h-[44px] inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-white dark:bg-[#111827] border border-slate-300 dark:border-slate-700 jx-elevation-1 cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
         >
           <RotateCcw className="w-3.5 h-3.5" />
           <span>Reset Card</span>
@@ -95,7 +95,7 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({
         opacity,
         transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease',
       }}
-      className={`relative p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg ${getRadiusClass(
+      className={`relative p-5 bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 jx-elevation-1 shadow-lg ${getRadiusClass(
         'card'
       )} cursor-grab active:cursor-grabbing select-none space-y-2 ${className}`}
     >

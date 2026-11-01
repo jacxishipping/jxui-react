@@ -85,9 +85,9 @@ export const JXCard: React.FC<JXCardProps> = ({
             }
           : undefined
       }
-      className={`p-5 border border-slate-200/90 dark:border-slate-800 transition-transform duration-200 ${
+      className={`p-5 bg-white dark:bg-[#111827] text-slate-900 dark:text-white border border-slate-200/90 dark:border-slate-800 transition-transform duration-200 ${
         hoverLift ? 'hover:-translate-y-0.5' : ''
-      } jx-elevation-2 ${getRadiusClass('card')} ${className}`}
+      } jx-elevation-1 ${getRadiusClass('card')} ${className}`}
     >
       {children || (
         <>

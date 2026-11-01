@@ -26,7 +26,7 @@ export interface GlassCardProps {
 export const GlassCard: React.FC<GlassCardProps> = ({ title = 'Luminescent Metric', subtitle = 'Zero latency event loop', children, className = '' }) => {
   const { getRadiusClass } = useJXTheme();
   return (
-    <div className={`p-5 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-white/50 dark:border-slate-800 shadow-lg hover:shadow-2xl transition-all duration-300 ${getRadiusClass('card')} ${className}`}>
+    <div className={`p-5 bg-white/70 dark:bg-[#111827]/70 backdrop-blur-xl border border-white/50 dark:border-slate-800 jx-elevation-2 shadow-lg hover:shadow-2xl transition-all duration-300 ${getRadiusClass('card')} ${className}`}>
       <h3 className="font-bold text-slate-900 dark:text-white text-base">{title}</h3>
       <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 mb-3">{subtitle}</p>
       {children}

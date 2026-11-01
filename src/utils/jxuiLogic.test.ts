@@ -237,12 +237,16 @@ test('generateDesignTokensJSON and generateDesignTokensCSS reflect active accent
   assert.equal(parsed.$metadata.activeRadiusScale, 'xl');
   assert.equal(parsed.color.accent.name.$value, 'Emerald');
   assert.equal(parsed.color.surface.canvas.$value, '#0B0F19');
+  assert.equal(parsed.color.surface.elevatedCard.$value, '#111827');
+  assert.equal(parsed.color.surface.subtle.$value, '#1E293B');
   assert.equal(parsed.geometry.radius.card.$value, '24px');
 
   const cssStr = generateDesignTokensCSS(config);
   assert.ok(cssStr.includes('JXUI (@jxui/react) v3.0'));
   assert.ok(cssStr.includes('--jx-accent-500: #10b981;'));
   assert.ok(cssStr.includes('--jx-surface-canvas: #0B0F19;'));
+  assert.ok(cssStr.includes('--jx-surface-card: #111827;'));
+  assert.ok(cssStr.includes('--jx-surface-subtle: #1E293B;'));
   assert.ok(cssStr.includes('--jx-radius-card: 24px;'));
 
   assert.equal(getDesignTokenFilename(config, 'json'), 'jxui-tokens-emerald-dark-xl.json');

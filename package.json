@@ -17,15 +17,15 @@
     "glassmorphism",
     "interactive-components"
   ],
-  "author": "Shakir (https://github.com/iam-shakir)",
+  "author": "jacxishipping (https://github.com/jacxishipping)",
   "license": "MIT",
-  "homepage": "https://iam-shakir.github.io/JXUI-react/",
+  "homepage": "https://jacxishipping.github.io/jxui-react/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iam-shakir/JXUI-react.git"
+    "url": "git+https://github.com/jacxishipping/jxui-react.git"
   },
   "bugs": {
-    "url": "https://github.com/iam-shakir/JXUI-react/issues"
+    "url": "https://github.com/jacxishipping/jxui-react/issues"
   },
   "publishConfig": {
     "access": "public"

@@ -17,6 +17,7 @@ import {
   AccentColor,
   RadiusScale,
 } from '../context/JXThemeContext';
+import { tactile } from '../utils/tactileAudio';
 import {
   ACCENT_TONAL_SCALES,
   RADIUS_TOKEN_MAP,
@@ -72,6 +73,8 @@ export const DesignTokenExporter: React.FC = () => {
   const codeLines = useMemo(() => generatedOutput.split('\n'), [generatedOutput]);
 
   const handleCopyTokens = () => {
+    tactile.playClick(950);
+    tactile.triggerHaptic('light');
     navigator.clipboard?.writeText(generatedOutput).catch(() => {});
     setCopied(true);
     pushToast({
@@ -83,6 +86,8 @@ export const DesignTokenExporter: React.FC = () => {
   };
 
   const handleDownloadFile = () => {
+    tactile.playClick(900);
+    tactile.triggerHaptic('success');
     const mimeType =
       exportFormat === 'json'
         ? 'application/json;charset=utf-8'
@@ -109,7 +114,7 @@ export const DesignTokenExporter: React.FC = () => {
     <section
       id="jx-design-token-exporter"
       aria-label="JXUI Design Token Exporter Module"
-      className={`p-5 sm:p-7 bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800/80 jx-elevation-2 space-y-6 scroll-mt-24 ${getRadiusClass('card')}`}
+      className={`p-5 sm:p-7 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 space-y-6 scroll-mt-24 ${getRadiusClass('card')}`}
     >
       {/* Header Bar */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-200/70 dark:border-slate-800 pb-5">
@@ -147,17 +152,20 @@ export const DesignTokenExporter: React.FC = () => {
           <div
             role="radiogroup"
             aria-label="Select token export format"
-            className={`inline-flex p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 ${getRadiusClass('control')}`}
+            className={`inline-flex p-1 bg-slate-100 dark:bg-[#1E293B] border border-slate-200/80 dark:border-slate-700 ${getRadiusClass('control')}`}
           >
             <button
               type="button"
               role="radio"
               aria-checked={exportFormat === 'json'}
-              onClick={() => setExportFormat('json')}
+              onClick={() => {
+                tactile.playClick();
+                setExportFormat('json');
+              }}
               data-testid="token-format-json"
-              className={`inline-flex items-center gap-1.5 min-h-[44px] px-3.5 py-2 text-xs font-semibold transition-all cursor-pointer touch-manipulation active:scale-95 ${getRadiusClass('control')} ${
+              className={`inline-flex items-center gap-1.5 min-h-[44px] px-3.5 py-2 text-xs font-semibold transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${getRadiusClass('control')} ${
                 exportFormat === 'json'
-                  ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white jx-elevation-1'
+                  ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white jx-elevation-1'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -168,11 +176,14 @@ export const DesignTokenExporter: React.FC = () => {
               type="button"
               role="radio"
               aria-checked={exportFormat === 'css'}
-              onClick={() => setExportFormat('css')}
+              onClick={() => {
+                tactile.playClick();
+                setExportFormat('css');
+              }}
               data-testid="token-format-css"
-              className={`inline-flex items-center gap-1.5 min-h-[44px] px-3.5 py-2 text-xs font-semibold transition-all cursor-pointer touch-manipulation active:scale-95 ${getRadiusClass('control')} ${
+              className={`inline-flex items-center gap-1.5 min-h-[44px] px-3.5 py-2 text-xs font-semibold transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${getRadiusClass('control')} ${
                 exportFormat === 'css'
-                  ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white jx-elevation-1'
+                  ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white jx-elevation-1'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -185,7 +196,7 @@ export const DesignTokenExporter: React.FC = () => {
             type="button"
             onClick={handleCopyTokens}
             data-testid="token-copy-btn"
-            className={`inline-flex items-center gap-1.5 min-h-[44px] px-4 py-2.5 text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700 hover:bg-slate-200/70 dark:hover:bg-slate-700 transition-all cursor-pointer touch-manipulation active:scale-95 ${getRadiusClass('control')}`}
+            className={`inline-flex items-center gap-1.5 min-h-[44px] px-4 py-2.5 text-xs font-semibold bg-slate-100 dark:bg-[#1E293B] text-slate-800 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700 hover:bg-slate-200/70 dark:hover:bg-[#1E293B]/80 transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${getRadiusClass('control')}`}
           >
             {copied ? (
               <>
@@ -204,7 +215,7 @@ export const DesignTokenExporter: React.FC = () => {
             type="button"
             onClick={handleDownloadFile}
             data-testid="token-download-btn"
-            className={`inline-flex items-center gap-2 min-h-[44px] px-4 py-2.5 text-xs font-semibold text-white ${palette.bg} ${palette.bgHover} jx-elevation-1 transition-all cursor-pointer touch-manipulation active:scale-95 ${getRadiusClass('control')}`}
+            className={`inline-flex items-center gap-2 min-h-[44px] px-4 py-2.5 text-xs font-semibold text-white ${palette.bg} ${palette.bgHover} jx-elevation-1 transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${getRadiusClass('control')}`}
           >
             <Download className="w-3.5 h-3.5" />
             <span>Download {exportFormat === 'json' ? '.json' : '.css'} File</span>
@@ -217,7 +228,7 @@ export const DesignTokenExporter: React.FC = () => {
         {/* Left Column: Active Palette & Geometry Visualizer */}
         <div className="lg:col-span-5 space-y-4">
           {/* Active 11-Stop Accent Tonal Swatch Strip */}
-          <div className="p-4 rounded-xl bg-slate-50/90 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800 space-y-3">
+          <div className="p-4 rounded-xl bg-slate-50/90 dark:bg-[#0B0F19]/60 border border-slate-200/70 dark:border-slate-800 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
                 1. Active Accent Palette ({activeTonalScale.name})
@@ -236,11 +247,14 @@ export const DesignTokenExporter: React.FC = () => {
                   <button
                     key={colorKey}
                     type="button"
-                    onClick={() => setAccent(colorKey)}
-                    className={`inline-flex items-center gap-2 min-h-[44px] sm:min-h-[36px] px-3 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer touch-manipulation active:scale-95 ${
+                    onClick={() => {
+                      tactile.playClick();
+                      setAccent(colorKey);
+                    }}
+                    className={`inline-flex items-center gap-2 min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                       active
                         ? 'bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-slate-900 dark:border-white shadow-xs'
-                        : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-slate-400'
+                        : 'bg-white dark:bg-[#111827] text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-slate-400'
                     }`}
                   >
                     <span
@@ -273,7 +287,7 @@ export const DesignTokenExporter: React.FC = () => {
           </div>
 
           {/* Active Radius Scale & Surface Luminance Visualizer */}
-          <div className="p-4 rounded-xl bg-slate-50/90 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800 space-y-3">
+          <div className="p-4 rounded-xl bg-slate-50/90 dark:bg-[#0B0F19]/60 border border-slate-200/70 dark:border-slate-800 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
                 <Sliders className="w-3.5 h-3.5 text-indigo-500" />
@@ -281,8 +295,11 @@ export const DesignTokenExporter: React.FC = () => {
               </span>
               <button
                 type="button"
-                onClick={toggleMode}
-                className="min-h-[36px] inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 cursor-pointer touch-manipulation active:scale-95"
+                onClick={() => {
+                  tactile.playClick();
+                  toggleMode();
+                }}
+                className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
               >
                 {mode === 'light' ? (
                   <>
@@ -303,11 +320,14 @@ export const DesignTokenExporter: React.FC = () => {
                 <button
                   key={r.id}
                   type="button"
-                  onClick={() => setRadiusScale(r.id)}
-                  className={`min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer touch-manipulation active:scale-95 ${
+                  onClick={() => {
+                    tactile.playClick();
+                    setRadiusScale(r.id);
+                  }}
+                  className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                     radiusScale === r.id
                       ? `${palette.bg} text-white border-transparent shadow-xs`
-                      : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800'
+                      : 'bg-white dark:bg-[#111827] text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800'
                   }`}
                 >
                   {r.label}
@@ -316,19 +336,19 @@ export const DesignTokenExporter: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-3 gap-2 pt-1 text-center">
-              <div className="p-2.5 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-lg">
+              <div className="p-2.5 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800 rounded-lg">
                 <div className="text-[10px] text-slate-500">Control Radius</div>
                 <div className="font-mono text-xs font-bold text-slate-900 dark:text-white mt-0.5">
                   {activeRadiusSpec.controlPx}
                 </div>
               </div>
-              <div className="p-2.5 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-lg">
+              <div className="p-2.5 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800 rounded-lg">
                 <div className="text-[10px] text-slate-500">Card Radius</div>
                 <div className="font-mono text-xs font-bold text-slate-900 dark:text-white mt-0.5">
                   {activeRadiusSpec.cardPx}
                 </div>
               </div>
-              <div className="p-2.5 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-lg">
+              <div className="p-2.5 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800 rounded-lg">
                 <div className="text-[10px] text-slate-500">Pill Radius</div>
                 <div className="font-mono text-xs font-bold text-slate-900 dark:text-white mt-0.5">
                   {activeRadiusSpec.pillPx}

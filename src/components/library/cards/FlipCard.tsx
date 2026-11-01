@@ -38,7 +38,7 @@ export const FlipCard: React.FC<FlipCardProps> = ({
         {/* Front Face */}
         <div
           style={{ backfaceVisibility: 'hidden' }}
-          className={`absolute inset-0 p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg flex flex-col justify-between ${getRadiusClass(
+          className={`absolute inset-0 p-5 bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 jx-elevation-1 shadow-lg flex flex-col justify-between ${getRadiusClass(
             'card'
           )}`}
         >

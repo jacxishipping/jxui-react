@@ -71,11 +71,11 @@ export const PinInput: React.FC<PinInputProps> = ({
             onChange={(e) => handleChange(i, e.target.value)}
             onKeyDown={(e) => handleKeyDown(i, e)}
             aria-label={`PIN Digit ${i + 1}`}
-            className={`w-9 h-10 text-center font-mono text-base font-bold text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-900 border ${
+            className={`min-h-[44px] min-w-[44px] w-11 h-11 text-center font-mono text-base font-bold text-slate-900 dark:text-white bg-slate-50 dark:bg-[#111827] border ${
               v
-                ? 'border-indigo-500 ring-2 ring-indigo-500/20'
+                ? 'border-indigo-500 ring-2 ring-[var(--jx-accent-halo)]'
                 : 'border-slate-300 dark:border-slate-700'
-            } ${getRadiusClass('control')} focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/30 transition-all`}
+            } ${getRadiusClass('control')} focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-[var(--jx-accent-halo)] transition-all touch-manipulation`}
           />
           {mask && v && (
             <div className="absolute pointer-events-none w-2.5 h-2.5 rounded-full bg-indigo-600" />

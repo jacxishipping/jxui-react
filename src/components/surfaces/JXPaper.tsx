@@ -40,10 +40,10 @@ export const JXPaper: React.FC<JXPaperProps> = ({
               key={t}
               type="button"
               onClick={() => selectTier(t)}
-              className={`px-2.5 py-1 text-xs font-mono rounded capitalize transition-colors ${
+              className={`min-h-[32px] px-2.5 py-1 text-xs font-mono rounded capitalize transition-colors touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                 currentTier === t
                   ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                  : 'bg-slate-100 dark:bg-[#1E293B] text-slate-600 dark:text-slate-400'
               }`}
             >
               {t}
@@ -55,12 +55,12 @@ export const JXPaper: React.FC<JXPaperProps> = ({
       <div
         className={`p-4 border text-xs transition-all ${getRadiusClass('control')} ${
           currentTier === 'sunken'
-            ? 'bg-slate-100 dark:bg-slate-950 border-slate-200/70 dark:border-slate-800 shadow-inner'
+            ? 'bg-slate-100 dark:bg-[#0B0F19] border-slate-200/70 dark:border-slate-800 shadow-inner'
             : currentTier === 'glass'
-            ? 'bg-white/75 dark:bg-slate-900/75 backdrop-blur-md border-slate-200/80 dark:border-slate-700 jx-elevation-2'
+            ? 'bg-white/75 dark:bg-[#111827]/75 backdrop-blur-md border-slate-200/80 dark:border-slate-700 jx-elevation-2'
             : currentTier === 'overlay'
-            ? 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 jx-elevation-3'
-            : 'bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 jx-elevation-1'
+            ? 'bg-white dark:bg-[#111827] border-slate-200 dark:border-slate-700 jx-elevation-3'
+            : 'bg-white dark:bg-[#111827] border-slate-200/80 dark:border-slate-800 jx-elevation-1'
         }`}
       >
         {children || (

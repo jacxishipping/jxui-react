@@ -20,6 +20,7 @@ import { UNIFIED_COMPONENTS_351, UnifiedComponentSpec } from '../data/unifiedCat
 import { InteractiveComponentPreview } from './InteractiveComponentPreview';
 import { useJXTheme } from '../context/JXThemeContext';
 import { copyTextToClipboard } from '../utils/rawSourceLoader';
+import { tactile } from '../utils/tactileAudio';
 import {
   PlaygroundPropValues,
   PlaygroundCssVariables,
@@ -112,6 +113,8 @@ export const InlineLivePlayground: React.FC<InlineLivePlaygroundProps> = ({
   );
 
   const handleCopy = async (type: 'jsx' | 'css' | 'changelog') => {
+    tactile.playClick(950);
+    tactile.triggerHaptic('light');
     const text =
       type === 'jsx'
         ? serializePlaygroundJsx(componentName, propsState, true)
@@ -146,14 +149,14 @@ export const InlineLivePlayground: React.FC<InlineLivePlaygroundProps> = ({
   return (
     <div
       data-testid={`inline-playground-${componentName}`}
-      className="border-t border-slate-200/80 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-900/90 p-3 space-y-3 text-xs rounded-b-xl"
+      className="border-t border-slate-200/80 dark:border-slate-800 bg-slate-100/80 dark:bg-[#111827]/90 p-3 space-y-3 text-xs rounded-b-xl"
     >
       {/* Top Bar: Mode Switcher + Reset + Copy Actions */}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div
           role="tablist"
           aria-label={`Live Playground tabs for ${componentName}`}
-          className="inline-flex items-center rounded-lg bg-slate-200/80 dark:bg-slate-800 p-0.5 text-[11px] font-semibold"
+          className="inline-flex items-center rounded-lg bg-slate-200/80 dark:bg-[#1E293B] p-0.5 text-[11px] font-semibold"
         >
           <button
             type="button"
@@ -162,7 +165,7 @@ export const InlineLivePlayground: React.FC<InlineLivePlaygroundProps> = ({
             onClick={() => setActiveTab('props')}
             className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md transition-colors cursor-pointer whitespace-nowrap ${
               activeTab === 'props'
-                ? 'bg-white dark:bg-slate-950 text-indigo-600 dark:text-indigo-400 shadow-2xs'
+                ? 'bg-white dark:bg-[#111827] text-indigo-600 dark:text-indigo-400 shadow-2xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -176,7 +179,7 @@ export const InlineLivePlayground: React.FC<InlineLivePlaygroundProps> = ({
             onClick={() => setActiveTab('css')}
             className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md transition-colors cursor-pointer whitespace-nowrap ${
               activeTab === 'css'
-                ? 'bg-white dark:bg-slate-950 text-indigo-600 dark:text-indigo-400 shadow-2xs'
+                ? 'bg-white dark:bg-[#111827] text-indigo-600 dark:text-indigo-400 shadow-2xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -190,7 +193,7 @@ export const InlineLivePlayground: React.FC<InlineLivePlaygroundProps> = ({
             onClick={() => setActiveTab('changelog')}
             className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md transition-colors cursor-pointer whitespace-nowrap ${
               activeTab === 'changelog'
-                ? 'bg-white dark:bg-slate-950 text-emerald-600 dark:text-emerald-400 shadow-2xs'
+                ? 'bg-white dark:bg-[#111827] text-emerald-600 dark:text-emerald-400 shadow-2xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -229,9 +232,9 @@ export const InlineLivePlayground: React.FC<InlineLivePlaygroundProps> = ({
             onClick={onReset}
             title="Reset playground controls"
             aria-label={`Reset playground controls for ${componentName}`}
-            className="p-1 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+            className="p-1 rounded-md bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
           >
-            <RotateCcw className="w-3 h-3" />
+            <RotateCcw className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
@@ -253,7 +256,7 @@ export const InlineLivePlayground: React.FC<InlineLivePlaygroundProps> = ({
                     className={`px-2 py-0.5 rounded text-[10px] font-medium capitalize transition-colors cursor-pointer ${
                       propsState.variant === v
                         ? 'bg-indigo-600 text-white font-semibold'
-                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+                        : 'bg-white dark:bg-[#1E293B] text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
                     }`}
                   >
                     {v}
@@ -275,7 +278,7 @@ export const InlineLivePlayground: React.FC<InlineLivePlaygroundProps> = ({
                     className={`px-1.5 py-0.5 rounded text-[10px] font-medium capitalize transition-colors cursor-pointer ${
                       propsState.color === c
                         ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold'
-                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+                        : 'bg-white dark:bg-[#1E293B] text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
                     }`}
                   >
                     {c}
@@ -290,7 +293,7 @@ export const InlineLivePlayground: React.FC<InlineLivePlaygroundProps> = ({
                     className={`px-1.5 py-0.5 rounded text-[10px] font-mono uppercase transition-colors cursor-pointer ${
                       propsState.size === sz
                         ? 'bg-indigo-600 text-white font-semibold'
-                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+                        : 'bg-white dark:bg-[#1E293B] text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
                     }`}
                   >
                     {sz}
@@ -328,7 +331,7 @@ export const InlineLivePlayground: React.FC<InlineLivePlaygroundProps> = ({
                   className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-mono text-[10px] border transition-colors cursor-pointer ${
                     active
                       ? 'bg-indigo-50 dark:bg-indigo-950/80 border-indigo-400 dark:border-indigo-600 text-indigo-700 dark:text-indigo-300 font-semibold'
-                      : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500'
+                      : 'bg-white dark:bg-[#1E293B] border-slate-200 dark:border-slate-700 text-slate-500'
                   }`}
                 >
                   <span>{toggle.label}</span>
@@ -489,7 +492,7 @@ export const InlineLivePlayground: React.FC<InlineLivePlaygroundProps> = ({
             {v3Changelog.entries.map((entry) => (
               <div
                 key={entry.id}
-                className="p-2.5 rounded-lg bg-white dark:bg-slate-950/80 border border-slate-200/80 dark:border-slate-800 space-y-1.5"
+                className="p-2.5 rounded-lg bg-white dark:bg-[#0B0F19]/80 border border-slate-200/80 dark:border-slate-800 space-y-1.5"
               >
                 <div className="flex flex-wrap items-center justify-between gap-1">
                   <span className="font-semibold text-[11px] text-slate-900 dark:text-white">
@@ -604,6 +607,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
   );
 
   const handleResetAll = () => {
+    tactile.playClick(850);
     setPropsState(DEFAULT_PLAYGROUND_PROPS);
     setCssVars(DEFAULT_PLAYGROUND_CSS_VARS);
     pushToast({
@@ -614,6 +618,8 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
   };
 
   const handleCopyActiveCode = async () => {
+    tactile.playClick(950);
+    tactile.triggerHaptic('light');
     const text =
       codeTab === 'jsx'
         ? liveJsxCode
@@ -649,21 +655,21 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
 
   const backdropClass =
     stageBackdrop === 'grid'
-      ? 'bg-slate-50 dark:bg-slate-950 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] dark:bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px]'
+      ? 'bg-slate-50 dark:bg-[#0B0F19] bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] dark:bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px]'
       : stageBackdrop === 'dots'
-      ? 'bg-slate-100/70 dark:bg-slate-900/80'
+      ? 'bg-slate-100/70 dark:bg-[#111827]/80'
       : stageBackdrop === 'glass'
-      ? 'bg-gradient-to-br from-indigo-500/10 via-sky-500/5 to-emerald-500/10 dark:from-indigo-950/50 dark:via-slate-950 dark:to-emerald-950/40'
-      : 'bg-slate-900 text-white dark:bg-slate-950';
+      ? 'bg-gradient-to-br from-indigo-500/10 via-sky-500/5 to-emerald-500/10 dark:from-indigo-950/50 dark:via-[#0B0F19] dark:to-emerald-950/40'
+      : 'bg-slate-900 text-white dark:bg-[#0B0F19]';
 
   return (
     <section
       id="jx-live-playground"
       aria-label="Interactive Live Playground"
-      className="scroll-mt-24 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-xs overflow-hidden"
+      className="scroll-mt-24 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 overflow-hidden"
     >
       {/* Top Studio Header Bar */}
-      <div className="px-5 sm:px-6 py-4 border-b border-slate-200/80 dark:border-slate-800/80 flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-slate-50/60 dark:bg-slate-950/40">
+      <div className="px-5 sm:px-6 py-4 border-b border-slate-200/80 dark:border-slate-800/80 flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-slate-50/60 dark:bg-[#1E293B]/40">
         <div className="space-y-1">
           <div className="flex flex-wrap items-center gap-2 text-xs text-indigo-600 dark:text-indigo-400 font-semibold">
             <Sliders className="w-3.5 h-3.5" />
@@ -695,7 +701,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
               aria-label="Select component for Live Playground"
               value={activeSpec.id}
               onChange={(e) => setActiveId(e.target.value)}
-              className="min-h-[44px] px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30 cursor-pointer touch-manipulation"
+              className="min-h-[44px] px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1E293B] text-xs font-mono font-semibold text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] cursor-pointer touch-manipulation"
             >
               <optgroup label="61 Flagship Showcases">
                 {UNIFIED_COMPONENTS_351.filter((c) => c.tier === 'showcase').map((c) => (
@@ -716,7 +722,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
             </select>
           </div>
 
-          <div className="inline-flex items-center rounded-xl bg-slate-200/70 dark:bg-slate-800 p-0.5 text-xs font-semibold overflow-x-auto max-w-full scrollbar-thin">
+          <div className="inline-flex items-center rounded-xl bg-slate-200/70 dark:bg-[#1E293B] p-0.5 text-xs font-semibold overflow-x-auto max-w-full scrollbar-thin">
             {(
               [
                 { id: 'split', label: 'Props + CSS' },
@@ -729,9 +735,9 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                 key={m.id}
                 type="button"
                 onClick={() => setControlMode(m.id)}
-                className={`min-h-[44px] px-3.5 py-2 rounded-lg transition-all cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 ${
+                className={`min-h-[44px] px-3.5 py-2 rounded-lg transition-all cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                   controlMode === m.id
-                    ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xs font-bold'
+                    ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white shadow-2xs font-bold'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
@@ -743,7 +749,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
           <button
             type="button"
             onClick={handleResetAll}
-            className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all cursor-pointer whitespace-nowrap touch-manipulation active:scale-95"
+            className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1E293B] text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#111827] transition-all cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset Playground</span>
@@ -752,7 +758,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
       </div>
 
       {/* Quick Featured Component Switcher Bar */}
-      <div className="px-4 sm:px-6 py-2.5 border-b border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900 flex items-center gap-2 overflow-x-auto scrollbar-thin">
+      <div className="px-4 sm:px-6 py-2.5 border-b border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-[#111827] flex items-center gap-2 overflow-x-auto scrollbar-thin">
         <span className="text-[11px] font-mono text-slate-400 shrink-0">Quick Load:</span>
         {featuredSpecs.map((item) => {
           const isSelected = item.id === activeSpec.id;
@@ -761,10 +767,10 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
               key={item.id}
               type="button"
               onClick={() => setActiveId(item.id)}
-              className={`min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-mono transition-all shrink-0 cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 ${
+              className={`min-h-[44px] px-3.5 py-2 rounded-lg text-xs font-mono transition-all shrink-0 cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                 isSelected
                   ? 'bg-indigo-600 text-white font-semibold shadow-xs'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                  : 'bg-slate-100 dark:bg-[#1E293B] text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#1E293B]/80'
               }`}
             >
               &lt;{item.name} /&gt;
@@ -792,7 +798,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
 
               <div className="flex flex-wrap items-center gap-1.5">
                 {/* Viewport Switcher */}
-                <div className="inline-flex items-center rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 text-[10px] font-mono">
+                <div className="inline-flex items-center rounded-lg bg-slate-100 dark:bg-[#1E293B] p-0.5 text-[10px] font-mono">
                   {(
                     [
                       { id: 'responsive', label: 'Fluid', icon: Monitor },
@@ -808,9 +814,9 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                         type="button"
                         aria-label={`Viewport ${vp.label}`}
                         onClick={() => setStageViewport(vp.id)}
-                        className={`min-h-[32px] inline-flex items-center gap-1 px-2.5 py-1 rounded cursor-pointer transition-all touch-manipulation active:scale-95 ${
+                        className={`min-h-[32px] inline-flex items-center gap-1 px-2.5 py-1 rounded cursor-pointer transition-all touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                           stageViewport === vp.id
-                            ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 font-semibold shadow-2xs'
+                            ? 'bg-white dark:bg-[#111827] text-indigo-600 dark:text-indigo-400 font-semibold shadow-2xs'
                             : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
                         }`}
                       >
@@ -822,7 +828,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                 </div>
 
                 {/* Stage Backdrop Switcher */}
-                <div className="inline-flex items-center rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 text-[10px] font-mono">
+                <div className="inline-flex items-center rounded-lg bg-slate-100 dark:bg-[#1E293B] p-0.5 text-[10px] font-mono">
                   {(
                     [
                       { id: 'grid', label: 'Grid' },
@@ -836,9 +842,9 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                       type="button"
                       aria-label={`Stage backdrop ${bg.label}`}
                       onClick={() => setStageBackdrop(bg.id)}
-                      className={`min-h-[32px] px-2.5 py-1 rounded cursor-pointer transition-all touch-manipulation active:scale-95 ${
+                      className={`min-h-[32px] px-2.5 py-1 rounded cursor-pointer transition-all touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                         stageBackdrop === bg.id
-                          ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-semibold shadow-2xs'
+                          ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white font-semibold shadow-2xs'
                           : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
                       }`}
                     >
@@ -851,7 +857,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                   <button
                     type="button"
                     onClick={() => onOpenDocs(activeSpec)}
-                    className="min-h-[32px] inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-[11px] font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer whitespace-nowrap touch-manipulation active:scale-95"
+                    className="min-h-[44px] inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-[11px] font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-[#1E293B] cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                   >
                     <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
                     <span>Full Spec</span>
@@ -879,7 +885,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                   maxWidth: '100%',
                   transition: 'width 250ms cubic-bezier(0.22, 1, 0.36, 1)',
                 }}
-                className="border border-slate-200/80 dark:border-slate-700/80 bg-white/90 dark:bg-slate-900/90 flex flex-col items-center justify-center"
+                className="border border-slate-200/80 dark:border-slate-700/80 bg-white/90 dark:bg-[#111827]/90 jx-elevation-1 flex flex-col items-center justify-center"
               >
                 <InteractiveComponentPreview
                   spec={activeSpec}
@@ -1015,7 +1021,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
         </div>
 
         {/* RIGHT COLUMN (5 cols): Interactive Props Toggles & CSS Variable Controls */}
-        <div className="lg:col-span-5 p-5 sm:p-6 space-y-6 bg-slate-50/40 dark:bg-slate-950/30">
+        <div className="lg:col-span-5 p-5 sm:p-6 space-y-6 bg-slate-50/40 dark:bg-[#0B0F19]/30">
           {/* 1. PROPS CONTROL PANEL */}
           {(controlMode === 'split' || controlMode === 'props') && (
             <div className="space-y-4">
@@ -1044,10 +1050,10 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                           glass: v === 'glass' ? true : prev.glass,
                         }))
                       }
-                      className={`min-h-[36px] px-2 py-1.5 rounded-lg text-xs font-medium capitalize transition-all cursor-pointer text-center touch-manipulation active:scale-95 ${
+                      className={`min-h-[44px] px-2 py-1.5 rounded-lg text-xs font-medium capitalize transition-all cursor-pointer text-center touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                         propsState.variant === v
                           ? 'bg-indigo-600 text-white font-semibold shadow-2xs'
-                          : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
+                          : 'bg-white dark:bg-[#1E293B] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-[#111827]'
                       }`}
                     >
                       {v}
@@ -1067,10 +1073,10 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                       key={c}
                       type="button"
                       onClick={() => setPropsState((prev) => ({ ...prev, color: c }))}
-                      className={`min-h-[36px] px-2 py-1.5 rounded-lg text-xs font-medium capitalize transition-all cursor-pointer text-center touch-manipulation active:scale-95 ${
+                      className={`min-h-[44px] px-2 py-1.5 rounded-lg text-xs font-medium capitalize transition-all cursor-pointer text-center touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                         propsState.color === c
                           ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold shadow-2xs'
-                          : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
+                          : 'bg-white dark:bg-[#1E293B] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-[#111827]'
                       }`}
                     >
                       {c}
@@ -1091,10 +1097,10 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                         key={sz}
                         type="button"
                         onClick={() => setPropsState((prev) => ({ ...prev, size: sz }))}
-                        className={`min-h-[36px] py-1 rounded-lg text-xs font-mono uppercase cursor-pointer transition-all touch-manipulation active:scale-95 ${
+                        className={`min-h-[44px] py-1 rounded-lg text-xs font-mono uppercase cursor-pointer transition-all touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                           propsState.size === sz
                             ? 'bg-indigo-600 text-white font-bold shadow-2xs'
-                            : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
+                            : 'bg-white dark:bg-[#1E293B] text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-[#111827]'
                         }`}
                       >
                         {sz}
@@ -1113,10 +1119,10 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                         key={el}
                         type="button"
                         onClick={() => setPropsState((prev) => ({ ...prev, elevation: el }))}
-                        className={`min-h-[36px] py-1 rounded-lg text-xs font-mono tabular-nums cursor-pointer transition-all touch-manipulation active:scale-95 ${
+                        className={`min-h-[44px] py-1 rounded-lg text-xs font-mono tabular-nums cursor-pointer transition-all touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                           propsState.elevation === el
                             ? 'bg-indigo-600 text-white font-bold shadow-2xs'
-                            : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
+                            : 'bg-white dark:bg-[#1E293B] text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-[#111827]'
                         }`}
                       >
                         {el}
@@ -1142,7 +1148,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                     setPropsState((prev) => ({ ...prev, customLabel: e.target.value }))
                   }
                   placeholder={`Custom text for <${activeSpec.name} />...`}
-                  className="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                  className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[var(--jx-accent-halo)]"
                 />
               </div>
 
@@ -1175,7 +1181,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                       className={`p-2 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                         isOn
                           ? 'bg-indigo-50/90 dark:bg-indigo-950/70 border-indigo-400 dark:border-indigo-600 text-indigo-900 dark:text-indigo-200'
-                          : 'bg-white dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'
+                          : 'bg-white dark:bg-[#1E293B]/80 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'
                       }`}
                     >
                       <div className="flex items-center justify-between w-full gap-1">
@@ -1184,7 +1190,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                           className={`text-[9px] font-mono px-1.5 py-0.2 rounded ${
                             isOn
                               ? 'bg-indigo-600 text-white font-bold'
-                              : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400'
+                              : 'bg-slate-200 dark:bg-[#1E293B] text-slate-600 dark:text-slate-400'
                           }`}
                         >
                           {isOn ? 'true' : 'false'}
@@ -1219,7 +1225,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                     {cssVars['--jx-pg-accent']}
                   </span>
                 </div>
-                <div className="flex items-center justify-between gap-2 p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <div className="flex items-center justify-between gap-2 p-2 rounded-xl bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700">
                   <div className="flex items-center gap-1.5">
                     {ACCENT_PRESETS.map((preset) => (
                       <button
@@ -1306,7 +1312,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                 {activeV3Changelog.entries.map((entry) => (
                   <div
                     key={entry.id}
-                    className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-2 shadow-2xs"
+                    className="p-3 rounded-xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800 space-y-2 shadow-2xs"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-xs font-bold text-slate-900 dark:text-white">

@@ -52,7 +52,7 @@ export const TiltCard: React.FC<TiltCardProps> = ({
           transition: tilt.rotateX === 0 ? 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)' : 'transform 0.08s ease-out',
           transformStyle: 'preserve-3d',
         }}
-        className={`p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl hover:shadow-2xl ${getRadiusClass(
+        className={`p-5 bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 jx-elevation-1 hover:shadow-2xl ${getRadiusClass(
           'card'
         )} cursor-pointer select-none`}
       >
