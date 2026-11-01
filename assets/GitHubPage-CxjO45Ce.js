@@ -117,10 +117,12 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
       <div className="border-b border-[#30363d] bg-[#161b22] px-4 sm:px-8 py-3">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
           {/* Breadcrumbs & Public Badge */}
-          <div className="flex items-center gap-2 text-sm sm:text-base">
+          <div className="flex items-center gap-2 text-sm sm:text-base min-w-0">
             <img
               src="./favicon.png"
               alt="JXUI Logo"
+              width={20}
+              height={20}
               className="w-5 h-5 rounded-md object-contain shrink-0 ring-1 ring-white/10"
             />
             <Github className="w-5 h-5 text-white shrink-0" />
@@ -128,7 +130,7 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
               href="https://github.com/iam-shakir"
               target="_blank"
               rel="noreferrer"
-              className="text-[#58a6ff] hover:underline font-normal"
+              className="text-[#58a6ff] hover:underline font-normal truncate"
             >
               iam-shakir
             </a>
@@ -137,32 +139,32 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
               href="https://github.com/iam-shakir/JXUI-react"
               target="_blank"
               rel="noreferrer"
-              className="text-white hover:underline font-semibold flex items-center gap-2"
+              className="text-white hover:underline font-semibold flex items-center gap-2 truncate"
             >
-              JXUI-react
-              <span className="px-2 py-0.5 text-[11px] font-medium rounded-full border border-[#30363d] text-[#8b949e] bg-[#21262d]">
+              <span>JXUI-react</span>
+              <span className="px-2 py-0.5 text-[11px] font-medium rounded-full border border-[#30363d] text-[#8b949e] bg-[#21262d] shrink-0">
                 Public
               </span>
             </a>
           </div>
 
           {/* GitHub Action Pill Controls */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {/* Sponsor */}
             <a
               href="#sponsors"
-              className="px-3 py-1 text-xs font-semibold rounded-md border border-[#30363d] bg-[#21262d] text-[#c9d1d9] hover:bg-[#30363d] transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="min-h-[44px] sm:min-h-[36px] px-3.5 py-1.5 text-xs font-semibold rounded-lg border border-[#30363d] bg-[#21262d] text-[#c9d1d9] hover:bg-[#30363d] transition-all flex items-center gap-1.5 cursor-pointer touch-manipulation active:scale-95"
             >
-              <Heart className="w-3.5 h-3.5 text-[#f778ba] fill-[#f778ba]" />
+              <Heart className="w-4 h-4 text-[#f778ba] fill-[#f778ba]" />
               <span>Sponsor</span>
             </a>
 
             {/* Watch */}
             <button
               type="button"
-              className="px-3 py-1 text-xs font-semibold rounded-md border border-[#30363d] bg-[#21262d] text-[#c9d1d9] hover:bg-[#30363d] transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="min-h-[44px] sm:min-h-[36px] px-3.5 py-1.5 text-xs font-semibold rounded-lg border border-[#30363d] bg-[#21262d] text-[#c9d1d9] hover:bg-[#30363d] transition-all flex items-center gap-1.5 cursor-pointer touch-manipulation active:scale-95"
             >
-              <Eye className="w-3.5 h-3.5 text-[#8b949e]" />
+              <Eye className="w-4 h-4 text-[#8b949e]" />
               <span>Watch</span>
               <span className="px-1.5 py-0.2 rounded-full bg-[#30363d] text-[10px] font-mono">342</span>
             </button>
@@ -171,9 +173,9 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
             <button
               type="button"
               onClick={handleFork}
-              className="px-3 py-1 text-xs font-semibold rounded-md border border-[#30363d] bg-[#21262d] text-[#c9d1d9] hover:bg-[#30363d] transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="min-h-[44px] sm:min-h-[36px] px-3.5 py-1.5 text-xs font-semibold rounded-lg border border-[#30363d] bg-[#21262d] text-[#c9d1d9] hover:bg-[#30363d] transition-all flex items-center gap-1.5 cursor-pointer touch-manipulation active:scale-95"
             >
-              <GitFork className="w-3.5 h-3.5 text-[#8b949e]" />
+              <GitFork className="w-4 h-4 text-[#8b949e]" />
               <span>Fork</span>
               <span className="px-1.5 py-0.2 rounded-full bg-[#30363d] text-[10px] font-mono">
                 {forkCount.toLocaleString()}
@@ -184,13 +186,13 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
             <button
               type="button"
               onClick={handleToggleStar}
-              className={\`px-3 py-1 text-xs font-semibold rounded-md border transition-all flex items-center gap-1.5 cursor-pointer \${
+              className={\`min-h-[44px] sm:min-h-[36px] px-3.5 py-1.5 text-xs font-semibold rounded-lg border transition-all flex items-center gap-1.5 cursor-pointer touch-manipulation active:scale-95 \${
                 isStarred
                   ? 'border-[#e3b341] bg-[#e3b341]/20 text-[#e3b341]'
                   : 'border-[#30363d] bg-[#21262d] text-[#c9d1d9] hover:bg-[#30363d]'
               }\`}
             >
-              <Star className={\`w-3.5 h-3.5 \${isStarred ? 'fill-[#e3b341] text-[#e3b341]' : 'text-[#8b949e]'}\`} />
+              <Star className={\`w-4 h-4 \${isStarred ? 'fill-[#e3b341] text-[#e3b341]' : 'text-[#8b949e]'}\`} />
               <span>{isStarred ? 'Starred' : 'Star'}</span>
               <span className="px-1.5 py-0.2 rounded-full bg-[#30363d] text-[10px] font-mono">
                 {starsCount.toLocaleString()}
@@ -200,11 +202,11 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
         </div>
 
         {/* GitHub Navigation Tabs */}
-        <div className="max-w-7xl mx-auto mt-4 flex items-center gap-1 overflow-x-auto text-xs font-medium">
+        <div className="max-w-7xl mx-auto mt-4 flex items-center gap-1 overflow-x-auto text-xs font-medium scrollbar-thin">
           <button
             type="button"
             onClick={() => setActiveRepoTab('code')}
-            className={\`px-3 py-2 flex items-center gap-2 border-b-2 transition-colors cursor-pointer \${
+            className={\`min-h-[44px] px-3 py-2 flex items-center gap-2 border-b-2 transition-colors cursor-pointer touch-manipulation whitespace-nowrap \${
               activeRepoTab === 'code'
                 ? 'border-[#f78166] text-white font-semibold'
                 : 'border-transparent text-[#8b949e] hover:text-[#c9d1d9]'
@@ -216,7 +218,7 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
           <button
             type="button"
             onClick={() => setActiveRepoTab('issues')}
-            className={\`px-3 py-2 flex items-center gap-2 border-b-2 transition-colors cursor-pointer \${
+            className={\`min-h-[44px] px-3 py-2 flex items-center gap-2 border-b-2 transition-colors cursor-pointer touch-manipulation whitespace-nowrap \${
               activeRepoTab === 'issues'
                 ? 'border-[#f78166] text-white font-semibold'
                 : 'border-transparent text-[#8b949e] hover:text-[#c9d1d9]'
@@ -229,7 +231,7 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
           <button
             type="button"
             onClick={() => setActiveRepoTab('pulls')}
-            className={\`px-3 py-2 flex items-center gap-2 border-b-2 transition-colors cursor-pointer \${
+            className={\`min-h-[44px] px-3 py-2 flex items-center gap-2 border-b-2 transition-colors cursor-pointer touch-manipulation whitespace-nowrap \${
               activeRepoTab === 'pulls'
                 ? 'border-[#f78166] text-white font-semibold'
                 : 'border-transparent text-[#8b949e] hover:text-[#c9d1d9]'
@@ -242,7 +244,7 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
           <button
             type="button"
             onClick={() => setActiveRepoTab('actions')}
-            className={\`px-3 py-2 flex items-center gap-2 border-b-2 transition-colors cursor-pointer \${
+            className={\`min-h-[44px] px-3 py-2 flex items-center gap-2 border-b-2 transition-colors cursor-pointer touch-manipulation whitespace-nowrap \${
               activeRepoTab === 'actions'
                 ? 'border-[#f78166] text-white font-semibold'
                 : 'border-transparent text-[#8b949e] hover:text-[#c9d1d9]'
@@ -255,7 +257,7 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
           <button
             type="button"
             onClick={() => setActiveRepoTab('releases')}
-            className={\`px-3 py-2 flex items-center gap-2 border-b-2 transition-colors cursor-pointer \${
+            className={\`min-h-[44px] px-3 py-2 flex items-center gap-2 border-b-2 transition-colors cursor-pointer touch-manipulation whitespace-nowrap \${
               activeRepoTab === 'releases'
                 ? 'border-[#f78166] text-white font-semibold'
                 : 'border-transparent text-[#8b949e] hover:text-[#c9d1d9]'
@@ -271,9 +273,9 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
             <button
               type="button"
               onClick={onBackToWorkbench}
-              className="ml-auto px-3 py-1.5 rounded-lg bg-[#238636] hover:bg-[#2ea043] text-white text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
+              className="ml-auto min-h-[44px] px-4 py-2 rounded-xl bg-[#238636] hover:bg-[#2ea043] text-white text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer shadow-sm touch-manipulation active:scale-95 whitespace-nowrap"
             >
-              <Play className="w-3.5 h-3.5 fill-white" />
+              <Play className="w-4 h-4 fill-white" />
               <span>Launch Interactive Workbench</span>
             </button>
           )}
@@ -281,12 +283,12 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
       </div>
 
       {/* 2. Hero Presentation Banner */}
-      <div className="relative overflow-hidden border-b border-[#30363d] bg-gradient-to-b from-[#161b22] via-[#0d1117] to-[#0d1117] py-16 px-4 sm:px-8">
+      <div className="relative overflow-hidden border-b border-[#30363d] bg-gradient-to-b from-[#161b22] via-[#0d1117] to-[#0d1117] py-12 sm:py-16 px-4 sm:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.18),rgba(255,255,255,0))]" />
         
         <div className="relative max-w-5xl mx-auto text-center flex flex-col items-center">
           {/* Release Badge Pill */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#1f6feb]/10 text-[#58a6ff] border border-[#1f6feb]/30 mb-6 shadow-xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#1f6feb]/10 text-[#58a6ff] border border-[#1f6feb]/30 mb-6 shadow-xs">
             <Sparkles className="w-3.5 h-3.5" />
             <span>JXUI v3.0.0 — Unified 361-Component Architecture is Live</span>
           </div>
@@ -297,16 +299,18 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
             <img
               src="./logo.png"
               alt="JXUI Brand Logo"
-              className="relative w-32 h-32 sm:w-40 sm:h-40 object-contain drop-shadow-[0_20px_35px_rgba(79,70,229,0.35)] hover:scale-105 transition-transform duration-300"
+              width={160}
+              height={160}
+              className="relative w-28 h-28 sm:w-40 sm:h-40 object-contain drop-shadow-[0_20px_35px_rgba(79,70,229,0.35)] hover:scale-105 transition-transform duration-300"
             />
           </div>
 
           {/* Hero Headline */}
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white max-w-4xl leading-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white max-w-4xl leading-tight">
             The Next-Generation Component Library &amp; Design System
           </h1>
 
-          <p className="mt-5 text-base sm:text-xl text-[#8b949e] max-w-2xl leading-relaxed">
+          <p className="mt-4 sm:mt-5 text-sm sm:text-lg text-[#8b949e] max-w-2xl leading-relaxed">
             Reimagining enterprise React UI with tactile spring kinematics, specular glassmorphism, and guaranteed <strong>zero cumulative layout shift (CLS = 0)</strong>.
           </p>
 
@@ -319,7 +323,7 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
                     key={pm}
                     type="button"
                     onClick={() => setPackageManager(pm)}
-                    className={\`px-2.5 py-1 rounded-md transition-colors cursor-pointer \${
+                    className={\`min-h-[44px] sm:min-h-[36px] px-3 py-1.5 rounded-lg transition-colors cursor-pointer touch-manipulation active:scale-95 \${
                       packageManager === pm
                         ? 'bg-[#21262d] text-white font-bold border border-[#30363d]'
                         : 'text-[#8b949e] hover:text-[#c9d1d9]'
@@ -332,16 +336,16 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
               <span className="text-[10px]">v3.0.0 • React 19+</span>
             </div>
 
-            <div className="flex items-center justify-between px-4 py-3 bg-[#0d1117] border-x border-b border-[#30363d] rounded-b-xl font-mono text-sm">
+            <div className="flex items-center justify-between px-4 py-2.5 bg-[#0d1117] border-x border-b border-[#30363d] rounded-b-xl font-mono text-sm">
               <div className="flex items-center gap-2 text-white overflow-x-auto select-all">
                 <span className="text-[#8b949e]">$</span>
-                <span className="text-[#58a6ff]">{installCommands[packageManager]}</span>
+                <span className="text-[#58a6ff] whitespace-nowrap">{installCommands[packageManager]}</span>
               </div>
               <button
                 type="button"
                 onClick={handleCopyInstall}
                 aria-label="Copy install command"
-                className="ml-3 p-1.5 rounded-md hover:bg-[#21262d] text-[#8b949e] hover:text-white transition-colors cursor-pointer shrink-0"
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded-lg hover:bg-[#21262d] text-[#8b949e] hover:text-white transition-colors cursor-pointer shrink-0 touch-manipulation active:scale-95"
               >
                 {copiedInstall ? <Check className="w-4 h-4 text-[#3fb950]" /> : <Copy className="w-4 h-4" />}
               </button>
@@ -349,12 +353,12 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
           </div>
 
           {/* CTAs */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 w-full max-w-md sm:max-w-none">
             {onBackToWorkbench && (
               <button
                 type="button"
                 onClick={onBackToWorkbench}
-                className="px-6 py-3 rounded-xl bg-[#238636] hover:bg-[#2ea043] text-white font-semibold text-sm flex items-center gap-2 shadow-lg hover:shadow-emerald-900/30 transition-all cursor-pointer"
+                className="min-h-[48px] px-6 py-3 rounded-xl bg-[#238636] hover:bg-[#2ea043] text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-emerald-900/30 transition-all cursor-pointer touch-manipulation active:scale-95"
               >
                 <Play className="w-4 h-4 fill-white" />
                 <span>Open Full 361-Component Workbench</span>
@@ -362,7 +366,7 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
             )}
             <a
               href="#interactive-demo"
-              className="px-6 py-3 rounded-xl bg-[#21262d] hover:bg-[#30363d] text-white font-semibold text-sm border border-[#30363d] flex items-center gap-2 transition-colors cursor-pointer"
+              className="min-h-[48px] px-6 py-3 rounded-xl bg-[#21262d] hover:bg-[#30363d] text-white font-semibold text-sm border border-[#30363d] flex items-center justify-center gap-2 transition-all cursor-pointer touch-manipulation active:scale-95"
             >
               <Code2 className="w-4 h-4 text-[#58a6ff]" />
               <span>Interactive Live Showcase</span>
@@ -411,12 +415,12 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
             </div>
 
             {/* Component Picker Tabs */}
-            <div className="flex items-center gap-1 bg-[#161b22] p-1 rounded-lg text-xs font-semibold">
+            <div className="flex items-center gap-1.5 bg-[#161b22] p-1 rounded-xl text-xs font-semibold overflow-x-auto max-w-full scrollbar-thin">
               <button
                 type="button"
                 onClick={() => setSelectedDemoTab('tilt')}
-                className={\`px-3 py-1.5 rounded-md transition-colors cursor-pointer \${
-                  selectedDemoTab === 'tilt' ? 'bg-[#30363d] text-white' : 'text-[#8b949e] hover:text-[#c9d1d9]'
+                className={\`min-h-[44px] px-3.5 py-2 rounded-lg transition-all cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 \${
+                  selectedDemoTab === 'tilt' ? 'bg-[#30363d] text-white font-bold shadow-xs' : 'text-[#8b949e] hover:text-[#c9d1d9]'
                 }\`}
               >
                 3D Tilt Card
@@ -424,8 +428,8 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
               <button
                 type="button"
                 onClick={() => setSelectedDemoTab('slider')}
-                className={\`px-3 py-1.5 rounded-md transition-colors cursor-pointer \${
-                  selectedDemoTab === 'slider' ? 'bg-[#30363d] text-white' : 'text-[#8b949e] hover:text-[#c9d1d9]'
+                className={\`min-h-[44px] px-3.5 py-2 rounded-lg transition-all cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 \${
+                  selectedDemoTab === 'slider' ? 'bg-[#30363d] text-white font-bold shadow-xs' : 'text-[#8b949e] hover:text-[#c9d1d9]'
                 }\`}
               >
                 Rotary &amp; Dual Sliders
@@ -433,8 +437,8 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
               <button
                 type="button"
                 onClick={() => setSelectedDemoTab('signature')}
-                className={\`px-3 py-1.5 rounded-md transition-colors cursor-pointer \${
-                  selectedDemoTab === 'signature' ? 'bg-[#30363d] text-white' : 'text-[#8b949e] hover:text-[#c9d1d9]'
+                className={\`min-h-[44px] px-3.5 py-2 rounded-lg transition-all cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 \${
+                  selectedDemoTab === 'signature' ? 'bg-[#30363d] text-white font-bold shadow-xs' : 'text-[#8b949e] hover:text-[#c9d1d9]'
                 }\`}
               >
                 Vector Signature Pad
@@ -442,8 +446,8 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
               <button
                 type="button"
                 onClick={() => setSelectedDemoTab('token')}
-                className={\`px-3 py-1.5 rounded-md transition-colors cursor-pointer \${
-                  selectedDemoTab === 'token' ? 'bg-[#30363d] text-white' : 'text-[#8b949e] hover:text-[#c9d1d9]'
+                className={\`min-h-[44px] px-3.5 py-2 rounded-lg transition-all cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 \${
+                  selectedDemoTab === 'token' ? 'bg-[#30363d] text-white font-bold shadow-xs' : 'text-[#8b949e] hover:text-[#c9d1d9]'
                 }\`}
               >
                 Token &amp; Liquid FX
@@ -482,7 +486,7 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
             {selectedDemoTab === 'token' && (
               <div className="w-full max-w-lg flex flex-col gap-5">
                 <TokenInput initialToken="jx_live_sec_8a39d04b6f12" />
-                <div className="flex items-center gap-3 justify-center">
+                <div className="flex flex-wrap items-center gap-3 justify-center">
                   <LiquidButton>Liquid Viscosity</LiquidButton>
                   <RippleButton>Spring Ripple</RippleButton>
                   <MagneticButton>Magnetic Cursor</MagneticButton>
@@ -512,7 +516,7 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
               <button
                 type="button"
                 onClick={onBackToWorkbench}
-                className="text-xs font-semibold text-[#58a6ff] hover:underline flex items-center gap-1 cursor-pointer self-start sm:self-auto"
+                className="text-xs font-semibold text-[#58a6ff] hover:underline flex items-center gap-1 cursor-pointer self-start sm:self-auto touch-manipulation active:scale-95"
               >
                 <span>Browse all in Interactive Workbench</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -531,7 +535,7 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
                     onBackToWorkbench();
                   }
                 }}
-                className="p-4 rounded-xl border border-[#30363d] bg-[#161b22] hover:bg-[#21262d] hover:border-[#58a6ff]/50 transition-all cursor-pointer group flex flex-col justify-between"
+                className="p-4 rounded-xl border border-[#30363d] bg-[#161b22] hover:bg-[#21262d] hover:border-[#58a6ff]/50 transition-all cursor-pointer group flex flex-col justify-between touch-manipulation active:scale-[0.98]"
               >
                 <div>
                   <div className="flex items-center justify-between mb-2">
@@ -571,8 +575,8 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
             </h2>
           </div>
 
-          <div className="border border-[#30363d] rounded-2xl overflow-hidden bg-[#161b22]">
-            <table className="w-full text-left text-xs sm:text-sm">
+          <div className="border border-[#30363d] rounded-2xl overflow-x-auto bg-[#161b22]">
+            <table className="w-full text-left text-xs sm:text-sm min-w-[560px]">
               <thead className="bg-[#21262d] border-b border-[#30363d] text-[#8b949e] uppercase font-mono text-[11px]">
                 <tr>
                   <th className="p-4 sm:px-6">Design Principle</th>
@@ -660,11 +664,11 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - run: npm ci
-      - run: npm run lint
-      - run: npm test
-      - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
+        - run: npm ci
+        - run: npm run lint
+        - run: npm test
+        - run: npm run build
+        - uses: actions/upload-pages-artifact@v3
         with:
           path: './dist'
       - id: deployment
@@ -682,23 +686,23 @@ jobs:
             <span>&copy; 2026 JXUI Design System. Released under the MIT License.</span>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-x-6 gap-y-2">
             {onBackToWorkbench && (
               <button
                 type="button"
                 onClick={onBackToWorkbench}
-                className="text-[#58a6ff] hover:underline cursor-pointer"
+                className="text-[#58a6ff] hover:underline cursor-pointer touch-manipulation active:scale-95 py-1"
               >
                 Interactive Workbench
               </button>
             )}
-            <a href="https://github.com/iam-shakir/JXUI-react" target="_blank" rel="noreferrer" className="hover:text-white">
+            <a href="https://github.com/iam-shakir/JXUI-react" target="_blank" rel="noreferrer" className="hover:text-white py-1">
               GitHub Repository
             </a>
-            <a href="https://www.npmjs.com/package/jxui-react" target="_blank" rel="noreferrer" className="hover:text-white">
+            <a href="https://www.npmjs.com/package/jxui-react" target="_blank" rel="noreferrer" className="hover:text-white py-1">
               npm package
             </a>
-            <a href="#interactive-demo" className="hover:text-white">
+            <a href="#interactive-demo" className="hover:text-white py-1">
               Component Demos
             </a>
           </div>

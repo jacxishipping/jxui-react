@@ -274,7 +274,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
           <button
             type="button"
             onClick={() => setCategoryFilter('all')}
-            className={\`px-2.5 py-1 text-xs font-semibold transition-all cursor-pointer \${getRadiusClass('control')} \${
+            className={\`min-h-[36px] px-3 py-1.5 text-xs font-semibold transition-all cursor-pointer touch-manipulation active:scale-95 \${getRadiusClass('control')} \${
               categoryFilter === 'all'
                 ? \`\${palette.bg} text-white\`
                 : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200/70'
@@ -287,7 +287,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
               key={cat.id}
               type="button"
               onClick={() => setCategoryFilter(cat.id)}
-              className={\`px-2.5 py-1 text-xs font-medium transition-all cursor-pointer \${getRadiusClass('control')} \${
+              className={\`min-h-[36px] px-3 py-1.5 text-xs font-medium transition-all cursor-pointer touch-manipulation active:scale-95 \${getRadiusClass('control')} \${
                 categoryFilter === cat.id
                   ? \`\${palette.bg} text-white font-semibold\`
                   : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200/70'
@@ -303,14 +303,14 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
           <div
             role="group"
             aria-label="Filter checklist by pass or fail status"
-            className="inline-flex self-start p-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 text-[11px] font-semibold"
+            className="inline-flex self-start p-1 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 text-xs font-semibold"
           >
             <button
               type="button"
               onClick={() => setStatusFilter('all')}
-              className={\`px-3 py-1 rounded-md cursor-pointer \${
+              className={\`min-h-[36px] px-3.5 py-1.5 rounded-lg cursor-pointer transition-all touch-manipulation active:scale-95 \${
                 statusFilter === 'all'
-                  ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xs'
+                  ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xs font-bold'
                   : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
               }\`}
             >
@@ -319,9 +319,9 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
             <button
               type="button"
               onClick={() => setStatusFilter('pass')}
-              className={\`px-3 py-1 rounded-md cursor-pointer \${
+              className={\`min-h-[36px] px-3.5 py-1.5 rounded-lg cursor-pointer transition-all touch-manipulation active:scale-95 \${
                 statusFilter === 'pass'
-                  ? 'bg-emerald-600 text-white'
+                  ? 'bg-emerald-600 text-white font-bold'
                   : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
               }\`}
             >
@@ -331,9 +331,9 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
               type="button"
               onClick={() => setStatusFilter('fail')}
               data-testid="a11y-filter-fail"
-              className={\`px-3 py-1 rounded-md cursor-pointer \${
+              className={\`min-h-[36px] px-3.5 py-1.5 rounded-lg cursor-pointer transition-all touch-manipulation active:scale-95 \${
                 statusFilter === 'fail'
-                  ? 'bg-rose-600 text-white'
+                  ? 'bg-rose-600 text-white font-bold'
                   : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
               }\`}
             >
@@ -342,14 +342,14 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
           </div>
 
           <div className="relative w-full sm:w-80">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search component, ARIA role, or keyboard key..."
               aria-label="Search component accessibility specifications"
-              className="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none"
+              className="w-full pl-9 pr-3.5 min-h-[44px] text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
             />
           </div>
         </div>
@@ -466,25 +466,25 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
                       aria-label={\`\${item.name} Keyboard Navigation Pass Status\`}
                       data-testid={\`a11y-kb-toggle-\${item.id}\`}
                       onClick={() => toggleKeyboardCheck(item.id, item.name)}
-                      className={\`inline-flex items-center justify-between gap-2.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer \${
+                      className={\`min-h-[44px] inline-flex items-center justify-between gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer touch-manipulation active:scale-95 \${
                         checkState.keyboardPass
                           ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border-emerald-300/80 dark:border-emerald-800'
                           : 'bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-800'
                       }\`}
                     >
                       <span className="inline-flex items-center gap-1.5">
-                        <Keyboard className="w-3.5 h-3.5" />
+                        <Keyboard className="w-4 h-4" />
                         <span>Keyboard Nav</span>
                       </span>
                       <span className="inline-flex items-center gap-1 font-mono text-[11px] uppercase">
                         {checkState.keyboardPass ? (
                           <>
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                             <span>PASS</span>
                           </>
                         ) : (
                           <>
-                            <XCircle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+                            <XCircle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
                             <span>FAIL</span>
                           </>
                         )}
@@ -498,25 +498,25 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
                       aria-label={\`\${item.name} Screen Reader Support Pass Status\`}
                       data-testid={\`a11y-sr-toggle-\${item.id}\`}
                       onClick={() => toggleScreenReaderCheck(item.id, item.name)}
-                      className={\`inline-flex items-center justify-between gap-2.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer \${
+                      className={\`min-h-[44px] inline-flex items-center justify-between gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer touch-manipulation active:scale-95 \${
                         checkState.screenReaderPass
                           ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border-emerald-300/80 dark:border-emerald-800'
                           : 'bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-800'
                       }\`}
                     >
                       <span className="inline-flex items-center gap-1.5">
-                        <Volume2 className="w-3.5 h-3.5" />
+                        <Volume2 className="w-4 h-4" />
                         <span>Screen Reader</span>
                       </span>
                       <span className="inline-flex items-center gap-1 font-mono text-[11px] uppercase">
                         {checkState.screenReaderPass ? (
                           <>
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                             <span>PASS</span>
                           </>
                         ) : (
                           <>
-                            <XCircle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+                            <XCircle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
                             <span>FAIL</span>
                           </>
                         )}

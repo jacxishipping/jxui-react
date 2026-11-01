@@ -433,12 +433,20 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
               type="button"
               onClick={() => setQuery('')}
               aria-label="Clear search query"
-              className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer touch-manipulation active:scale-95 shrink-0"
             >
               <X className="w-4 h-4" />
             </button>
           )}
-          <kbd className="px-2 py-0.5 text-[11px] font-mono bg-slate-100 dark:bg-slate-800 text-slate-500 rounded border border-slate-200 dark:border-slate-700">
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close command palette"
+            className="sm:hidden min-h-[44px] min-w-[44px] flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white rounded-lg bg-slate-100 dark:bg-slate-800 cursor-pointer touch-manipulation active:scale-95 shrink-0"
+          >
+            <X className="w-4 h-4" />
+          </button>
+          <kbd className="hidden sm:inline-flex px-2 py-0.5 text-[11px] font-mono bg-slate-100 dark:bg-slate-800 text-slate-500 rounded border border-slate-200 dark:border-slate-700 shrink-0">
             ESC
           </kbd>
         </div>
@@ -464,7 +472,7 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
                 type="button"
                 data-testid="clear-recently-viewed"
                 onClick={handleClearRecentlyViewed}
-                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1 min-h-[36px] px-2.5 py-1 rounded-md text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer touch-manipulation active:scale-95"
               >
                 <Trash2 className="w-3 h-3" />
                 <span>Clear History</span>
@@ -509,7 +517,7 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
                           handleSelectAndRecordComponent(entry.item);
                         }
                       }}
-                      className="inline-flex items-center gap-1.5 text-left cursor-pointer"
+                      className="min-h-[36px] inline-flex items-center gap-1.5 text-left cursor-pointer touch-manipulation active:scale-95"
                     >
                       <span className="font-semibold text-xs text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                         {compName}
@@ -525,9 +533,9 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
                       type="button"
                       aria-label={\`Remove \${compName} from recently viewed\`}
                       onClick={(e) => handleRemoveSingleRecent(e, compId)}
-                      className="p-0.5 rounded text-slate-400 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                      className="min-h-[36px] min-w-[32px] flex items-center justify-center p-1 rounded text-slate-400 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer touch-manipulation active:scale-95"
                     >
-                      <X className="w-3 h-3" />
+                      <X className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 );
@@ -554,7 +562,7 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
                     key={link.id}
                     type="button"
                     onClick={() => handleExecuteQuickLink(link)}
-                    className="px-2.5 py-1.5 rounded-lg text-left border bg-white/80 dark:bg-slate-900/70 border-slate-200/80 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 hover:bg-white dark:hover:bg-slate-900 transition-all cursor-pointer inline-flex items-center gap-1.5 group"
+                    className="min-h-[40px] px-3 py-1.5 rounded-lg text-left border bg-white/80 dark:bg-slate-900/70 border-slate-200/80 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 hover:bg-white dark:hover:bg-slate-900 transition-all cursor-pointer inline-flex items-center gap-1.5 group touch-manipulation active:scale-95"
                   >
                     <Icon className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
                     <span className="font-semibold text-xs text-slate-800 dark:text-slate-100 whitespace-nowrap">
@@ -587,7 +595,7 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
                     type="button"
                     onMouseEnter={() => setSelectedIndex(idx)}
                     onClick={() => handleExecuteQuickLink(link)}
-                    className={\`w-full text-left px-3.5 py-2.5 flex items-center justify-between gap-4 transition-colors cursor-pointer \${getRadiusClass(
+                    className={\`w-full text-left min-h-[44px] px-3.5 py-2.5 flex items-center justify-between gap-4 transition-colors cursor-pointer touch-manipulation active:scale-[0.98] \${getRadiusClass(
                       'control'
                     )} \${
                       isSelected
@@ -631,7 +639,7 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
                     type="button"
                     onMouseEnter={() => setSelectedIndex(idx)}
                     onClick={() => handleSelectAndRecord290(item)}
-                    className={\`w-full text-left px-3.5 py-2.5 flex items-center justify-between gap-4 transition-colors cursor-pointer \${getRadiusClass(
+                    className={\`w-full text-left min-h-[44px] px-3.5 py-2.5 flex items-center justify-between gap-4 transition-colors cursor-pointer touch-manipulation active:scale-[0.98] \${getRadiusClass(
                       'control'
                     )} \${
                       isSelected
@@ -682,7 +690,7 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
                   type="button"
                   onMouseEnter={() => setSelectedIndex(idx)}
                   onClick={() => handleSelectAndRecordComponent(item)}
-                  className={\`w-full text-left px-3.5 py-2.5 flex items-center justify-between gap-4 transition-colors cursor-pointer \${getRadiusClass(
+                  className={\`w-full text-left min-h-[44px] px-3.5 py-2.5 flex items-center justify-between gap-4 transition-colors cursor-pointer touch-manipulation active:scale-[0.98] \${getRadiusClass(
                     'control'
                   )} \${
                     isSelected
