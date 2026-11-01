@@ -11,3 +11,5 @@ coverage/
 dist.zip
 *.tgz
 .npmrc
+playwright-report/
+test-results/

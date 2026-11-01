@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useMemo, useRef, Suspense, lazy } from 'react';
 import {
   Sparkles,
   Zap,
@@ -138,6 +138,49 @@ const CATEGORY_ICONS_18: Record<string, React.ComponentType<{ className?: string
 };
 
 const ITEMS_PER_PAGE = 24;
+
+const DeferredComponentPreview: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    if (!('IntersectionObserver' in window)) {
+      setShouldRender(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldRender(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '400px 0px' }
+    );
+
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={stageRef}
+      data-preview-state={shouldRender ? 'ready' : 'deferred'}
+      data-testid="component-preview-stage"
+      className="w-full min-h-[120px]"
+    >
+      {shouldRender ? (
+        children
+      ) : (
+        <div aria-hidden="true" className="min-h-[120px] w-full rounded-lg jx-shimmer-wave opacity-30" />
+      )}
+    </div>
+  );
+};
 
 export interface AppWorkbenchProps {
   activeCategory: string;
@@ -493,6 +536,57 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
   });
 
   const activeCategorySpec = UNIFIED_CATEGORIES_18.find((c) => c.id === activeCategory);
+
+  const handleResetFilters = () => {
+    setActiveCategory('all');
+    setActiveTier('all');
+    setSearchQuery('');
+    setSelectedDifficulty('all');
+    setSelectedFramework('all');
+    setSelectedCollection('all');
+  };
+
+  const activeFilters: { id: string; label: string; clear: () => void }[] = [];
+  if (activeCategory !== 'all') {
+    activeFilters.push({
+      id: 'category',
+      label: `Category: ${activeCategorySpec?.title.replace(/^Category \d+:\s*/, '') || activeCategory}`,
+      clear: () => setActiveCategory('all'),
+    });
+  }
+  if (activeTier !== 'all') {
+    const tierLabel = activeTier === 'showcase'
+      ? 'Showcases'
+      : activeTier === 'primitive'
+        ? 'Primitives'
+        : 'Starred';
+    activeFilters.push({ id: 'tier', label: `Tier: ${tierLabel}`, clear: () => setActiveTier('all') });
+  }
+  if (searchQuery.trim()) {
+    activeFilters.push({ id: 'search', label: `Search: ${searchQuery.trim()}`, clear: () => setSearchQuery('') });
+  }
+  if (selectedDifficulty !== 'all') {
+    activeFilters.push({
+      id: 'difficulty',
+      label: `Difficulty: ${selectedDifficulty}`,
+      clear: () => setSelectedDifficulty('all'),
+    });
+  }
+  if (selectedFramework !== 'all') {
+    activeFilters.push({
+      id: 'framework',
+      label: `Framework: ${selectedFramework}`,
+      clear: () => setSelectedFramework('all'),
+    });
+  }
+  if (selectedCollection !== 'all') {
+    const collectionName = collectionsState.collections.find((item) => item.id === selectedCollection)?.name;
+    activeFilters.push({
+      id: 'collection',
+      label: `Collection: ${collectionName || 'Selected'}`,
+      clear: () => setSelectedCollection('all'),
+    });
+  }
 
   return (
     <main className="w-full flex-1 px-3 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-8 max-w-7xl mx-auto min-w-0">
@@ -896,6 +990,20 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
             )}
           </div>
 
+          <select
+            value={activeCategory}
+            onChange={(event) => setActiveCategory(event.target.value)}
+            aria-label="Filter by category"
+            className="lg:hidden min-h-[44px] w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#1E293B]/60 text-slate-700 dark:text-slate-200 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] cursor-pointer touch-manipulation"
+          >
+            <option value="all">All categories</option>
+            {UNIFIED_CATEGORIES_18.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.title.replace(/^Category \d+:\s*/, '')} ({category.totalCount})
+              </option>
+            ))}
+          </select>
+
           {/* Center: Tier Tabs */}
           <div className="flex items-center gap-1 bg-slate-100 dark:bg-[#1E293B] p-1 rounded-xl text-xs font-semibold w-full lg:w-auto overflow-x-auto scrollbar-thin">
             <button
@@ -1002,12 +1110,37 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
           </div>
         </div>
 
+        {activeFilters.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2 px-1" role="group" aria-label="Active filters">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Active filters</span>
+            {activeFilters.map((filter) => (
+              <button
+                key={filter.id}
+                type="button"
+                onClick={filter.clear}
+                aria-label={`Remove ${filter.id} filter`}
+                className="min-h-[36px] inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#111827] text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-[#1E293B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+              >
+                <span>{filter.label}</span>
+                <X aria-hidden="true" className="w-3 h-3 shrink-0 text-slate-400" />
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={handleResetFilters}
+              className="min-h-[36px] px-2.5 py-1 text-xs font-semibold text-rose-600 dark:text-rose-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+            >
+              Clear all
+            </button>
+          </div>
+        )}
+
         {/* Category Header & Filter Indicator */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
           <div>
             <h2 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
               <span>{activeCategorySpec ? activeCategorySpec.title : `All ${UNIFIED_STATS.totalComponents} Components`}</span>
-              <span className="font-mono text-xs px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold">
+              <span data-testid="component-results-count" className="font-mono text-xs px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold">
                 {filteredComponents.length} results
               </span>
             </h2>
@@ -1018,24 +1151,6 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
             </p>
           </div>
 
-          {(activeCategory !== 'all' || activeTier !== 'all' || searchQuery || selectedDifficulty !== 'all' || selectedFramework !== 'all' || selectedCollection !== 'all') && (
-            <button
-              type="button"
-              onClick={() => {
-                tactile.playClick(750);
-                setActiveCategory('all');
-                setActiveTier('all');
-                setSearchQuery('');
-                setSelectedDifficulty('all');
-                setSelectedFramework('all');
-                setSelectedCollection('all');
-              }}
-              className="self-start sm:self-auto min-h-[44px] inline-flex items-center gap-2 px-3.5 py-2 text-xs rounded-xl text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/40 font-semibold transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Reset Filters</span>
-            </button>
-          )}
         </div>
 
         {/* 5. MASTER UNIFIED COMPONENT GRID */}
@@ -1048,17 +1163,13 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               No matching components found
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
-              Try adjusting your search query, tier filter, or category selection to find what you need.
+              Remove an active filter or broaden your search. Category, tier, difficulty, framework, and collection filters all affect these results.
             </p>
             <button
               type="button"
               onClick={() => {
                 tactile.playClick(750);
-                setActiveCategory('all');
-                setActiveTier('all');
-                setSearchQuery('');
-                setSelectedDifficulty('all');
-                setSelectedFramework('all');
+                handleResetFilters();
               }}
               className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white cursor-pointer hover:bg-indigo-500 transition-all touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
             >
@@ -1267,16 +1378,18 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
 
                     {/* Interactive Live Preview Stage */}
                     <div className="min-h-[120px] flex items-center justify-center p-3 relative overflow-hidden max-w-full">
-                      <InteractiveComponentPreview
-                        spec={spec}
-                        onOpenDocs={setActiveDocSpec}
-                        playgroundProps={isPlaygroundExpanded ? activeCardProps || DEFAULT_PLAYGROUND_PROPS : activeCardProps}
-                        playgroundCssVars={isPlaygroundExpanded ? activeCardCssVars || DEFAULT_PLAYGROUND_CSS_VARS : activeCardCssVars}
-                        onJumpToShowcase={onJumpToComponent ? (specNumber: number) => {
-                          const s = COMPONENT_CATALOG.find((c) => c.number === spec.showcaseNumber);
-                          if (s) { onJumpToComponent(s); }
-                        } : undefined}
-                      />
+                      <DeferredComponentPreview>
+                        <InteractiveComponentPreview
+                          spec={spec}
+                          onOpenDocs={setActiveDocSpec}
+                          playgroundProps={isPlaygroundExpanded ? activeCardProps || DEFAULT_PLAYGROUND_PROPS : activeCardProps}
+                          playgroundCssVars={isPlaygroundExpanded ? activeCardCssVars || DEFAULT_PLAYGROUND_CSS_VARS : activeCardCssVars}
+                          onJumpToShowcase={onJumpToComponent ? (specNumber: number) => {
+                            const s = COMPONENT_CATALOG.find((c) => c.number === spec.showcaseNumber);
+                            if (s) { onJumpToComponent(s); }
+                          } : undefined}
+                        />
+                      </DeferredComponentPreview>
                     </div>
 
                     {/* Inline Live Playground Drawer for Real-Time Props, CSS Variables & v3 Changelog */}

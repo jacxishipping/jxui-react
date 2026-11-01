@@ -997,7 +997,7 @@ export interface AccessibilityAuditSummary {
   fullyCompliantCount: number;
   compliancePercentage: number;
   failedComponentIds: string[];
-  overallStatus: 'All Checks Passing' | 'Review Needed';
+  overallStatus: 'Demo: Pass Scenario' | 'Demo: Review Scenario';
 }
 
 const SPECIFIC_A11Y_MAP: Record<
@@ -1311,7 +1311,7 @@ export function evaluateAccessibilityAudit(
       fullyCompliantCount: 0,
       compliancePercentage: 100,
       failedComponentIds: [],
-      overallStatus: 'All Checks Passing',
+      overallStatus: 'Demo: Pass Scenario',
     };
   }
 
@@ -1343,7 +1343,7 @@ export function evaluateAccessibilityAudit(
     compliancePercentage,
     failedComponentIds,
     overallStatus:
-      failedComponentIds.length === 0 ? 'All Checks Passing' : 'Review Needed',
+      failedComponentIds.length === 0 ? 'Demo: Pass Scenario' : 'Demo: Review Scenario',
   };
 }
 

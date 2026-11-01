@@ -263,7 +263,7 @@ test('getComponentAccessibilitySpec and evaluateAccessibilityAudit cover all 61 
   assert.equal(defaultSummary.screenReaderPassCount, 61);
   assert.equal(defaultSummary.fullyCompliantCount, 61);
   assert.equal(defaultSummary.compliancePercentage, 100);
-  assert.equal(defaultSummary.overallStatus, 'All Checks Passing');
+  assert.equal(defaultSummary.overallStatus, 'Demo: Pass Scenario');
 
   // Simulate toggling one keyboard check and one screen reader check to Fail
   const modifiedSummary = evaluateAccessibilityAudit(specs, {
@@ -274,7 +274,7 @@ test('getComponentAccessibilitySpec and evaluateAccessibilityAudit cover all 61 
   assert.equal(modifiedSummary.screenReaderPassCount, 60);
   assert.equal(modifiedSummary.fullyCompliantCount, 59);
   assert.equal(modifiedSummary.failedComponentIds.length, 2);
-  assert.equal(modifiedSummary.overallStatus, 'Review Needed');
+  assert.equal(modifiedSummary.overallStatus, 'Demo: Review Scenario');
   assert.ok(modifiedSummary.compliancePercentage < 100);
 });
 

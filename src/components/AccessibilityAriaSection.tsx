@@ -77,10 +77,10 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
       const current = prev[id] ?? { keyboardPass: true, screenReaderPass: true };
       const nextVal = !current.keyboardPass;
       pushToast({
-        title: `${componentName}: Keyboard Navigation ${nextVal ? 'PASS' : 'FAIL'}`,
+        title: `Demo: ${componentName} keyboard ${nextVal ? 'PASS' : 'FAIL'}`,
         description: nextVal
-          ? 'WCAG 2.1.1 Keyboard criteria verified'
-          : 'Flagged for WCAG 2.1.1 Keyboard remediation',
+          ? 'Example state only. Verify keyboard behavior before recording audit results.'
+          : 'Marked for review in this demo. Verify the behavior before recording audit results.',
         variant: nextVal ? 'success' : 'warning',
       });
       return {
@@ -95,10 +95,10 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
       const current = prev[id] ?? { keyboardPass: true, screenReaderPass: true };
       const nextVal = !current.screenReaderPass;
       pushToast({
-        title: `${componentName}: Screen Reader ${nextVal ? 'PASS' : 'FAIL'}`,
+        title: `Demo: ${componentName} screen reader ${nextVal ? 'PASS' : 'FAIL'}`,
         description: nextVal
-          ? 'WCAG 4.1.2 Name, Role, Value criteria verified'
-          : 'Flagged for WAI-ARIA Screen Reader remediation',
+          ? 'Example state only. Verify with assistive technology before recording audit results.'
+          : 'Marked for review in this demo. Verify with assistive technology before recording audit results.',
         variant: nextVal ? 'success' : 'warning',
       });
       return {
@@ -124,8 +124,8 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
     setOverrides({});
     setStatusFilter('all');
     pushToast({
-      title: 'Checklist restored',
-      description: 'All 61 component checklist items are passing for keyboard and screen reader checks.',
+      title: 'Demo scenario restored',
+      description: 'Reset to the all-pass example state. No independent audit is implied.',
       variant: 'success',
     });
   };
@@ -141,28 +141,21 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
         <div className="space-y-1.5">
           <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-emerald-600 dark:text-emerald-400">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>WCAG 2.1 AA &amp; WAI-ARIA 1.2 SPECIFICATION</span>
+            <span>ACCESSIBILITY REVIEW GUIDE · WCAG 2.1 AA TARGET</span>
             <span aria-hidden="true">·</span>
             <span className="text-slate-500 dark:text-slate-400">
-              Interactive 61-Component Compliance Audit
+              Illustrative 61-Component Checklist
             </span>
           </div>
           <h2 className="text-lg sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
             Accessibility &amp; ARIA Standards Interactive Checklist
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
-            Every component in <code className="font-mono">@jxui/react</code> is engineered to meet{' '}
-            <strong className="font-semibold text-slate-900 dark:text-white">WCAG 2.1 Level AA</strong>{' '}
-            out of the box—featuring roving <code className="font-mono">tabIndex</code>, 3px high-visibility
-            focus halos, deterministic focus trapping, and polite <code className="font-mono">aria-live</code>{' '}
-            announcements. Use the interactive checklist below to inspect or toggle{' '}
-            <strong className="font-semibold text-slate-900 dark:text-white">Keyboard Navigation</strong> and{' '}
-            <strong className="font-semibold text-slate-900 dark:text-white">Screen Reader Support</strong>{' '}
-            pass/fail status across all 61 components.
+            This checklist demonstrates how keyboard and screen-reader review states can be tracked across 61 showcase components. Its initial pass states are examples, not audit results or certification. The browser suite runs automated axe checks on the mobile navigation drawer; the full workbench and component library still need broader keyboard, contrast, and assistive-technology testing.
           </p>
         </div>
 
-        {/* Audit Simulation & Reset Actions */}
+        {/* Checklist Scenario Controls */}
         <div className="flex flex-wrap items-center gap-2 shrink-0">
           <button
             type="button"
@@ -186,17 +179,17 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
             className={`min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold bg-slate-100 dark:bg-[#1E293B] text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700 hover:bg-slate-200/70 transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${getRadiusClass('control')}`}
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>Reset All Pass (61/61)</span>
+            <span>Reset demo scenario</span>
           </button>
         </div>
       </div>
 
-      {/* Live WCAG 2.1 AA Telemetry & Score Cards */}
+      {/* Example Checklist Scenario Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5">
         <div className="p-4 rounded-xl bg-slate-50/90 dark:bg-[#0B0F19]/60 border border-slate-200/70 dark:border-slate-800 flex flex-col justify-between gap-2">
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-            <span>WCAG 2.1 AA Audit Score</span>
-            {auditSummary.overallStatus === 'All Checks Passing' ? (
+            <span>Checklist demo state</span>
+            {auditSummary.overallStatus === 'Demo: Pass Scenario' ? (
               <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
             ) : (
               <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />
@@ -212,7 +205,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
             <span
               data-testid="a11y-overall-status"
               className={`px-2 py-0.5 rounded-md text-[11px] font-semibold whitespace-nowrap ${
-                auditSummary.overallStatus === 'All Checks Passing'
+                auditSummary.overallStatus === 'Demo: Pass Scenario'
                   ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300'
                   : 'bg-amber-500/15 text-amber-700 dark:text-amber-300'
               }`}

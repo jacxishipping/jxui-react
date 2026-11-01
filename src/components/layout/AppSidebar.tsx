@@ -151,7 +151,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   v3.0.0
                 </span>
               </div>
-              <span className="font-mono text-[11px] text-slate-400">jxui-react · {UNIFIED_STATS.totalComponents} Components</span>
+              <span className="font-mono text-[11px] text-slate-600 dark:text-slate-400">jxui-react · {UNIFIED_STATS.totalComponents} Components</span>
             </div>
           </div>
           <button
@@ -174,7 +174,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               onChange={(e) => onSidebarQueryChange(e.target.value)}
               placeholder={`Search all ${totalCount} components...`}
               aria-label={`Search all ${totalCount} components`}
-              className="w-full pl-9 pr-12 py-2 min-h-[44px] rounded-xl bg-slate-100 dark:bg-[#1E293B]/70 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#111827] border border-transparent focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] transition-colors"
+              className="w-full pl-9 pr-12 py-2 min-h-[44px] rounded-xl bg-slate-100 dark:bg-[#1E293B]/70 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-600 dark:placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#111827] border border-transparent focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] transition-colors"
             />
             <span className="absolute right-2.5 px-1.5 py-0.5 rounded bg-slate-200/70 dark:bg-[#1E293B] text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300">
               {filteredCount}
@@ -212,7 +212,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 
         {/* 18 Unified Categories Single Scroll List */}
         <div className="flex-1 overflow-y-auto px-2.5 py-2 space-y-1 text-xs">
-          <div className="px-2.5 pt-1 pb-1.5 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          <div className="px-2.5 pt-1 pb-1.5 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
             <span>18 Unified Categories</span>
             <span className="font-mono">Combined</span>
           </div>
@@ -240,7 +240,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
                     isCatActive
                       ? 'bg-indigo-600 text-white shadow-xs'
-                      : 'bg-slate-100 dark:bg-[#1E293B] text-slate-500 dark:text-slate-400'
+                      : 'bg-slate-100 dark:bg-[#1E293B] text-slate-700 dark:text-slate-300'
                   }`}>
                     <Icon className="w-3.5 h-3.5" />
                   </div>
@@ -248,7 +248,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                     <span className="text-xs truncate font-medium">
                       {cat.title.replace(/^Category \d+:\s*/, '')}
                     </span>
-                    <span className="text-[10px] text-slate-400 font-mono">
+                    <span className="text-[10px] text-slate-600 dark:text-slate-400 font-mono">
                       {cat.showcaseCount} showcases · {cat.primitiveCount} primitives
                     </span>
                   </div>
@@ -263,7 +263,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   <span className={`font-mono text-[11px] px-1.5 py-0.5 rounded-full ${
                     isCatActive
                       ? 'bg-indigo-200/70 dark:bg-indigo-900/60 text-indigo-800 dark:text-indigo-200 font-bold'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
                   }`}>
                     {cat.totalCount}
                   </span>
@@ -274,7 +274,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 
           {/* Studio Tools & Fast Links Section */}
           <div className="pt-3 pb-1">
-            <div className="px-2.5 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            <div className="px-2.5 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
               Studio &amp; Governance
             </div>
 
@@ -324,7 +324,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   <Palette className="w-3.5 h-3.5 text-violet-500" />
                   <span>Design Token Studio</span>
                 </span>
-                <span className="font-mono text-[10px] text-slate-400">JSON/CSS</span>
+                <span className="font-mono text-[10px] text-slate-600 dark:text-slate-400">JSON/CSS</span>
               </button>
 
               <button
@@ -340,7 +340,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
                   <span>WCAG 2.1 AA Checklist</span>
                 </span>
-                <span className="font-mono text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">100%</span>
+                <span className="font-mono text-[10px] text-emerald-700 dark:text-emerald-400 font-bold">100%</span>
               </button>
 
               <button
@@ -360,7 +360,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   <Github className="w-3.5 h-3.5" />
                   <span>GitHub Showcase &amp; Docs</span>
                 </span>
-                <span className="font-mono text-[10px] text-emerald-500 font-bold">v3.0</span>
+                <span className="font-mono text-[10px] text-emerald-700 dark:text-emerald-300 font-bold">v3.0</span>
               </button>
             </div>
           </div>
@@ -375,7 +375,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             <span>Accessibility checklist</span>
           </span>
         </div>
-        <p className="text-[10px] text-slate-400 font-mono flex items-center justify-between">
+        <p className="text-[10px] text-slate-600 dark:text-slate-400 font-mono flex items-center justify-between">
           <span>Keyboard · ARIA · Focus</span>
           <span>React 19</span>
         </p>

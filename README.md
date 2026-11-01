@@ -132,6 +132,9 @@ npm run dev
 # Run pure logic unit tests (22/22 passing)
 npm test
 
+# Browser regressions (first run: npx playwright install chromium)
+npm run test:e2e
+
 # Run strict TypeScript linting
 npm run lint
 
@@ -148,7 +151,7 @@ The interactive workbench runs locally at `http://localhost:3000`.
 JXUI includes an automated GitHub Actions continuous deployment pipeline configured in `.github/workflows/deploy.yml`:
 
 1. Push your changes to `master` or `main`.
-2. GitHub Actions installs dependencies, validates types (`npm run lint`), runs tests (`npm test`), and compiles the Vite production bundle (`npm run build`).
+2. GitHub Actions installs dependencies, validates types (`npm run lint`), runs logic and browser tests (`npm test` and `npm run test:e2e`), and compiles the Vite production bundle (`npm run build`).
 3. The site is published automatically to `https://<username>.github.io/<repo>/`.
 
 ---
