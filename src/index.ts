@@ -10,4 +10,6 @@ export * from './data/catalog290';
 export * from './data/unifiedCatalog';
 export * from './utils/jxuiCollections';
 export * from './utils/jxuiLogic';
+export * from './utils/useLockGeometry';
+export * from './utils/tactileAudio';
 

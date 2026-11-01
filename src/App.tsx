@@ -15,6 +15,8 @@ import {
   loadCollectionsState,
 } from './utils/jxuiCollections';
 import { persistRecentlyViewedComponent } from './utils/jxuiLogic';
+import { tactile } from './utils/tactileAudio';
+import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
 import { AppSidebar } from './components/layout/AppSidebar';
 import { AppHeader } from './components/layout/AppHeader';
 import { AppWorkbench } from './components/layout/AppWorkbench';
@@ -58,6 +60,7 @@ const WorkbenchShell: React.FC = () => {
   const [activeTier, setActiveTier] = useState<'all' | 'showcase' | 'primitive' | 'favorites'>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [cmdOpen, setCmdOpen] = useState<boolean>(false);
+  const [shortcutsOpen, setShortcutsOpen] = useState<boolean>(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false);
   const [showEncyclopedia, setShowEncyclopedia] = useState<boolean>(false);
   const [encyclopediaFilter, setEncyclopediaFilter] = useState<string>('');
@@ -114,21 +117,32 @@ const WorkbenchShell: React.FC = () => {
     }, 120);
   };
 
-  // Global Cmd+K / Ctrl+K listener
+  // Global Cmd+K / Ctrl+K and ? shortcuts listener
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      const activeTag = (document.activeElement?.tagName || '').toLowerCase();
+      const isInput = activeTag === 'input' || activeTag === 'textarea';
+
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
+        tactile.playClick(900);
         setCmdOpen((o) => !o);
-      } else if (e.key === 'Escape' && mobileSidebarOpen) {
-        setMobileSidebarOpen(false);
+      } else if (e.key === '?' && !isInput && !e.metaKey && !e.ctrlKey) {
+        e.preventDefault();
+        tactile.playClick(750);
+        setShortcutsOpen((o) => !o);
+      } else if (e.key === 'Escape') {
+        if (shortcutsOpen) setShortcutsOpen(false);
+        if (mobileSidebarOpen) setMobileSidebarOpen(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [mobileSidebarOpen]);
+  }, [mobileSidebarOpen, shortcutsOpen]);
 
   const handleCopyInstall = () => {
+    tactile.playSuccess();
+    tactile.triggerHaptic('success');
     navigator.clipboard?.writeText('npm i jxui-react').catch(() => {});
     setCopiedInstall(true);
     pushToast({
@@ -306,6 +320,12 @@ const WorkbenchShell: React.FC = () => {
           onToggleEncyclopedia={handleToggleEncyclopedia}
         />
       </Suspense>
+
+      {/* Keyboard Shortcuts Help Modal (? Hotkey) */}
+      <KeyboardShortcutsModal
+        open={shortcutsOpen}
+        onClose={() => setShortcutsOpen(false)}
+      />
     </div>
   );
 };
