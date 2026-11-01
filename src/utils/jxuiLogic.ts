@@ -997,7 +997,7 @@ export interface AccessibilityAuditSummary {
   fullyCompliantCount: number;
   compliancePercentage: number;
   failedComponentIds: string[];
-  overallStatus: 'WCAG 2.1 AA Certified' | 'Remediation Required';
+  overallStatus: 'All Checks Passing' | 'Review Needed';
 }
 
 const SPECIFIC_A11Y_MAP: Record<
@@ -1291,7 +1291,7 @@ export function getComponentAccessibilitySpec(spec: {
         ],
         contrastRatio: '7.0:1 (AA/AAA)',
         keyboardContract:
-          'Full Tab and Arrow key navigation across composed controls with zero keyboard traps and visible 3px focus halos.',
+          'Documented Tab and Arrow key behavior for composed controls, with visible focus indicators.',
         screenReaderContract:
           'Exposes semantic region landmarks, live interactive telemetry updates, and accessible action descriptions.',
       };
@@ -1311,7 +1311,7 @@ export function evaluateAccessibilityAudit(
       fullyCompliantCount: 0,
       compliancePercentage: 100,
       failedComponentIds: [],
-      overallStatus: 'WCAG 2.1 AA Certified',
+      overallStatus: 'All Checks Passing',
     };
   }
 
@@ -1343,7 +1343,7 @@ export function evaluateAccessibilityAudit(
     compliancePercentage,
     failedComponentIds,
     overallStatus:
-      failedComponentIds.length === 0 ? 'WCAG 2.1 AA Certified' : 'Remediation Required',
+      failedComponentIds.length === 0 ? 'All Checks Passing' : 'Review Needed',
   };
 }
 
@@ -1824,7 +1824,7 @@ export function getComponentV3Changelog(input: V3ChangelogInput): ComponentV3Cha
       id: `${cleanName}-v3-physics`,
       category: 'Physics & UX',
       title: `Tactile Spring Kinematics & Zero-Ripple Press Response`,
-      description: `Replaced v2 Material ink ripples on <${cleanName} /> (${categoryLabel}) with 200ms spring physics (cubic-bezier(0.22, 1, 0.36, 1)), active:scale-[0.98] micro-press feedback, and zero layout shift (CLS = 0).`,
+      description: `Replaced v2 Material ink ripples on <${cleanName} /> (${categoryLabel}) with 200ms spring physics (cubic-bezier(0.22, 1, 0.36, 1)), active:scale-[0.98] micro-press feedback, and stable state geometry.`,
       beforeV2: `TouchRipple DOM mount + 300ms linear easing`,
       afterV3: `spring={true} + cubic-bezier(0.22, 1, 0.36, 1)`,
       impact: 'enhancement',

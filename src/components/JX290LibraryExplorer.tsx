@@ -191,7 +191,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
     collectionFilter,
   ]);
 
-  // Filtering engine across 351 components
+  // Filtering engine across the complete component catalog.
   const filteredComponents = useMemo(() => {
     let list = UNIFIED_COMPONENTS_351;
 
@@ -389,7 +389,7 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
             18-Category Master Component Suite
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-300 mt-1.5 max-w-2xl leading-relaxed">
-            Multi-tier component search, live interactive previews, custom bookmark collections, and typed documentation pages. All 351 components feature verified <strong>WCAG 2.1 AA/AAA compliance</strong> and <strong>CLS = 0</strong>.
+            Search and filter {UNIFIED_STATS.totalComponents} components, preview them live, manage collections, and inspect typed documentation. The library includes an interactive accessibility checklist and component-level guidance.
           </p>
         </div>
 
@@ -597,7 +597,11 @@ export const JX290LibraryExplorer: React.FC<JX290LibraryExplorerProps> = ({
                     : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
-                {tier === 'all' ? 'All (351)' : tier === 'showcase' ? 'Showcases (61)' : 'Primitives (290)'}
+                {tier === 'all'
+                  ? `All (${UNIFIED_STATS.totalComponents})`
+                  : tier === 'showcase'
+                    ? `Showcases (${UNIFIED_STATS.totalShowcases})`
+                    : `Primitives (${UNIFIED_STATS.totalPrimitives})`}
               </button>
             ))}
           </div>

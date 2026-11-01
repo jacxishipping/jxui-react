@@ -18,6 +18,7 @@ import { tactile } from '../../utils/tactileAudio';
 export interface AppHeaderProps {
   onOpenCmd: () => void;
   onOpenMobileSidebar: () => void;
+  mobileSidebarOpen: boolean;
   currentView: 'workbench' | 'github-page';
   onToggleView: () => void;
 }
@@ -33,6 +34,7 @@ const RADIUS_OPTIONS: { id: RadiusScale; label: string; scaleLabel: string }[] =
 export const AppHeader: React.FC<AppHeaderProps> = ({
   onOpenCmd,
   onOpenMobileSidebar,
+  mobileSidebarOpen,
   currentView,
   onToggleView,
 }) => {
@@ -58,6 +60,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
             onOpenMobileSidebar();
           }}
           aria-label="Open navigation sidebar"
+          aria-controls="mobile-navigation-drawer"
+          aria-expanded={mobileSidebarOpen}
+          aria-haspopup="dialog"
           className="lg:hidden min-h-[44px] min-w-[44px] p-2.5 rounded-xl bg-slate-100 dark:bg-[#1E293B] text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 cursor-pointer flex items-center justify-center touch-manipulation active:scale-95 transition-transform shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
         >
           <Menu className="w-5 h-5" />
@@ -76,7 +81,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           <Terminal className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
           <span className="font-medium text-slate-600 dark:text-slate-300 truncate">
             <span className="hidden sm:inline">Quick Find / Jump to Component...</span>
-            <span className="inline sm:hidden">Search 351 comps...</span>
+            <span className="inline sm:hidden">Search components...</span>
           </span>
           <kbd className="hidden sm:inline-flex ml-auto px-1.5 py-0.5 rounded bg-white dark:bg-[#111827] font-mono text-[10px] text-slate-600 dark:text-slate-300 shadow-xs border border-slate-200 dark:border-slate-700 shrink-0">
             ⌘K

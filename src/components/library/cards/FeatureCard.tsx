@@ -9,7 +9,7 @@ export const FeatureCard: React.FC = () => {
     <div className="p-4 border rounded-2xl flex flex-col gap-2 text-xs">
       <Sparkles className="w-5 h-5 text-indigo-500" />
       <span className="font-bold text-sm">Zero Layout Shift</span>
-      <p className="text-slate-500 text-[11px]">Strict CLS = 0 compliance across all state transitions.</p>
+      <p className="text-slate-500 text-[11px]">Stable geometry for supported state transitions.</p>
     </div>
   );
 };

@@ -17,7 +17,7 @@ export const TourGuide: React.FC = () => {
   return (
     <div className="p-2.5 bg-slate-900 text-white rounded-xl text-xs flex flex-col gap-1 w-48 shadow-2xl">
       <span className="font-bold text-indigo-400">Step 1 of 4</span>
-      <p className="text-[11px] text-slate-300">Click ⌘K anytime to jump across the 290 components.</p>
+      <p className="text-[11px] text-slate-300">Click ⌘K anytime to search all 361 components.</p>
     </div>
   );
 };

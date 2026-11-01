@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 
 // 2. AIMessage
-export const AIMessage: React.FC<{ content?: string }> = ({ content = 'I analyzed the 18 design categories and synthesized all 290 zero-shift components.' }) => {
+export const AIMessage: React.FC<{ content?: string }> = ({ content = 'I analyzed the 18 design categories and synthesized all 300 modular components.' }) => {
   return (
     <div className="flex gap-2.5 text-xs">
       <div className="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center shrink-0">

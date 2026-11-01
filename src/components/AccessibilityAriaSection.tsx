@@ -124,8 +124,8 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
     setOverrides({});
     setStatusFilter('all');
     pushToast({
-      title: 'All 61 Components Certified PASS',
-      description: 'Restored 100% WCAG 2.1 AA compliance across Keyboard & Screen Reader checks',
+      title: 'Checklist restored',
+      description: 'All 61 component checklist items are passing for keyboard and screen reader checks.',
       variant: 'success',
     });
   };
@@ -196,7 +196,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
         <div className="p-4 rounded-xl bg-slate-50/90 dark:bg-[#0B0F19]/60 border border-slate-200/70 dark:border-slate-800 flex flex-col justify-between gap-2">
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
             <span>WCAG 2.1 AA Audit Score</span>
-            {auditSummary.overallStatus === 'WCAG 2.1 AA Certified' ? (
+            {auditSummary.overallStatus === 'All Checks Passing' ? (
               <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
             ) : (
               <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />
@@ -212,7 +212,7 @@ export const AccessibilityAriaSection: React.FC<AccessibilityAriaSectionProps> =
             <span
               data-testid="a11y-overall-status"
               className={`px-2 py-0.5 rounded-md text-[11px] font-semibold whitespace-nowrap ${
-                auditSummary.overallStatus === 'WCAG 2.1 AA Certified'
+                auditSummary.overallStatus === 'All Checks Passing'
                   ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300'
                   : 'bg-amber-500/15 text-amber-700 dark:text-amber-300'
               }`}

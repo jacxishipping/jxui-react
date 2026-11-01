@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { COMPONENT_CATALOG, CATEGORIES, CategoryId, ComponentSpec } from '../data/catalog';
 import { COMPONENTS_290, ComponentSpec290 } from '../data/catalog290';
-import { UNIFIED_COMPONENTS_351 } from '../data/unifiedCatalog';
+import { UNIFIED_COMPONENTS_351, UNIFIED_STATS } from '../data/unifiedCatalog';
 import {
   fuzzyScore,
   loadRecentlyViewedIds,
@@ -88,15 +88,15 @@ const SPOTLIGHT_QUICK_LINKS: SpotlightQuickLink[] = [
   },
   {
     id: 'spotlight-290-suite',
-    name: '351 Master Suite',
-    subtitle: 'Unified 18 categories: 61 Showcases + 290 Modular Primitives',
-    badge: '351 Primitives',
+    name: `${UNIFIED_STATS.totalComponents} Component Suite`,
+    subtitle: `Unified 18 categories: ${UNIFIED_STATS.totalShowcases} Showcases + ${UNIFIED_STATS.totalPrimitives} Modular Primitives`,
+    badge: `${UNIFIED_STATS.totalComponents} Components`,
     badgeColor:
       'bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border-amber-200/60 dark:border-amber-800/60',
     icon: Sparkles,
     keywords: [
-      '351',
-      '290',
+      String(UNIFIED_STATS.totalComponents),
+      String(UNIFIED_STATS.totalPrimitives),
       'suite',
       'library',
       'categories',
@@ -347,7 +347,7 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
       return { kind: 'component' as const, item, score: maxScore, isRecent };
     }).filter((x) => x.score > (x.isRecent ? 8 : 0));
 
-    // Score 290 Suite components
+    // Score primitive suite components
     const scored290: CombinedSpotlightItem[] = COMPONENTS_290.map((item) => {
       const sName = fuzzyScore(item.name, q);
       const sSub = fuzzyScore(item.subtitle, q);
@@ -688,7 +688,7 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
                       </div>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-[10px] font-mono text-slate-400">290 Suite</span>
+                      <span className="text-[10px] font-mono text-slate-400">{UNIFIED_STATS.totalPrimitives} Primitives</span>
                       <CornerDownLeft className="w-3.5 h-3.5 text-slate-400" />
                     </div>
                   </button>
@@ -765,7 +765,7 @@ export const CommandFinderModal: React.FC<CommandFinderModalProps> = ({
             </span>
           </div>
           <span className="font-mono tabular-nums">
-            {filteredItems.length} items ({resolvedRecentItems.length} Recent · 61 Batches · 290 Suite)
+            {filteredItems.length} items ({resolvedRecentItems.length} Recent · {UNIFIED_STATS.totalShowcases} Showcases · {UNIFIED_STATS.totalPrimitives} Primitives)
           </span>
         </div>
       </div>

@@ -1,6 +1,6 @@
 // ============================================================================
 // JXUI (@jxui/react) — Complete Library Entry Point
-// 351 Combined Primitives (61 Interactive Showcases + 290 Modular Primitives)
+// 361 Combined Components (61 Interactive Showcases + 300 Modular Primitives)
 // ============================================================================
 
 export * from './components';

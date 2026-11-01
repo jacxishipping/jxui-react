@@ -1,7 +1,7 @@
 {
   "name": "jxui-react",
   "version": "3.0.0",
-  "description": "Next-generation React 19 component library and design system reimagining Material UI with zero-runtime CSS, 200ms spring physics, and 100% WCAG AA compliance across 351 unified components.",
+  "description": "Next-generation React 19 component library and design system with zero-runtime CSS, tactile spring interactions, and 361 unified components.",
   "keywords": [
     "react",
     "react-19",

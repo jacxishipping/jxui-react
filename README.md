@@ -7,7 +7,7 @@
 <h3 align="center">Next-Generation React 19 Component Library &amp; Interactive Design System Workbench</h3>
 
 <p align="center">
-  Reimagining enterprise React UI with tactile spring kinematics, specular glassmorphism, and guaranteed <strong>zero cumulative layout shift (CLS = 0)</strong>.
+  Reimagining enterprise React UI with tactile spring interactions, specular glassmorphism, and stable component geometry across supported state changes.
 </p>
 
 <p align="center">
@@ -16,7 +16,7 @@
   <a href="https://jacxishipping.github.io/jxui-react/"><img src="https://img.shields.io/badge/demo-live%20workbench-indigo?style=flat-square" alt="Live Demo" /></a>
   <a href="https://react.dev"><img src="https://img.shields.io/badge/react-19.0.0-blue?style=flat-square&logo=react" alt="React 19" /></a>
   <a href="https://www.typescriptlang.org"><img src="https://img.shields.io/badge/typescript-strict%20100%25-blue?style=flat-square&logo=typescript" alt="TypeScript Strict" /></a>
-  <a href="https://www.w3.org/WAI/WCAG21/quickref/"><img src="https://img.shields.io/badge/wcag-2.1%20AA%2FAAA-purple?style=flat-square" alt="WCAG 2.1 AA/AAA" /></a>
+  <a href="https://www.w3.org/WAI/WCAG21/quickref/"><img src="https://img.shields.io/badge/accessibility-audit%20matrix-purple?style=flat-square" alt="Accessibility audit matrix" /></a>
   <a href="#"><img src="https://img.shields.io/badge/cls-0.00%20guaranteed-success?style=flat-square" alt="CLS Zero" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational?style=flat-square" alt="License" /></a>
 </p>
@@ -85,26 +85,26 @@ export function App() {
 
 JXUI features 18 unified categories combining interactive showcases and modular primitives:
 
-| # | Category | Total | Key Highlights & Interactive Features |
-| :-: | :--- | :-: | :--- |
-| **01** | **Buttons & Actions** | **23** | `LiquidButton`, `RippleButton`, `MagneticButton`, `HoldToConfirmButton`, `SlideToAction`, `SplitButton` |
-| **02** | **Glassmorphism & Surfaces** | **21** | `AdaptiveGlass`, `FrostedGlass`, `LiquidGlass`, `DynamicGlassPanel`, `GlassModal`, `SpatialGlassWorkspace` |
-| **03** | **Navigation & Wayfinding** | **22** | `MagneticDock`, `FloatingDock`, `AdaptiveNavbar`, `GestureNavigation`, `RadialMenu`, `NavigationRail` |
-| **04** | **Inputs & Tactile Controls** | **29** | `SignaturePad`, `DualRangeSlider`, `CircularSlider`, `PinInput`, `TokenInput`, `DynamicFormBuilder` |
-| **05** | **Toggles & Selection** | **17** | `SpringSwitch`, `MorphingRadio`, `SegmentedControl`, `TactileCheckbox`, `ThemeToggle` |
-| **06** | **Feedback & Notifications** | **21** | `JXSnackbar` (3D stacked toast queue), `PulseBadge`, `StatusBeacon`, `LiveIndicator` |
-| **07** | **Modals & Overlays** | **17** | `SpringModal`, `GlassSheet`, `CommandPalette`, `Drawer`, `BackdropFilter` |
-| **08** | **Loading & Skeletons** | **16** | `ShimmerWave`, `CircularProgress`, `LiquidLoader`, `PulseGrid` |
-| **09** | **Cards & Containers** | **21** | `TiltCard`, `MagneticCard`, `SpotlightCard`, `FlipCard`, `SwipeableCard`, `StackedCard`, `BentoGrid` |
-| **10** | **Typography & Media** | **21** | `FluidTypography`, `GradientText`, `AvatarStack`, `MaskedImage`, `VideoPlayer` |
-| **11** | **Menus & Popovers** | **15** | `ContextMenu`, `FloatingPopover`, `MegaMenu`, `GlassToolbar` |
-| **12** | **Data Grids & Tables** | **17** | `JXDataGrid` (sorting, filtering, CSV export), `VirtualTable`, `EditableDataSheet` |
-| **13** | **Data Visualization** | **16** | `Sparkline`, `BarChart`, `AreaChart`, `RadarChart`, `DonutGauge`, `TelemetryStream` |
-| **14** | **Drag & Drop** | **15** | `KanbanBoard`, `SortableList`, `FileDropzone`, `SwappableGrid` |
-| **15** | **Layout & Structure** | **18** | `BentoLayout`, `SplitPane`, `MasonryFLIP`, `StickyScroll`, `Container` |
-| **16** | **Animation & FX** | **15** | `ConfettiEmitter`, `ParticleField`, `GlowOrb`, `SoundFxTrigger` |
-| **17** | **AI & Intelligent** | **15** | `PromptInput`, `StreamingChat`, `ModelSelector`, `TokenCounter`, `AgentStatus` |
-| **18** | **System & Utilities** | **13** | `ClipboardCopy`, `ShortcutHint`, `Portal`, `ErrorBoundary`, `ColorSwatch` |
+| # | Category | Components |
+| :-: | :--- | :-: |
+| **01** | **Buttons & Actions** | **24** |
+| **02** | **Glassmorphism & Surfaces** | **24** |
+| **03** | **Navigation & Wayfinding** | **30** |
+| **04** | **Inputs & Forms** | **32** |
+| **05** | **Toggles & Selection** | **18** |
+| **06** | **Modals & Overlays** | **22** |
+| **07** | **Notifications & Feedback** | **17** |
+| **08** | **Loading & Progress** | **17** |
+| **09** | **Cards & Content** | **22** |
+| **10** | **Data Visualization** | **21** |
+| **11** | **Tables & Data Grids** | **18** |
+| **12** | **Drag & Drop** | **15** |
+| **13** | **Layout & Workspace** | **20** |
+| **14** | **Animation & Motion** | **16** |
+| **15** | **AI Components** | **16** |
+| **16** | **Editors & Creative Tools** | **17** |
+| **17** | **Time & Scheduling** | **12** |
+| **18** | **Advanced Utilities** | **20** |
 
 ---
 
@@ -112,11 +112,11 @@ JXUI features 18 unified categories combining interactive showcases and modular 
 
 | Ergonomic Feature | Material UI (Core / Lab / X) | JXUI (jxui-react) |
 | :--- | :--- | :--- |
-| **Cumulative Layout Shift** | High: Spinner/text swaps pop button dimensions | **CLS = 0**: State morphing maintains exact bounding box |
+| **State Geometry** | Spinner/text swaps can change button dimensions | Stable bounds for supported state transitions |
 | **Surface Physics** | Flat Android 5 ink ripple with linear easing | **Tactile Spring**: Proximity pull, velocity scaling, 3D tilt |
 | **CSS Overhead** | Heavy Emotion / styled-components runtime | **Zero-Runtime**: Tailwind CSS v4 + native CSS variables |
 | **Glassmorphism** | Flat gray backgrounds with opaque drop shadows | **Specular Depth**: Ambient blur, top highlight, radial spotlights |
-| **Accessibility Audit** | Prone to keyboard traps in complex nested modals | **WCAG 2.1 AA/AAA**: Live focus traps auditor & ARIA matrix |
+| **Accessibility Guidance** | Complex nested modals need careful keyboard and focus testing | Interactive checklist for keyboard, focus, and ARIA patterns |
 
 ---
 

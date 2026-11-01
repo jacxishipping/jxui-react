@@ -1,6 +1,6 @@
 // ============================================================================
-// JXUI Unified Master Catalog & Data Architecture (351 Total Primitives)
-// Combining System A (61 Interactive Showcases) & System B (290 Modular Primitives)
+// JXUI Unified Master Catalog & Data Architecture (361 Total Components)
+// Combining System A (61 Interactive Showcases) & System B (300 Modular Primitives)
 // Fully Typed Schema: Search, Filters, Real Previews, Docs, Quality Indicators
 // ============================================================================
 
@@ -260,7 +260,7 @@ function deriveMetadata(
   // 4. Quality indicators
   const quality: QualityIndicators = {
     version: JXUI_COMPONENT_VERSION,
-    wcagScore: difficulty === 'enterprise' ? 'WCAG 2.1 AAA' : '100% WCAG 2.1 AA',
+    wcagScore: difficulty === 'enterprise' ? 'WCAG 2.1 AAA target' : 'WCAG 2.1 AA target',
     ariaRoles: lowerName.includes('button')
       ? ['button']
       : lowerName.includes('dialog')
@@ -360,7 +360,7 @@ function deriveMetadata(
   }
 
   const doc: ComponentDocSpec = {
-    summary: `${name} (JXUI v3.0.0) is an enterprise-grade ${tier} component engineered with tactile spring physics, specular glass aesthetics, and guaranteed zero cumulative layout shift (CLS = 0).`,
+    summary: `${name} (JXUI v3.0.0) is an enterprise-grade ${tier} component with tactile spring interactions and specular glass styling. Review its documented state behavior for geometry guidance.`,
     installation: `npm install jxui-react@^3.0.0 motion lucide-react`,
     usageCode: jsxSnippet || `import { ${name} } from 'jxui-react';\n\nexport default function Example() {\n  return (\n    <${name} variant="glass" size="md" />\n  );\n}`,
     props,
@@ -510,6 +510,6 @@ export const UNIFIED_STATS = {
   totalShowcases: COMPONENT_CATALOG.length,       // 61
   totalPrimitives: COMPONENTS_290.length,         // 300
   totalCategories: UNIFIED_CATEGORIES_18.length,  // 18
-  wcagCompliance: '100% WCAG 2.1 AA / AAA',
-  layoutShift: 'CLS = 0',
+  wcagCompliance: 'Interactive accessibility checklist available',
+  layoutShift: 'Stable state geometry target',
 };

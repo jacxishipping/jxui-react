@@ -263,7 +263,7 @@ test('getComponentAccessibilitySpec and evaluateAccessibilityAudit cover all 61 
   assert.equal(defaultSummary.screenReaderPassCount, 61);
   assert.equal(defaultSummary.fullyCompliantCount, 61);
   assert.equal(defaultSummary.compliancePercentage, 100);
-  assert.equal(defaultSummary.overallStatus, 'WCAG 2.1 AA Certified');
+  assert.equal(defaultSummary.overallStatus, 'All Checks Passing');
 
   // Simulate toggling one keyboard check and one screen reader check to Fail
   const modifiedSummary = evaluateAccessibilityAudit(specs, {
@@ -274,7 +274,7 @@ test('getComponentAccessibilitySpec and evaluateAccessibilityAudit cover all 61 
   assert.equal(modifiedSummary.screenReaderPassCount, 60);
   assert.equal(modifiedSummary.fullyCompliantCount, 59);
   assert.equal(modifiedSummary.failedComponentIds.length, 2);
-  assert.equal(modifiedSummary.overallStatus, 'Remediation Required');
+  assert.equal(modifiedSummary.overallStatus, 'Review Needed');
   assert.ok(modifiedSummary.compliancePercentage < 100);
 });
 

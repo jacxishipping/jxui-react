@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Search,
   Sparkles,
   Github,
-  Star,
   Zap,
   Layers,
   Compass,
@@ -26,7 +25,7 @@ import {
   Palette,
   Check,
 } from 'lucide-react';
-import { UNIFIED_CATEGORIES_18, UnifiedCategorySpec } from '../../data/unifiedCatalog';
+import { UNIFIED_CATEGORIES_18, UNIFIED_STATS, UnifiedCategorySpec } from '../../data/unifiedCatalog';
 import { useJXTheme } from '../../context/JXThemeContext';
 import { tactile } from '../../utils/tactileAudio';
 
@@ -39,7 +38,6 @@ export interface AppSidebarProps {
   onSidebarQueryChange: (q: string) => void;
   filteredCount: number;
   totalCount: number;
-  favoritesCount: number;
   mobileSidebarOpen: boolean;
   onCloseMobileSidebar: () => void;
   currentView: 'workbench' | 'github-page';
@@ -77,7 +75,6 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   onSidebarQueryChange,
   filteredCount,
   totalCount,
-  favoritesCount,
   mobileSidebarOpen,
   onCloseMobileSidebar,
   currentView,
@@ -85,6 +82,52 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   onOpenEncyclopedia,
 }) => {
   const { palette } = useJXTheme();
+  const mobileDrawerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!mobileSidebarOpen) return;
+
+    const drawer = mobileDrawerRef.current;
+    if (!drawer) return;
+
+    const previouslyFocused = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    drawer.querySelector<HTMLInputElement>('input')?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab') return;
+
+      const focusableElements = Array.from(
+        drawer.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((element) => element.getClientRects().length > 0);
+
+      if (focusableElements.length === 0) {
+        event.preventDefault();
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+      const focusIsOutsideDrawer = !drawer.contains(document.activeElement);
+
+      if (event.shiftKey && (document.activeElement === firstElement || focusIsOutsideDrawer)) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && (document.activeElement === lastElement || focusIsOutsideDrawer)) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      if (previouslyFocused?.isConnected) previouslyFocused.focus();
+    };
+  }, [mobileSidebarOpen]);
 
   const content = (
     <div className="flex flex-col h-full justify-between overflow-hidden bg-white/95 dark:bg-[#0B0F19]/95 backdrop-blur-xl">
@@ -108,7 +151,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   v3.0.0
                 </span>
               </div>
-              <span className="font-mono text-[11px] text-slate-400">jxui-react · 351 Primitives</span>
+              <span className="font-mono text-[11px] text-slate-400">jxui-react · {UNIFIED_STATS.totalComponents} Components</span>
             </div>
           </div>
           <button
@@ -129,8 +172,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               type="text"
               value={sidebarQuery}
               onChange={(e) => onSidebarQueryChange(e.target.value)}
-              placeholder="Search all 351 components..."
-              aria-label="Search all 351 components"
+              placeholder={`Search all ${totalCount} components...`}
+              aria-label={`Search all ${totalCount} components`}
               className="w-full pl-9 pr-12 py-2 min-h-[44px] rounded-xl bg-slate-100 dark:bg-[#1E293B]/70 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#111827] border border-transparent focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] transition-colors"
             />
             <span className="absolute right-2.5 px-1.5 py-0.5 rounded bg-slate-200/70 dark:bg-[#1E293B] text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300">
@@ -141,7 +184,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 
         {/* Global Component Tier Quick Filters */}
         <div className="p-3 border-b border-slate-200/50 dark:border-slate-800/50 space-y-1.5 shrink-0 text-xs">
-          {/* All 351 Components */}
+          {/* All Components */}
           <button
             type="button"
             onClick={() => {
@@ -158,62 +201,13 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           >
             <span className="flex items-center gap-2">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>All 351 Components</span>
+              <span>All {totalCount} Components</span>
             </span>
             <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10 font-bold">
               {totalCount}
             </span>
           </button>
 
-          {/* Tier Pills Grid */}
-          <div className="grid grid-cols-3 gap-1.5 pt-0.5">
-            <button
-              type="button"
-              onClick={() => {
-                tactile.playClick(800);
-                onSelectTier('showcase');
-                onCloseMobileSidebar();
-              }}
-              className={`min-h-[44px] px-2 py-1.5 rounded-xl text-[11px] font-medium transition-all text-center cursor-pointer flex items-center justify-center touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
-                activeTier === 'showcase'
-                  ? 'bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold ring-2 ring-[var(--jx-accent-halo)]'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#1E293B]/60'
-              }`}
-            >
-              Showcase (61)
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                tactile.playClick(800);
-                onSelectTier('primitive');
-                onCloseMobileSidebar();
-              }}
-              className={`min-h-[44px] px-2 py-1.5 rounded-xl text-[11px] font-medium transition-all text-center cursor-pointer flex items-center justify-center touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
-                activeTier === 'primitive'
-                  ? 'bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold ring-2 ring-[var(--jx-accent-halo)]'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#1E293B]/60'
-              }`}
-            >
-              Primitives (290)
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                tactile.playClick(800);
-                onSelectTier('favorites');
-                onCloseMobileSidebar();
-              }}
-              className={`min-h-[44px] px-2 py-1.5 rounded-xl text-[11px] font-medium transition-all text-center cursor-pointer flex items-center justify-center gap-1 touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
-                activeTier === 'favorites'
-                  ? 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 font-bold ring-2 ring-amber-500/30'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#1E293B]/60'
-              }`}
-            >
-              <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-500" />
-              <span>Starred ({favoritesCount})</span>
-            </button>
-          </div>
         </div>
 
         {/* 18 Unified Categories Single Scroll List */}
@@ -378,16 +372,12 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         <div className="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-400">
           <span className="flex items-center gap-1.5 font-medium">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-            <span>WCAG 2.1 AA Certified</span>
+            <span>Accessibility checklist</span>
           </span>
-          <span className="font-mono text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">100%</span>
-        </div>
-        <div className="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
-          <div className="bg-emerald-500 h-full w-full rounded-full" />
         </div>
         <p className="text-[10px] text-slate-400 font-mono flex items-center justify-between">
-          <span>React 19 Actions</span>
-          <span>Zero Runtime CSS</span>
+          <span>Keyboard · ARIA · Focus</span>
+          <span>React 19</span>
         </p>
       </div>
     </div>
@@ -403,6 +393,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       {/* Mobile Slide-over Drawer Backdrop */}
       {mobileSidebarOpen && (
         <div
+          id="mobile-navigation-drawer"
+          ref={mobileDrawerRef}
           role="dialog"
           aria-modal="true"
           aria-label="Navigation drawer"

@@ -332,7 +332,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
 
             {/* Zero CLS Guarantee */}
             <span className="px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-800 font-semibold">
-              CLS = 0.00
+              Stable geometry target
             </span>
 
             {/* JXUI v3.0 Engine */}
@@ -631,7 +631,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                     {spec.quality.wcagScore} Certified
                   </h4>
                   <p className="text-xs text-emerald-700 dark:text-emerald-400 mt-0.5">
-                    Guaranteed high-contrast compliance exceeding 7:1 ratio with programmatic focus traps and zero keyboard traps.
+                    This is a design target. Review the documented keyboard, focus, and ARIA behavior for this component.
                   </p>
                 </div>
               </div>

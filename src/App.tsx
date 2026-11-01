@@ -40,7 +40,7 @@ const SectionSkeletonFallback: React.FC<{ label?: string }> = ({
       {label}
     </span>
     <span className="text-[10px] text-slate-400 font-mono mt-1">
-      Zero CLS Dynamic Chunk Loading
+      Loading component suite
     </span>
   </div>
 );
@@ -156,7 +156,7 @@ const WorkbenchShell: React.FC = () => {
   const handleTriggerToast = () => {
     pushToast({
       title: 'Tactile Luminescence Event',
-      description: 'Zero cumulative layout shift (CLS = 0) with spring physics settling.',
+      description: 'Spring interactions with stable state geometry.',
       variant: 'default',
     });
   };
@@ -206,7 +206,7 @@ const WorkbenchShell: React.FC = () => {
     }, 80);
   };
 
-  // Filtered count across all 351 components
+  // Filtered count across the complete component catalog.
   const filteredCount = useMemo(() => {
     let list = UNIFIED_COMPONENTS_351;
     if (activeTier === 'showcase') {
@@ -235,7 +235,7 @@ const WorkbenchShell: React.FC = () => {
   }, [activeCategory, activeTier, searchQuery, collectionsState]);
 
   return (
-    <div className="min-h-screen flex w-full max-w-full overflow-x-hidden bg-[#F8FAFC] dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500/20 selection:text-indigo-600 dark:selection:text-indigo-300">
+    <div className="min-h-screen flex w-full max-w-full overflow-x-clip bg-[#F8FAFC] dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500/20 selection:text-indigo-600 dark:selection:text-indigo-300">
       {/* 1. Unified Single Component Navigation Sidebar */}
       <AppSidebar
         activeCategory={activeCategory}
@@ -246,7 +246,6 @@ const WorkbenchShell: React.FC = () => {
         onSidebarQueryChange={setSearchQuery}
         filteredCount={filteredCount}
         totalCount={UNIFIED_COMPONENTS_351.length}
-        favoritesCount={collectionsState.favorites.length}
         mobileSidebarOpen={mobileSidebarOpen}
         onCloseMobileSidebar={() => setMobileSidebarOpen(false)}
         currentView={currentView}
@@ -260,6 +259,7 @@ const WorkbenchShell: React.FC = () => {
         <AppHeader
           onOpenCmd={() => setCmdOpen(true)}
           onOpenMobileSidebar={() => setMobileSidebarOpen(true)}
+          mobileSidebarOpen={mobileSidebarOpen}
           currentView={currentView}
           onToggleView={() => setCurrentView(currentView === 'workbench' ? 'github-page' : 'workbench')}
         />

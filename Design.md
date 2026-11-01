@@ -1,7 +1,7 @@
 # JXUI (@jxui/react) — Design System Architecture & Specifications
 
 > **Next-Generation Component Library & Interactive Design System Workbench**  
-> Reimagining Material UI (Core, Lab, and X) with tactile spring physics, glassmorphic depth, and zero-shift ergonomics across **361 unified components in 18 categories**.
+> Reimagining Material UI (Core, Lab, and X) with tactile spring interactions, glassmorphic depth, and stable-state geometry across **361 unified components in 18 categories**.
 
 ---
 
@@ -11,10 +11,10 @@ Traditional enterprise UI libraries (such as Material UI) were conceived in the 
 
 **JXUI** establishes a modern, physical design language founded on four core invariants:
 
-1. **Zero-Shift Ergonomics (CLS = 0)**:
-   - No button, input, tab, or card may cause layout reflow when transitioning states (`idle ➔ loading ➔ success ➔ error`).
-   - Bounding geometries are locked or pre-allocated using the `useLockGeometry` hook.
-   - Skeletons match destination border-radii and exact bounding heights using `.jx-shimmer-wave`.
+1. **Stable-State Geometry**:
+  - Button, input, tab, and card state transitions should preserve their intended dimensions where the component supports it.
+  - Bounding geometries can be locked or pre-allocated using the `useLockGeometry` hook.
+  - Skeletons should match destination border-radii and bounding heights using `.jx-shimmer-wave`.
    - Numeric counters, metrics, ratings, and code timestamps strictly use `font-mono tabular-nums`.
 2. **Tactile Physics & Motion**:
    - Interactions utilize spring dynamics (`cubic-bezier(0.22, 1, 0.36, 1)`), velocity-based kinematics, and active press compression (`scale 0.98` / `active:scale-95`) rather than dated radial ink ripples.
@@ -22,10 +22,10 @@ Traditional enterprise UI libraries (such as Material UI) were conceived in the 
 3. **Specular Glassmorphism & Depth**:
    - Surfaces employ subtle ambient occlusion combined with top specular highlights (`inset 0 1px 0 0 rgba(255, 255, 255, 0.8)` in light mode and `0.06` in dark mode).
    - Interactive cursor-tracking spotlights (`SpotlightCard`, `JXCard`) project radial luminescent highlights without DOM repaints.
-4. **Accessible by Default (WCAG 2.1 AA/AAA)**:
-   - Strict keyboard navigation contracts (`ArrowUp/Down`, `Enter`, `Space`, `Escape`, `Tab`).
-   - Mobile touch targets meet WCAG 2.1 AA (minimum `44px x 44px` via `min-h-[44px] min-w-[44px] touch-manipulation`).
-   - Native ARIA live-regions, high-contrast dark mode, and dynamic focus rings (`--jx-accent-halo`).
+4. **Accessibility Targets (WCAG 2.1 AA)**:
+  - Document and test keyboard navigation contracts (`ArrowUp/Down`, `Enter`, `Space`, `Escape`, `Tab`) for each interactive component.
+  - Aim for mobile touch targets of at least `44px x 44px` via `min-h-[44px] min-w-[44px] touch-manipulation`.
+  - Use semantic ARIA live regions, sufficient contrast, and visible focus rings (`--jx-accent-halo`); validate with assistive technology and manual testing.
 
 ---
 

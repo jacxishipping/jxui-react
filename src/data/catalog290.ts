@@ -1,4 +1,4 @@
-// Complete 290 Component Registry for JXUI (18 Categories)
+// Complete 300 Component Registry for JXUI (18 Categories)
 
 export interface CategorySpec290 {
   id: string;
@@ -172,7 +172,7 @@ const RAW_CATEGORY_ITEMS: Record<string, { name: string; subtitle: string; mui: 
   'buttons-actions': [
     { name: 'MagneticButton', subtitle: 'Cursor magnetic tracking with physics pull', mui: 'Rigid static bounding box', jxui: 'Elastic cursor gravitation' },
     { name: 'LiquidButton', subtitle: 'Fluid morphing gel with specular highlights', mui: 'Flat solid color fill', jxui: 'Liquid specular sheen' },
-    { name: 'MorphButton', subtitle: 'Zero-shift 3-state morphing (idle/load/success)', mui: 'Layout jumps on spinner entrance', jxui: 'Strict CLS = 0 dimension lock' },
+    { name: 'MorphButton', subtitle: 'Stable 3-state morphing (idle/load/success)', mui: 'Layout jumps on spinner entrance', jxui: 'Preserves dimensions during supported state changes' },
     { name: 'SpringButton', subtitle: 'Tactile spring scale on press', mui: 'Abrupt linear transitions', jxui: 'Cubic bezier spring release' },
     { name: 'RippleButton', subtitle: 'Upgraded coordinate wave ripple', mui: 'Heavy DOM ripple nodes', jxui: 'GPU-accelerated wave' },
     { name: 'GlowButton', subtitle: 'Dynamic luminescent drop glow', mui: 'Static box shadow', jxui: 'Palette-reactive glow' },

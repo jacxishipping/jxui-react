@@ -19,7 +19,7 @@ import {
 export const JsonEditor: React.FC = () => {
   return (
     <div className="font-mono text-xs p-2 bg-slate-100 dark:bg-slate-900 rounded-lg">
-      <div>{`{ "theme": "Tactile Luminescence", "components": 290 }`}</div>
+      <div>{`{ "theme": "Tactile Luminescence", "components": 361 }`}</div>
     </div>
   );
 };

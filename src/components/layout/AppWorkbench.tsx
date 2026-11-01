@@ -33,6 +33,7 @@ import {
   ShieldCheck,
   ExternalLink,
   History,
+  ChevronDown,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -49,6 +50,7 @@ import {
 import {
   UNIFIED_COMPONENTS_351,
   UNIFIED_CATEGORIES_18,
+  UNIFIED_STATS,
   UnifiedComponentSpec,
   UnifiedCategorySpec,
   DifficultyLevel,
@@ -266,7 +268,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
     selectedCollection,
   ]);
 
-  // Unified Filtering Engine across all 351 Components
+  // Unified filtering engine across the complete component catalog.
   const filteredComponents = useMemo(() => {
     let list = UNIFIED_COMPONENTS_351;
 
@@ -506,18 +508,18 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                 <Sparkles className="w-3.5 h-3.5 text-indigo-500 animate-pulse shrink-0" />
                 <span className="truncate">JXUI v3.0.0 · The Unified React 19 Component Suite</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0" />
-                <span className="font-mono text-[11px] font-bold">351 Total Primitives</span>
+                <span className="font-mono text-[11px] font-bold">{UNIFIED_STATS.totalComponents} Total Components</span>
               </div>
 
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
-                All 351 React Components.{' '}
+                Explore {UNIFIED_STATS.totalComponents} React Components.{' '}
                 <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-500 bg-clip-text text-transparent">
                   Unified &amp; Interactive.
                 </span>
               </h1>
 
               <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 font-normal leading-relaxed">
-                61 flagship showcases + 290 atomic primitives categorized into 18 unified domains. Zero runtime CSS overhead, 200ms damped spring physics, and 100% WCAG AA certification.
+                {UNIFIED_STATS.totalShowcases} showcases and {UNIFIED_STATS.totalPrimitives} primitives across 18 categories. Browse interactive previews, compare patterns, and inspect implementation details.
               </p>
             </div>
 
@@ -542,22 +544,22 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                 </button>
               </div>
 
-              <button
-                type="button"
-                onClick={() => {
-                  tactile.playClick(850);
-                  onToggleEncyclopedia();
-                }}
-                className="min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-[#1E293B]/80 transition-all shadow-xs cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+              <a
+                href="#unified-component-suite"
+                className="min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors shadow-xs touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
               >
-                <span>61 Architectural Flaws</span>
-                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold">
-                  vs JXUI
-                </span>
-              </button>
+                <Search className="w-4 h-4" />
+                <span>Browse components</span>
+              </a>
             </div>
           </div>
 
+          <details className="group space-y-4">
+            <summary className="min-h-[44px] cursor-pointer flex items-center justify-between gap-3 px-3 rounded-lg border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-[#111827]/70 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-[#111827]">
+              <span>System metrics and architecture</span>
+              <ChevronDown aria-hidden="true" className="w-4 h-4 shrink-0 text-slate-400" />
+            </summary>
+            <div className="space-y-4">
           {/* Overview Telemetry KPI Metrics Strip */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             <div className="p-3.5 sm:p-4 rounded-xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col justify-between">
@@ -566,12 +568,12 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               </span>
               <div className="mt-1 flex items-baseline gap-1.5">
                 <span className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white font-mono">
-                  351
+                  {UNIFIED_STATS.totalComponents}
                 </span>
                 <span className="text-[11px] text-slate-500 font-medium">primitives</span>
               </div>
               <span className="text-[10px] text-indigo-600 dark:text-indigo-400 font-mono mt-0.5">
-                61 showcases · 290 atoms
+                {UNIFIED_STATS.totalShowcases} showcases · {UNIFIED_STATS.totalPrimitives} primitives
               </span>
             </div>
 
@@ -607,16 +609,16 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
 
             <div className="p-3.5 sm:p-4 rounded-xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col justify-between">
               <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold font-mono">
-                A11y Certification
+                Accessibility guidance
               </span>
               <div className="mt-1 flex items-baseline gap-1.5">
                 <span className="text-xl sm:text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
-                  100%
+                  Audit matrix
                 </span>
-                <span className="text-[11px] text-slate-500 font-medium">WCAG AA</span>
+                <span className="text-[11px] text-slate-500 font-medium">Keyboard · ARIA</span>
               </div>
               <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono mt-0.5">
-                Contrast &ge; 4.5:1 + Halos
+                Patterns and review guidance
               </span>
             </div>
           </div>
@@ -677,10 +679,17 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               </p>
             </div>
           </div>
+            </div>
+          </details>
         </div>
       </div>
 
       {/* 2. RUNTIME THEME STUDIO & CONTROLS TOOLBAR */}
+      <details className="group space-y-3">
+        <summary className="min-h-[44px] cursor-pointer flex items-center justify-between gap-3 px-3 rounded-lg border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-[#111827]/70 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-[#111827]">
+          <span>Customize theme, motion, and comparison</span>
+          <ChevronDown aria-hidden="true" className="w-4 h-4 shrink-0 text-slate-400" />
+        </summary>
       <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-4 sm:gap-6">
           {/* Palette Selector */}
@@ -847,61 +856,20 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
           </button>
         </div>
       </div>
+      </details>
 
-      {/* 3. UNIFIED 18-CATEGORY HORIZONTAL PILL SELECTOR RAIL */}
-      <div className="relative">
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-800 scroll-smooth">
-          {/* All Categories Button */}
-          <button
-            type="button"
-            onClick={() => setActiveCategory('all')}
-            className={`min-h-[44px] px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-2 shrink-0 cursor-pointer touch-manipulation active:scale-95 ${
-              activeCategory === 'all'
-                ? 'bg-indigo-600 text-white shadow-md ring-2 ring-indigo-500/20'
-                : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>All Categories</span>
-            <span className="font-mono text-[10px] px-1.5 py-0.5 rounded-full bg-black/15 dark:bg-white/15">
-              351
-            </span>
-          </button>
-
-          {/* 18 Individual Category Pills */}
-          {UNIFIED_CATEGORIES_18.map((cat) => {
-            const Icon = CATEGORY_ICONS_18[cat.id] || Box;
-            const isActive = activeCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => setActiveCategory(cat.id)}
-                className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-2 shrink-0 cursor-pointer touch-manipulation active:scale-95 ${
-                  isActive
-                    ? 'bg-indigo-600 text-white shadow-md ring-2 ring-indigo-500/20'
-                    : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
-                }`}
-              >
-                <Icon className="w-3.5 h-3.5 opacity-80" />
-                <span>{cat.title.replace(/^Category \d+:\s*/, '')}</span>
-                <span className={`font-mono text-[10px] px-1.5 py-0.5 rounded-full ${
-                  isActive ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'
-                }`}>
-                  {cat.totalCount}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* 3B. INTERACTIVE LIVE PLAYGROUND STUDIO */}
+      {/* Interactive Playground */}
+      <details id="jx-live-playground" className="group space-y-3">
+        <summary className="min-h-[44px] cursor-pointer flex items-center justify-between gap-3 px-3 rounded-lg border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-[#111827]/70 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-[#111827]">
+          <span>Open the interactive component playground</span>
+          <ChevronDown aria-hidden="true" className="w-4 h-4 shrink-0 text-slate-400" />
+        </summary>
       <LivePlayground
         selectedComponentId={playgroundComponentId}
         onSelectComponentId={setPlaygroundComponentId}
         onOpenDocs={setActiveDocSpec}
       />
+      </details>
 
       {/* 4. MASTER COMPONENT EXPLORER: FILTERS & CONTROLS BAR */}
       <div id="unified-component-suite" className="scroll-mt-24 space-y-4">
@@ -942,7 +910,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              All (351)
+              All ({UNIFIED_STATS.totalComponents})
             </button>
             <button
               type="button"
@@ -971,7 +939,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              Primitives (290)
+              Primitives ({UNIFIED_STATS.totalPrimitives})
             </button>
             <button
               type="button"
@@ -1038,7 +1006,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
           <div>
             <h2 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-              <span>{activeCategorySpec ? activeCategorySpec.title : 'All 351 Components'}</span>
+              <span>{activeCategorySpec ? activeCategorySpec.title : `All ${UNIFIED_STATS.totalComponents} Components`}</span>
               <span className="font-mono text-xs px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold">
                 {filteredComponents.length} results
               </span>
@@ -1046,7 +1014,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               {activeCategorySpec
                 ? activeCategorySpec.description
-                : 'Browse all 61 showcase architectures and 290 atomic primitives in one unified interface.'}
+                : `Browse all ${UNIFIED_STATS.totalShowcases} showcase examples and ${UNIFIED_STATS.totalPrimitives} primitives in one unified interface.`}
             </p>
           </div>
 

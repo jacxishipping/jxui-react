@@ -311,7 +311,7 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
           </h1>
 
           <p className="mt-4 sm:mt-5 text-sm sm:text-lg text-[#8b949e] max-w-2xl leading-relaxed">
-            Reimagining enterprise React UI with tactile spring kinematics, specular glassmorphism, and guaranteed <strong>zero cumulative layout shift (CLS = 0)</strong>.
+            Reimagining enterprise React UI with tactile spring interactions, specular glassmorphism, and stable component geometry across supported state changes.
           </p>
 
           {/* Terminal Quick Install Bar */}
@@ -588,7 +588,7 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
                 <tr>
                   <td className="p-4 sm:px-6 font-semibold text-white">Cumulative Layout Shift</td>
                   <td className="p-4 sm:px-6 text-[#f85149]">High: Text/spinner swaps cause button width popping</td>
-                  <td className="p-4 sm:px-6 text-[#3fb950] font-semibold">CLS = 0: Locked bounding box with morphing states</td>
+                  <td className="p-4 sm:px-6 text-[#3fb950] font-semibold">Stable bounds for supported state transitions</td>
                 </tr>
                 <tr>
                   <td className="p-4 sm:px-6 font-semibold text-white">Surface Physics</td>
