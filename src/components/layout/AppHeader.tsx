@@ -47,37 +47,40 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   } = useJXTheme();
 
   return (
-    <header className="h-16 px-4 sm:px-8 border-b border-slate-200/70 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md flex items-center justify-between sticky top-0 z-30">
-      <div className="flex items-center gap-3">
+    <header className="h-16 px-3 sm:px-6 lg:px-8 border-b border-slate-200/70 dark:border-slate-800/80 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md flex items-center justify-between sticky top-0 z-30 w-full min-w-0">
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 mr-2 sm:mr-4">
         {/* Mobile Sidebar Hamburger */}
         <button
           type="button"
           onClick={onOpenMobileSidebar}
           aria-label="Open navigation sidebar"
-          className="lg:hidden min-h-[44px] min-w-[44px] p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 cursor-pointer flex items-center justify-center touch-manipulation active:scale-95 transition-transform"
+          className="lg:hidden min-h-[44px] min-w-[44px] p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 cursor-pointer flex items-center justify-center touch-manipulation active:scale-95 transition-transform shrink-0"
         >
           <Menu className="w-5 h-5" />
         </button>
 
         {/* Quick Find / Cmd+K Search Trigger */}
-        <div
+        <button
+          type="button"
           onClick={onOpenCmd}
-          className="flex items-center gap-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/70 dark:hover:bg-slate-700/70 px-3.5 py-1.5 rounded-xl cursor-pointer transition-colors text-slate-500 dark:text-slate-400 text-xs w-64 sm:w-80 border border-transparent hover:border-slate-300 dark:hover:border-slate-700"
+          aria-label="Quick Find or Jump to Component (Command K)"
+          className="flex items-center gap-2 sm:gap-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/70 dark:hover:bg-slate-700/70 px-3 py-2 min-h-[44px] rounded-xl cursor-pointer transition-all text-slate-500 dark:text-slate-400 text-xs flex-1 max-w-[220px] sm:max-w-xs md:max-w-sm border border-transparent hover:border-slate-300 dark:hover:border-slate-700 touch-manipulation active:scale-[0.98] text-left"
         >
           <Terminal className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
           <span className="font-medium text-slate-600 dark:text-slate-300 truncate">
-            Quick Find / Jump to Component...
+            <span className="hidden sm:inline">Quick Find / Jump to Component...</span>
+            <span className="inline sm:hidden">Search 351 comps...</span>
           </span>
-          <kbd className="ml-auto px-1.5 py-0.5 rounded bg-white dark:bg-slate-900 font-mono text-[10px] text-slate-600 dark:text-slate-300 shadow-xs border border-slate-200 dark:border-slate-700 shrink-0">
+          <kbd className="hidden sm:inline-flex ml-auto px-1.5 py-0.5 rounded bg-white dark:bg-slate-900 font-mono text-[10px] text-slate-600 dark:text-slate-300 shadow-xs border border-slate-200 dark:border-slate-700 shrink-0">
             ⌘K
           </kbd>
-        </div>
+        </button>
       </div>
 
       {/* Top Right Controls Toolbar */}
-      <div className="flex items-center gap-2.5 sm:gap-4 shrink-0">
+      <div className="flex items-center gap-1.5 sm:gap-2.5 md:gap-3 shrink-0">
         {/* Color Accent Swatches (Desktop) */}
-        <div className="hidden sm:flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+        <div className="hidden lg:flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
           {(Object.keys(ACCENT_PALETTES) as AccentColor[]).map((key) => {
             const pal = ACCENT_PALETTES[key];
             const active = accent === key;
@@ -88,10 +91,11 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 onClick={() => setAccent(key)}
                 style={{ backgroundColor: pal.hex }}
                 title={`${pal.name} Palette`}
-                className={`w-5 h-5 rounded-full transition-transform cursor-pointer ${
+                aria-label={`Select ${pal.name} accent`}
+                className={`w-5 h-5 rounded-full transition-transform cursor-pointer touch-manipulation ${
                   active
                     ? 'ring-2 ring-indigo-500 ring-offset-1 scale-110'
-                    : 'opacity-70 hover:opacity-100'
+                    : 'opacity-70 hover:opacity-100 hover:scale-105'
                 }`}
               />
             );
@@ -99,13 +103,13 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         </div>
 
         {/* Radius Scale Multipliers */}
-        <div className="hidden md:flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg text-[11px] font-semibold">
+        <div className="hidden xl:flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg text-[11px] font-semibold">
           {RADIUS_OPTIONS.slice(1, 4).map((r) => (
             <button
               key={r.id}
               type="button"
               onClick={() => setRadiusScale(r.id)}
-              className={`px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
+              className={`px-2 py-0.5 rounded-md transition-colors cursor-pointer touch-manipulation ${
                 radiusScale === r.id
                   ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs font-bold'
                   : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -121,13 +125,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           type="button"
           onClick={() => setCompareMode(compareMode === 'jxui' ? 'split' : 'jxui')}
           title="Toggle MUI vs JXUI Split Compare"
-          className={`p-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
+          aria-label="Toggle MUI vs JXUI Split Compare"
+          className={`min-h-[44px] min-w-[44px] p-2 sm:px-3 sm:py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer touch-manipulation active:scale-95 ${
             compareMode === 'split'
-              ? 'bg-indigo-600 text-white shadow-sm'
-              : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+              ? 'bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-500/30'
+              : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-slate-700/70'
           }`}
         >
-          <SplitSquareHorizontal className="w-4 h-4" />
+          <SplitSquareHorizontal className="w-4 h-4 shrink-0" />
           <span className="hidden xl:inline">Split Compare</span>
         </button>
 
@@ -139,7 +144,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           aria-label={`Switch to ${mode === 'light' ? 'Dark' : 'Light'} mode (current: ${mode})`}
           aria-pressed={mode === 'dark'}
           title={`Switch to ${mode === 'light' ? 'Dark Obsidian' : 'Light Alabaster'} (Saved to localStorage)`}
-          className="min-h-[44px] min-w-[44px] rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer touch-manipulation active:scale-95"
+          className="min-h-[44px] min-w-[44px] rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-300 bg-slate-100/70 dark:bg-slate-800/70 hover:bg-slate-200/80 dark:hover:bg-slate-700 transition-colors cursor-pointer touch-manipulation active:scale-95"
         >
           {mode === 'light' ? (
             <Sun className="w-4 h-4 text-amber-500" />
@@ -153,14 +158,15 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           type="button"
           onClick={onToggleView}
           title={currentView === 'workbench' ? 'Switch to GitHub Showcase Page' : 'Return to Interactive Workbench'}
-          className={`min-h-[44px] flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer touch-manipulation active:scale-95 ${
+          aria-label={currentView === 'workbench' ? 'Switch to GitHub Showcase Page' : 'Return to Interactive Workbench'}
+          className={`min-h-[44px] min-w-[44px] flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer touch-manipulation active:scale-95 ${
             currentView === 'github-page'
-              ? 'bg-[#238636] text-white shadow-sm'
+              ? 'bg-[#238636] text-white shadow-sm ring-2 ring-[#238636]/30'
               : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/70 dark:hover:bg-slate-700/70 text-slate-700 dark:text-slate-200'
           }`}
         >
-          <Github className="w-4 h-4" />
-          <span>{currentView === 'github-page' ? 'Workbench' : 'GitHub Page'}</span>
+          <Github className="w-4 h-4 shrink-0" />
+          <span className="hidden sm:inline">{currentView === 'github-page' ? 'Workbench' : 'GitHub Page'}</span>
         </button>
       </div>
     </header>

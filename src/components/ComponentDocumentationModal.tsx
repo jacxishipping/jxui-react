@@ -196,19 +196,19 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
         )}`}
       >
         {/* Modal Top Bar */}
-        <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-950/60 shrink-0">
+        <div className="px-4 py-3 sm:px-6 sm:py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-950/60 shrink-0">
           <div className="flex items-center gap-3">
-            <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-sm ${palette.bg}`}>
+            <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-sm shrink-0 ${palette.bg}`}>
               <BookOpen className="w-4 h-4" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 id="doc-modal-title" className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <h2 id="doc-modal-title" className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                   <span>&lt;{spec.name} /&gt;</span>
                   <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
                     v{spec.version || '3.0.0'}
                   </span>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                  <span className={`hidden sm:inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
                     spec.tier === 'showcase'
                       ? 'bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300'
                       : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
@@ -217,20 +217,20 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                   </span>
                 </h2>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1">
                 {spec.subtitle}
               </p>
             </div>
           </div>
 
           {/* Right Action Controls */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {/* Bookmark Favorite */}
             <button
               type="button"
               onClick={handleToggleFav}
               title={isFav ? 'Remove from favorites' : 'Bookmark to favorites'}
-              className={`p-2 rounded-lg border transition-colors cursor-pointer ${
+              className={`min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg border transition-colors cursor-pointer touch-manipulation active:scale-95 ${
                 isFav
                   ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700 text-amber-500'
                   : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 hover:text-slate-700 dark:hover:text-white'
@@ -244,7 +244,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
               <button
                 type="button"
                 onClick={() => setShowCollectionDropdown(!showCollectionDropdown)}
-                className="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center gap-1.5 cursor-pointer"
+                className="min-h-[44px] px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center gap-1.5 cursor-pointer touch-manipulation active:scale-95"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Add to Collection</span>
@@ -277,7 +277,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
               type="button"
               onClick={handleCopyShareLink}
               title="Copy deep link to this component"
-              className="p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer touch-manipulation active:scale-95"
             >
               <Share2 className="w-4 h-4" />
             </button>
@@ -287,7 +287,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
               type="button"
               onClick={onClose}
               aria-label="Close documentation modal"
-              className="p-2 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors touch-manipulation active:scale-95"
             >
               <X className="w-5 h-5" />
             </button>
@@ -295,7 +295,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
         </div>
 
         {/* Quality Indicators Ribbon */}
-        <div className="px-6 py-2.5 bg-slate-100/70 dark:bg-slate-800/50 border-b border-slate-200/80 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs shrink-0">
+        <div className="px-4 sm:px-6 py-2.5 bg-slate-100/70 dark:bg-slate-800/50 border-b border-slate-200/80 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs shrink-0">
           <div className="flex flex-wrap items-center gap-2 font-mono text-[11px]">
             {/* WCAG AA / AAA badge */}
             <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 font-semibold flex items-center gap-1">
@@ -342,7 +342,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
         </div>
 
         {/* Documentation Tab Navigation */}
-        <div className="px-6 border-b border-slate-200 dark:border-slate-800 flex items-center gap-1 overflow-x-auto text-xs font-semibold bg-white dark:bg-slate-900 shrink-0">
+        <div className="px-4 sm:px-6 border-b border-slate-200 dark:border-slate-800 flex items-center gap-1 overflow-x-auto text-xs font-semibold bg-white dark:bg-slate-900 shrink-0">
           {[
             { id: 'overview', label: 'Overview & Sandbox' },
             { id: 'props', label: 'Props Specification' },
@@ -354,7 +354,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id as any)}
-              className={`px-3.5 py-3 border-b-2 transition-colors cursor-pointer shrink-0 ${
+              className={`min-h-[44px] px-3.5 py-2.5 flex items-center border-b-2 transition-colors cursor-pointer shrink-0 touch-manipulation active:scale-95 ${
                 activeTab === tab.id
                   ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400 font-bold'
                   : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
@@ -366,7 +366,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
         </div>
 
         {/* Scrollable Tab Content Body */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6 text-sm">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 text-sm">
           {/* TAB 1: OVERVIEW & SANDBOX */}
           {activeTab === 'overview' && (
             <div className="space-y-6">
@@ -377,12 +377,12 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                     <Code2 className="w-3.5 h-3.5 text-indigo-500" />
                     <span>Interactive Live Sandbox Preview</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="inline-flex rounded-lg bg-slate-200/80 dark:bg-slate-800 p-0.5 text-[11px] font-mono">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <div className="inline-flex rounded-xl bg-slate-200/80 dark:bg-slate-800 p-0.5 text-xs font-mono">
                       <button
                         type="button"
                         onClick={() => setCodeMode('jsx')}
-                        className={`px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
+                        className={`min-h-[36px] px-3 py-1.5 rounded-lg transition-colors cursor-pointer touch-manipulation active:scale-95 ${
                           codeMode === 'jsx'
                             ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-semibold shadow-2xs'
                             : 'text-slate-600 dark:text-slate-400'
@@ -393,7 +393,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                       <button
                         type="button"
                         onClick={() => setCodeMode('raw')}
-                        className={`px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
+                        className={`min-h-[36px] px-3 py-1.5 rounded-lg transition-colors cursor-pointer touch-manipulation active:scale-95 ${
                           codeMode === 'raw'
                             ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-semibold shadow-2xs'
                             : 'text-slate-600 dark:text-slate-400'
@@ -407,9 +407,9 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                       type="button"
                       onClick={() => setShowLivePlayground((v) => !v)}
                       aria-expanded={showLivePlayground}
-                      className={`px-2.5 py-1 text-xs font-semibold rounded-lg border flex items-center gap-1.5 transition-colors cursor-pointer ${
+                      className={`min-h-[36px] px-3 py-1.5 text-xs font-semibold rounded-xl border flex items-center gap-1.5 transition-all cursor-pointer touch-manipulation active:scale-95 ${
                         showLivePlayground
-                          ? 'bg-indigo-600 text-white border-indigo-600'
+                          ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs'
                           : 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800'
                       }`}
                     >
@@ -420,7 +420,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                     <button
                       type="button"
                       onClick={() => handleCopySnippet()}
-                      className="px-2.5 py-1 text-xs font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
+                      className="min-h-[36px] px-3 py-1.5 text-xs font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white flex items-center gap-1.5 transition-all cursor-pointer shadow-xs touch-manipulation active:scale-95"
                     >
                       {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
                       <span>{copiedCode ? `Copied ${codeMode === 'raw' ? 'Raw' : 'JSX'}!` : `Copy ${codeMode === 'raw' ? 'Raw' : 'JSX'} Code`}</span>

@@ -221,7 +221,7 @@ const WorkbenchShell: React.FC = () => {
   }, [activeCategory, activeTier, searchQuery, collectionsState]);
 
   return (
-    <div className="min-h-screen flex bg-[#F8FAFC] dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500/20 selection:text-indigo-600 dark:selection:text-indigo-300">
+    <div className="min-h-screen flex w-full max-w-full overflow-x-hidden bg-[#F8FAFC] dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500/20 selection:text-indigo-600 dark:selection:text-indigo-300">
       {/* 1. Unified Single Component Navigation Sidebar */}
       <AppSidebar
         activeCategory={activeCategory}
