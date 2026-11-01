@@ -850,7 +850,7 @@ const ShowcaseLivePreview: React.FC<{
       const { JXAccordion } = mod;
       return (
         <div className="w-full space-y-2">
-          <JXAccordion variant={accordionVariant} iconMode="plus-cross" />
+          <JXAccordion variant={accordionVariant} iconMode="plus-cross" defaultOpenId={null} />
           <div className="flex justify-end gap-1">
             {(['bento', 'contiguous'] as const).map((v) => (
               <button

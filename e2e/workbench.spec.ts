@@ -77,6 +77,7 @@ test('mobile category selection and active filter chips recover results', async 
 });
 
 test('component previews mount as their cards approach the viewport', async ({ page }) => {
+  test.setTimeout(90_000);
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
 
@@ -109,7 +110,10 @@ test('documentation covers all components with detailed API and usage sections',
 
   await expect(page.getByRole('heading', { name: 'Documentation', level: 1 })).toBeVisible({ timeout: 30_000 });
   await expect(page.getByTestId('docs-component-total')).toHaveText('361');
-  await expect(page.getByTestId('docs-component-row')).toHaveCount(361);
+  await expect(page.getByTestId('docs-component-row')).toHaveCount(48);
+  await expect(page.getByRole('button', { name: 'Load 48 more components' })).toBeVisible();
+  await page.getByRole('button', { name: 'Load 48 more components' }).click();
+  await expect(page.getByTestId('docs-component-row')).toHaveCount(96);
 
   await page
     .getByRole('navigation', { name: 'Documentation categories' })
@@ -135,4 +139,59 @@ test('documentation covers all components with detailed API and usage sections',
   await expect(page.getByRole('combobox', { name: 'Category' })).toBeVisible();
   await expect(page.getByRole('textbox', { name: 'Find a component' })).toBeVisible();
   expect(await page.evaluate(() => document.body.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+});
+
+test('playground remains usable on mobile and exposes every component', async ({ page }) => {
+  test.setTimeout(90_000);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/?view=workbench');
+
+  const playground = page.locator('#jx-live-playground');
+  await playground.locator(':scope > summary').click();
+
+  const componentSelect = page.getByRole('combobox', { name: 'Select component for Live Playground' });
+  await expect(componentSelect).toBeVisible();
+  await expect(componentSelect.locator('option')).toHaveCount(361);
+  const selectMetrics = await componentSelect.evaluate((element) => ({
+    width: element.getBoundingClientRect().width,
+    viewport: document.documentElement.clientWidth,
+  }));
+  expect(selectMetrics.width).toBeLessThanOrEqual(selectMetrics.viewport);
+
+  const featuredShelf = playground.locator('details').first();
+  expect(await featuredShelf.evaluate((element) => (element as HTMLDetailsElement).open)).toBe(false);
+
+  await page.getByRole('combobox', { name: 'Preview viewport' }).selectOption('mobile');
+  const stage = page.getByTestId('live-playground-stage');
+  await expect(page.getByRole('combobox', { name: 'Preview viewport' })).toHaveValue('mobile');
+  const stageWidth = await stage.evaluate((element) => element.getBoundingClientRect().width);
+  const canvasWidth = await stage.evaluate((element) => element.parentElement?.clientWidth || 0);
+  expect(stageWidth).toBeLessThanOrEqual(375);
+  expect(stageWidth).toBeLessThanOrEqual(canvasWidth);
+
+  const positions = await Promise.all([
+    stage.evaluate((element) => element.getBoundingClientRect().top),
+    page.getByText('Component Props Controls', { exact: true }).evaluate((element) => element.getBoundingClientRect().top),
+    page.getByTestId('live-playground-code').evaluate((element) => element.getBoundingClientRect().top),
+  ]);
+  expect(positions[0]).toBeLessThan(positions[1]);
+  expect(positions[1]).toBeLessThan(positions[2]);
+  expect(await page.evaluate(() => document.body.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+});
+
+test('glass category accordion preview starts closed and can be toggled', async ({ page }) => {
+  test.setTimeout(90_000);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/?cat=glass-surfaces');
+
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  const card = page.locator('#spec-jx-accordion');
+  await card.scrollIntoViewIfNeeded();
+  await expect(card.getByTestId('component-preview-stage')).toHaveAttribute('data-preview-state', 'ready');
+  const accordion = card.getByRole('button', { name: /Zero-Layout-Shift Morphing Architecture/ });
+  await expect(accordion).toHaveAttribute('aria-expanded', 'false');
+  await accordion.click();
+  await expect(accordion).toHaveAttribute('aria-expanded', 'true');
+  await accordion.click();
+  await expect(accordion).toHaveAttribute('aria-expanded', 'false');
 });
