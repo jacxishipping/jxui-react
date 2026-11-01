@@ -12,9 +12,6 @@ import {
   Zap,
   BookOpen,
   History,
-  Smartphone,
-  Tablet,
-  Monitor,
 } from 'lucide-react';
 import { UNIFIED_COMPONENTS_351, UnifiedComponentSpec } from '../data/unifiedCatalog';
 import { InteractiveComponentPreview } from './InteractiveComponentPreview';
@@ -545,6 +542,11 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
   const activeId = selectedComponentId || internalId;
 
   const setActiveId = (nextId: string) => {
+    if (nextId !== activeId) {
+      setPropsState(DEFAULT_PLAYGROUND_PROPS);
+      setCssVars(DEFAULT_PLAYGROUND_CSS_VARS);
+      setCodeTab('jsx');
+    }
     setInternalId(nextId);
     if (onSelectComponentId) {
       onSelectComponentId(nextId);
@@ -567,7 +569,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
 
   const [propsState, setPropsState] = useState<PlaygroundPropValues>(DEFAULT_PLAYGROUND_PROPS);
   const [cssVars, setCssVars] = useState<PlaygroundCssVariables>(DEFAULT_PLAYGROUND_CSS_VARS);
-  const [controlMode, setControlMode] = useState<'split' | 'props' | 'css' | 'changelog'>('split');
+  const [controlMode, setControlMode] = useState<'split' | 'props' | 'css' | 'changelog'>('props');
   const [codeTab, setCodeTab] = useState<'jsx' | 'css' | 'changelog'>('jsx');
   const [stageBackdrop, setStageBackdrop] = useState<'grid' | 'dots' | 'glass' | 'contrast'>('grid');
   const [stageViewport, setStageViewport] = useState<'responsive' | 'mobile' | 'tablet' | 'desktop'>('responsive');
@@ -669,7 +671,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
       className="scroll-mt-24 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 overflow-hidden"
     >
       {/* Top Studio Header Bar */}
-      <div className="px-5 sm:px-6 py-4 border-b border-slate-200/80 dark:border-slate-800/80 flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-slate-50/60 dark:bg-[#1E293B]/40">
+      <div className="px-4 sm:px-6 py-4 border-b border-slate-200/80 dark:border-slate-800/80 bg-slate-50/60 dark:bg-[#1E293B]/40">
         <div className="space-y-1">
           <div className="flex flex-wrap items-center gap-2 text-xs text-indigo-600 dark:text-indigo-400 font-semibold">
             <Sliders className="w-3.5 h-3.5" />
@@ -683,46 +685,42 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
             Live Component Playground
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Toggle component props or fine-tune scoped CSS custom variables in real-time and copy the generated code.
+            Choose a component, adjust its props or styles, then copy the matching output.
           </p>
         </div>
 
-        {/* Component Selector Dropdown + Reset */}
-        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-          <div className="flex items-center gap-2">
-            <label
-              htmlFor="playground-component-select"
-              className="text-xs font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap"
-            >
-              Component:
+        <div className="mt-4 grid min-w-0 gap-3 lg:grid-cols-[minmax(260px,1.15fr)_minmax(0,1fr)_auto] lg:items-end">
+          <div className="min-w-0">
+            <label htmlFor="playground-component-select" className="mb-1.5 block text-xs font-semibold text-slate-600 dark:text-slate-300">
+              Component
             </label>
             <select
               id="playground-component-select"
               aria-label="Select component for Live Playground"
               value={activeSpec.id}
               onChange={(e) => setActiveId(e.target.value)}
-              className="min-h-[44px] px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1E293B] text-xs font-mono font-semibold text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] cursor-pointer touch-manipulation"
+              className="block min-h-[44px] w-full min-w-0 max-w-full truncate rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-mono font-semibold text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] dark:border-slate-700 dark:bg-[#1E293B] dark:text-white cursor-pointer touch-manipulation"
             >
               <optgroup label="61 Flagship Showcases">
                 {UNIFIED_COMPONENTS_351.filter((c) => c.tier === 'showcase').map((c) => (
                   <option key={c.id} value={c.id}>
-                    #{String(c.showcaseNumber).padStart(2, '0')} {c.name} — {c.subtitle}
+                    #{String(c.showcaseNumber).padStart(2, '0')} {c.name} — {c.categoryTitle.replace(/^Category \\d+:\\s*/, '')}
                   </option>
                 ))}
               </optgroup>
               <optgroup label="Atomic Primitives">
-                {UNIFIED_COMPONENTS_351.filter((c) => c.tier === 'primitive')
-                  .slice(0, 60)
-                  .map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name} ({c.categoryTitle.replace(/^Category \\d+:\\s*/, '')})
-                    </option>
-                  ))}
+                {UNIFIED_COMPONENTS_351.filter((c) => c.tier === 'primitive').map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name} ({c.categoryTitle.replace(/^Category \\d+:\\s*/, '')})
+                  </option>
+                ))}
               </optgroup>
             </select>
           </div>
 
-          <div className="inline-flex items-center rounded-xl bg-slate-200/70 dark:bg-[#1E293B] p-0.5 text-xs font-semibold overflow-x-auto max-w-full scrollbar-thin">
+          <div className="min-w-0">
+            <span className="mb-1.5 block text-xs font-semibold text-slate-600 dark:text-slate-300">Control layout</span>
+            <div role="group" aria-label="Control layout" className="grid grid-cols-2 gap-1 rounded-xl bg-slate-200/70 p-1 text-xs font-semibold dark:bg-[#1E293B] sm:grid-cols-4">
             {(
               [
                 { id: 'split', label: 'Props + CSS' },
@@ -735,7 +733,8 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                 key={m.id}
                 type="button"
                 onClick={() => setControlMode(m.id)}
-                className={\`min-h-[44px] px-3.5 py-2 rounded-lg transition-all cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] \${
+                aria-pressed={controlMode === m.id}
+                className={\`min-h-[40px] rounded-lg px-2 py-2 transition-all cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] \${
                   controlMode === m.id
                     ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white shadow-2xs font-bold'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -744,125 +743,107 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
                 {m.label}
               </button>
             ))}
+            </div>
           </div>
 
           <button
             type="button"
             onClick={handleResetAll}
-            className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1E293B] text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#111827] transition-all cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+            aria-label="Reset playground controls"
+            title="Reset props and styles"
+            className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] hover:bg-slate-100 dark:border-slate-700 dark:bg-[#1E293B] dark:text-slate-200 dark:hover:bg-[#111827] lg:justify-self-end"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>Reset Playground</span>
+            <span className="hidden sm:inline">Reset</span>
           </button>
         </div>
       </div>
 
       {/* Quick Featured Component Switcher Bar */}
-      <div className="px-4 sm:px-6 py-2.5 border-b border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-[#111827] flex items-center gap-2 overflow-x-auto scrollbar-thin">
-        <span className="text-[11px] font-mono text-slate-400 shrink-0">Quick Load:</span>
-        {featuredSpecs.map((item) => {
-          const isSelected = item.id === activeSpec.id;
-          return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => setActiveId(item.id)}
-              className={\`min-h-[44px] px-3.5 py-2 rounded-lg text-xs font-mono transition-all shrink-0 cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] \${
-                isSelected
-                  ? 'bg-indigo-600 text-white font-semibold shadow-xs'
-                  : 'bg-slate-100 dark:bg-[#1E293B] text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#1E293B]/80'
-              }\`}
-            >
-              &lt;{item.name} /&gt;
-            </button>
-          );
-        })}
-      </div>
+      <details className="border-b border-slate-200/60 bg-white dark:border-slate-800/60 dark:bg-[#111827]">
+        <summary className="min-h-[44px] cursor-pointer px-4 py-3 text-xs font-semibold text-slate-700 dark:text-slate-200 sm:px-6">
+          Featured components <span className="ml-1 font-mono text-slate-500 dark:text-slate-400">({featuredSpecs.length})</span>
+        </summary>
+        <div className="flex flex-wrap gap-2 px-4 pb-3 sm:px-6">
+          {featuredSpecs.map((item) => {
+            const isSelected = item.id === activeSpec.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setActiveId(item.id)}
+                aria-pressed={isSelected}
+                className={\`min-h-[40px] rounded-lg px-3 py-2 text-xs font-mono transition-all cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] \${
+                  isSelected
+                    ? 'bg-indigo-600 text-white font-semibold shadow-xs'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-[#1E293B] dark:text-slate-300 dark:hover:bg-[#1E293B]/80'
+                }\`}
+              >
+                &lt;{item.name} /&gt;
+              </button>
+            );
+          })}
+        </div>
+      </details>
 
       {/* Main Split Workbench: Left = Live Stage + Live Code | Right = Real-Time Props & CSS Variables */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-slate-200/80 dark:divide-slate-800 items-stretch">
+      <div className="grid grid-cols-1 items-stretch divide-y divide-slate-200/80 dark:divide-slate-800 lg:grid-cols-12 lg:divide-x lg:divide-y-0">
         {/* LEFT COLUMN (7 cols): Live Interactive Stage + Live Generated Code */}
-        <div className="lg:col-span-7 flex flex-col divide-y divide-slate-200/80 dark:divide-slate-800">
+        <div className="contents">
           {/* Stage Area */}
-          <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between gap-4">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="flex items-center gap-2">
-                <Eye className="w-4 h-4 text-indigo-500 shrink-0" />
-                <span className="text-xs font-bold text-slate-900 dark:text-white">
-                  Live Stage: &lt;{activeSpec.name} /&gt;
-                </span>
-                <span className="text-[11px] font-mono text-slate-400 hidden sm:inline">
-                  · {activeSpec.subtitle}
-                </span>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-1.5">
-                {/* Viewport Switcher */}
-                <div className="inline-flex items-center rounded-lg bg-slate-100 dark:bg-[#1E293B] p-0.5 text-[10px] font-mono">
-                  {(
-                    [
-                      { id: 'responsive', label: 'Fluid', icon: Monitor },
-                      { id: 'mobile', label: '375px', icon: Smartphone },
-                      { id: 'tablet', label: '768px', icon: Tablet },
-                      { id: 'desktop', label: '1024px', icon: Monitor },
-                    ] as const
-                  ).map((vp) => {
-                    const Icon = vp.icon;
-                    return (
-                      <button
-                        key={vp.id}
-                        type="button"
-                        aria-label={\`Viewport \${vp.label}\`}
-                        onClick={() => setStageViewport(vp.id)}
-                        className={\`min-h-[32px] inline-flex items-center gap-1 px-2.5 py-1 rounded cursor-pointer transition-all touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] \${
-                          stageViewport === vp.id
-                            ? 'bg-white dark:bg-[#111827] text-indigo-600 dark:text-indigo-400 font-semibold shadow-2xs'
-                            : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
-                        }\`}
-                      >
-                        <Icon className="w-3 h-3" />
-                        <span>{vp.label}</span>
-                      </button>
-                    );
-                  })}
+          <div className="order-1 flex min-w-0 flex-col justify-between gap-4 p-4 sm:p-6 lg:col-span-7">
+            <div className="space-y-3">
+              <div className="flex min-w-0 items-start justify-between gap-3">
+                <div className="flex min-w-0 items-start gap-2">
+                  <Eye className="mt-0.5 h-4 w-4 shrink-0 text-indigo-500" />
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white">Preview</h3>
+                    <p className="mt-0.5 truncate text-xs text-slate-600 dark:text-slate-300">
+                      &lt;{activeSpec.name} /&gt; · {activeSpec.subtitle}
+                    </p>
+                  </div>
                 </div>
-
-                {/* Stage Backdrop Switcher */}
-                <div className="inline-flex items-center rounded-lg bg-slate-100 dark:bg-[#1E293B] p-0.5 text-[10px] font-mono">
-                  {(
-                    [
-                      { id: 'grid', label: 'Grid' },
-                      { id: 'dots', label: 'Slate' },
-                      { id: 'glass', label: 'Aurora' },
-                      { id: 'contrast', label: 'Dark' },
-                    ] as const
-                  ).map((bg) => (
-                    <button
-                      key={bg.id}
-                      type="button"
-                      aria-label={\`Stage backdrop \${bg.label}\`}
-                      onClick={() => setStageBackdrop(bg.id)}
-                      className={\`min-h-[32px] px-2.5 py-1 rounded cursor-pointer transition-all touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] \${
-                        stageBackdrop === bg.id
-                          ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white font-semibold shadow-2xs'
-                          : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
-                      }\`}
-                    >
-                      {bg.label}
-                    </button>
-                  ))}
-                </div>
-
                 {onOpenDocs && (
                   <button
                     type="button"
                     onClick={() => onOpenDocs(activeSpec)}
-                    className="min-h-[44px] inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-[11px] font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-[#1E293B] cursor-pointer whitespace-nowrap touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+                    className="min-h-[40px] shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-[#1E293B] cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                   >
-                    <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
-                    <span>Full Spec</span>
+                    <BookOpen className="h-3.5 w-3.5 text-indigo-500" />
+                    <span>Docs</span>
                   </button>
                 )}
+              </div>
+
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <label className="flex min-w-0 items-center justify-between gap-2 text-xs font-medium text-slate-600 dark:text-slate-300">
+                  <span>Viewport</span>
+                  <select
+                    aria-label="Preview viewport"
+                    value={stageViewport}
+                    onChange={(event) => setStageViewport(event.target.value as typeof stageViewport)}
+                    className="min-h-[40px] min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-2.5 text-xs text-slate-800 dark:border-slate-700 dark:bg-[#1E293B] dark:text-slate-100 sm:max-w-[170px]"
+                  >
+                    <option value="responsive">Responsive</option>
+                    <option value="mobile">Mobile · 375px</option>
+                    <option value="tablet">Tablet · 768px</option>
+                    <option value="desktop">Desktop · 1024px</option>
+                  </select>
+                </label>
+                <label className="flex min-w-0 items-center justify-between gap-2 text-xs font-medium text-slate-600 dark:text-slate-300">
+                  <span>Backdrop</span>
+                  <select
+                    aria-label="Preview backdrop"
+                    value={stageBackdrop}
+                    onChange={(event) => setStageBackdrop(event.target.value as typeof stageBackdrop)}
+                    className="min-h-[40px] min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-2.5 text-xs text-slate-800 dark:border-slate-700 dark:bg-[#1E293B] dark:text-slate-100 sm:max-w-[170px]"
+                  >
+                    <option value="grid">Grid</option>
+                    <option value="dots">Slate</option>
+                    <option value="glass">Aurora</option>
+                    <option value="contrast">Dark</option>
+                  </select>
+                </label>
               </div>
             </div>
 
@@ -911,7 +892,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
           </div>
 
           {/* Live Synchronized JSX / CSS Variables / v3 Changelog Output */}
-          <div className="p-5 sm:p-6 bg-slate-950 text-slate-100 space-y-3">
+          <div className="order-3 space-y-3 bg-slate-950 p-4 text-slate-100 sm:p-6 lg:col-span-12">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="inline-flex items-center rounded-xl bg-slate-900 border border-slate-800 p-0.5 text-xs font-mono overflow-x-auto max-w-full scrollbar-thin">
                 <button
@@ -1021,7 +1002,7 @@ export const LivePlayground: React.FC<LivePlaygroundProps> = ({
         </div>
 
         {/* RIGHT COLUMN (5 cols): Interactive Props Toggles & CSS Variable Controls */}
-        <div className="lg:col-span-5 p-5 sm:p-6 space-y-6 bg-slate-50/40 dark:bg-[#0B0F19]/30">
+        <div className="order-2 space-y-6 bg-slate-50/40 p-5 dark:bg-[#0B0F19]/30 sm:p-6 lg:col-span-5">
           {/* 1. PROPS CONTROL PANEL */}
           {(controlMode === 'split' || controlMode === 'props') && (
             <div className="space-y-4">

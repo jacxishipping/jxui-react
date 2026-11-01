@@ -27,6 +27,7 @@ export interface DocumentationCenterProps {
 }
 
 type ComponentTierFilter = 'all' | 'showcase' | 'primitive';
+const DOCS_PAGE_SIZE = 48;
 
 const getInitialComponentId = (): string => {
   if (typeof window === 'undefined') return UNIFIED_COMPONENTS_351[0]?.id || '';
@@ -45,6 +46,7 @@ export const DocumentationCenter: React.FC<DocumentationCenterProps> = ({
   });
   const [tier, setTier] = useState<ComponentTierFilter>('all');
   const [selectedComponentId, setSelectedComponentId] = useState(getInitialComponentId);
+  const [visibleCount, setVisibleCount] = useState(DOCS_PAGE_SIZE);
   const [copied, setCopied] = useState<'install' | 'usage' | null>(null);
 
   const filteredComponents = useMemo(() => {
@@ -63,6 +65,12 @@ export const DocumentationCenter: React.FC<DocumentationCenterProps> = ({
       );
     });
   }, [categoryId, query, tier]);
+
+  useEffect(() => {
+    setVisibleCount(DOCS_PAGE_SIZE);
+  }, [categoryId, query, tier]);
+
+  const visibleComponents = filteredComponents.slice(0, visibleCount);
 
   const selectedComponent =
     filteredComponents.find((component) => component.id === selectedComponentId) ||
@@ -423,33 +431,44 @@ export const DocumentationCenter: React.FC<DocumentationCenterProps> = ({
             className="[&_[role=tabpanel]]:hidden"
           />
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-            <span>{filteredComponents.length} components</span>
+            <span>{visibleComponents.length} of {filteredComponents.length} components</span>
             <span>{categoryId === 'all' ? 'All categories' : UNIFIED_CATEGORIES_18.find((item) => item.id === categoryId)?.shortTitle}</span>
           </div>
           <div className="max-h-[420px] space-y-1 overflow-y-auto rounded-lg border border-slate-200 p-2 dark:border-slate-800 xl:max-h-[calc(100vh-25rem)]">
-            {filteredComponents.length > 0 ? filteredComponents.map((component) => (
-              <JXButton
+            {visibleComponents.length > 0 ? visibleComponents.map((component) => (
+              <button
                 key={component.id}
-                size="sm"
-                fullWidth
-                variant={selectedComponent?.id === component.id ? 'soft' : 'text'}
-                className="justify-start text-left"
+                type="button"
                 onClick={() => setSelectedComponentId(component.id)}
                 aria-pressed={selectedComponent?.id === component.id}
                 data-testid="docs-component-row"
                 data-component-id={component.id}
+                className={\`flex min-h-[40px] w-full min-w-0 items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] \${
+                  selectedComponent?.id === component.id
+                    ? 'bg-indigo-50 text-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-200'
+                    : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-[#1E293B]'
+                }\`}
               >
                 <span className="min-w-0 flex-1 truncate">{component.name}</span>
-                <span className="ml-auto shrink-0 text-[10px] font-mono opacity-70">
+                <span className="ml-auto shrink-0 font-mono text-[10px] opacity-70">
                   {component.tier === 'showcase' ? \`#\${component.showcaseNumber}\` : 'Primitive'}
                 </span>
-              </JXButton>
+              </button>
             )) : (
               <div className="px-3 py-8 text-center text-sm text-slate-500 dark:text-slate-400">
                 No components match these filters.
               </div>
             )}
           </div>
+          {visibleCount < filteredComponents.length && (
+            <JXButton
+              variant="outlined"
+              fullWidth
+              onClick={() => setVisibleCount((count) => Math.min(count + DOCS_PAGE_SIZE, filteredComponents.length))}
+            >
+              Load {Math.min(DOCS_PAGE_SIZE, filteredComponents.length - visibleCount)} more components
+            </JXButton>
+          )}
         </section>
 
         <section className="min-w-0" aria-label="Component documentation">
