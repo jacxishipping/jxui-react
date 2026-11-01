@@ -40,7 +40,7 @@ export interface AppSidebarProps {
   totalCount: number;
   mobileSidebarOpen: boolean;
   onCloseMobileSidebar: () => void;
-  currentView: 'workbench' | 'github-page';
+  currentView: 'workbench' | 'docs' | 'github-page';
   onNavigateToSection: (sectionId: string) => void;
   onOpenEncyclopedia: () => void;
 }
@@ -283,6 +283,27 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                 type="button"
                 onClick={() => {
                   tactile.playClick(800);
+                  onNavigateToSection('docs');
+                  onCloseMobileSidebar();
+                }}
+                aria-current={currentView === 'docs' ? 'page' : undefined}
+                className={`w-full min-h-[44px] flex items-center justify-between px-3 py-2 rounded-xl transition-all cursor-pointer text-left touch-manipulation active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+                  currentView === 'docs'
+                    ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-semibold'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#1E293B]/60 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <BookOpen className="h-3.5 w-3.5 text-indigo-500" />
+                  <span>Component Documentation</span>
+                </span>
+                <span className="font-mono text-[10px] text-slate-600 dark:text-slate-400">361</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  tactile.playClick(800);
                   onNavigateToSection('jx-live-playground');
                   onCloseMobileSidebar();
                 }}
@@ -358,7 +379,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               >
                 <span className="flex items-center gap-2">
                   <Github className="w-3.5 h-3.5" />
-                  <span>GitHub Showcase &amp; Docs</span>
+                  <span>GitHub Showcase</span>
                 </span>
                 <span className="font-mono text-[10px] text-emerald-700 dark:text-emerald-300 font-bold">v3.0</span>
               </button>

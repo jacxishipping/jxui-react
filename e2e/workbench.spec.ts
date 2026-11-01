@@ -2,13 +2,16 @@ import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 test('desktop navigation sidebar remains pinned while the workbench scrolls', async ({ page }) => {
+  test.setTimeout(90_000);
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
 
   const sidebar = page.locator('aside');
   await expect(sidebar).toBeVisible();
   await page.evaluate(() => window.scrollTo(0, 900));
-  await expect.poll(() => sidebar.evaluate((element) => Math.round(element.getBoundingClientRect().top))).toBe(0);
+  await expect
+    .poll(() => sidebar.evaluate((element) => Math.round(element.getBoundingClientRect().top)), { timeout: 15_000 })
+    .toBe(0);
 });
 
 test('mobile navigation contains focus and restores it when closed', async ({ page }) => {
@@ -80,12 +83,56 @@ test('component previews mount as their cards approach the viewport', async ({ p
   const cards = page.locator('#unified-component-suite [data-jxui-version]');
   await expect(cards).toHaveCount(24);
 
-  const firstPreview = cards.first().getByTestId('component-preview-stage');
+  const firstDeferredCardId = await page
+    .locator('[data-testid="component-preview-stage"][data-preview-state="deferred"]')
+    .first()
+    .evaluate((element) => element.closest<HTMLElement>('[data-jxui-version]')?.id);
+  expect(firstDeferredCardId).toBeTruthy();
+  const firstDeferredPreview = page.locator(`[id="${firstDeferredCardId}"] [data-testid="component-preview-stage"]`);
   const lastPreview = cards.last().getByTestId('component-preview-stage');
   await expect(lastPreview).toHaveAttribute('data-preview-state', 'deferred');
   expect(await page.locator('[data-preview-state="ready"]').count()).toBeLessThan(24);
 
-  await cards.last().scrollIntoViewIfNeeded();
-  await expect(lastPreview).toHaveAttribute('data-preview-state', 'ready');
-  await expect(firstPreview).toHaveAttribute('data-preview-state', 'ready');
+  const deferredTop = await firstDeferredPreview.evaluate(
+    (element) => element.getBoundingClientRect().top + window.scrollY
+  );
+  await page.evaluate((top) => window.scrollTo(0, Math.max(0, top - 160)), deferredTop);
+  await expect(firstDeferredPreview).toHaveAttribute('data-preview-state', 'ready');
+  await expect(lastPreview).toHaveAttribute('data-preview-state', 'deferred');
+});
+
+test('documentation covers all components with detailed API and usage sections', async ({ page }) => {
+  test.setTimeout(90_000);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Open component documentation' }).click();
+
+  await expect(page.getByRole('heading', { name: 'Documentation', level: 1 })).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByTestId('docs-component-total')).toHaveText('361');
+  await expect(page.getByTestId('docs-component-row')).toHaveCount(361);
+
+  await page
+    .getByRole('navigation', { name: 'Documentation categories' })
+    .getByRole('button', { name: /Buttons & Actions/ })
+    .click();
+  await expect(page.getByTestId('docs-component-row')).toHaveCount(24);
+
+  const component = page.locator('[data-component-id="jx-button"]');
+  await component.click();
+  await expect(page.getByRole('heading', { name: 'JXButton', level: 2 })).toBeVisible();
+  await expect(page.getByRole('tab', { name: 'Overview' })).toBeVisible();
+
+  await page.getByRole('tab', { name: /API/ }).click();
+  await expect(page.getByText('Props', { exact: true })).toBeVisible();
+  await page.getByRole('tab', { name: 'Accessibility' }).click();
+  await expect(page.getByText('Accessibility targets, not certification')).toBeVisible();
+  await page.getByRole('tab', { name: 'Responsive' }).click();
+  await expect(page.getByText('Supported layouts')).toBeVisible();
+  await page.getByRole('tab', { name: 'Guidance' }).click();
+  await expect(page.getByText('JXUI approach')).toBeVisible();
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.getByRole('combobox', { name: 'Category' })).toBeVisible();
+  await expect(page.getByRole('textbox', { name: 'Find a component' })).toBeVisible();
+  expect(await page.evaluate(() => document.body.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
 });

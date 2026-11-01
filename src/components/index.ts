@@ -20,6 +20,7 @@ export * from './library';
 // --- Interactive Workbench & Documentation Tooling ---
 export * from './ComponentDocumentation';
 export * from './ComponentDocumentationModal';
+export * from './DocumentationCenter';
 export * from './InteractiveComponentPreview';
 export * from './CommandFinderModal';
 export * from './DesignTokenExporter';

@@ -28,6 +28,9 @@ const CommandFinderModal = lazy(() =>
 const GitHubPage = lazy(() =>
   import('./components/GitHubPage').then((m) => ({ default: m.GitHubPage }))
 );
+const DocumentationCenter = lazy(() =>
+  import('./components/DocumentationCenter').then((m) => ({ default: m.DocumentationCenter }))
+);
 
 const SectionSkeletonFallback: React.FC<{ label?: string }> = ({
   label = 'Loading component suite...',
@@ -71,10 +74,10 @@ const WorkbenchShell: React.FC = () => {
   // Collections & Bookmarks State
   const [collectionsState, setCollectionsState] = useState<JXCollectionsState>(() => loadCollectionsState());
 
-  const [currentView, setCurrentView] = useState<'workbench' | 'github-page'>(() => {
+  const [currentView, setCurrentView] = useState<'workbench' | 'docs' | 'github-page'>(() => {
     if (typeof window !== 'undefined') {
       const v = new URLSearchParams(window.location.search).get('view');
-      if (v === 'github-page' || v === 'workbench') return v;
+      if (v === 'github-page' || v === 'docs' || v === 'workbench') return v;
     }
     return 'workbench';
   });
@@ -86,6 +89,8 @@ const WorkbenchShell: React.FC = () => {
       const url = new URL(window.location.href);
       if (currentView === 'github-page') {
         url.searchParams.set('view', 'github-page');
+      } else if (currentView === 'docs') {
+        url.searchParams.set('view', 'docs');
       } else {
         url.searchParams.delete('view');
       }
@@ -176,6 +181,13 @@ const WorkbenchShell: React.FC = () => {
   };
 
   const handleNavigateToSection = (sectionId: string) => {
+    if (sectionId === 'docs') {
+      setCurrentView('docs');
+      setMobileSidebarOpen(false);
+      setCmdOpen(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     if (sectionId === 'github-page') {
       setCurrentView('github-page');
       setMobileSidebarOpen(false);
@@ -259,13 +271,23 @@ const WorkbenchShell: React.FC = () => {
         <AppHeader
           onOpenCmd={() => setCmdOpen(true)}
           onOpenMobileSidebar={() => setMobileSidebarOpen(true)}
+          onOpenDocs={() => handleNavigateToSection('docs')}
           mobileSidebarOpen={mobileSidebarOpen}
           currentView={currentView}
           onToggleView={() => setCurrentView(currentView === 'workbench' ? 'github-page' : 'workbench')}
         />
 
         {/* 3. Main Content: GitHub Showcase Page OR Unified 351 Component Suite */}
-        {currentView === 'github-page' ? (
+        {currentView === 'docs' ? (
+          <Suspense fallback={<SectionSkeletonFallback label="Loading component documentation..." />}>
+            <DocumentationCenter
+              onBackToWorkbench={() => {
+                setCurrentView('workbench');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+          </Suspense>
+        ) : currentView === 'github-page' ? (
           <Suspense fallback={<SectionSkeletonFallback label="Loading GitHub Showcase & Docs..." />}>
             <GitHubPage
               onBackToWorkbench={() => {

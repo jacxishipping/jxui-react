@@ -6,6 +6,7 @@ import {
   Sun,
   Moon,
   Github,
+  BookOpen,
 } from 'lucide-react';
 import {
   useJXTheme,
@@ -18,8 +19,9 @@ import { tactile } from '../../utils/tactileAudio';
 export interface AppHeaderProps {
   onOpenCmd: () => void;
   onOpenMobileSidebar: () => void;
+  onOpenDocs: () => void;
   mobileSidebarOpen: boolean;
-  currentView: 'workbench' | 'github-page';
+  currentView: 'workbench' | 'docs' | 'github-page';
   onToggleView: () => void;
 }
 
@@ -34,6 +36,7 @@ const RADIUS_OPTIONS: { id: RadiusScale; label: string; scaleLabel: string }[] =
 export const AppHeader: React.FC<AppHeaderProps> = ({
   onOpenCmd,
   onOpenMobileSidebar,
+  onOpenDocs,
   mobileSidebarOpen,
   currentView,
   onToggleView,
@@ -91,6 +94,22 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
 
       {/* Top Right Controls Toolbar */}
       <div className="flex items-center gap-1.5 sm:gap-2.5 md:gap-3 shrink-0">
+        <button
+          type="button"
+          onClick={onOpenDocs}
+          aria-label="Open component documentation"
+          aria-current={currentView === 'docs' ? 'page' : undefined}
+          title="Component documentation"
+          className={`hidden sm:flex min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 rounded-xl px-3 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+            currentView === 'docs'
+              ? 'bg-indigo-600 text-white'
+              : 'bg-slate-100 text-slate-700 hover:bg-slate-200/70 dark:bg-[#1E293B] dark:text-slate-200 dark:hover:bg-[#1E293B]/80'
+          }`}
+        >
+          <BookOpen className="h-4 w-4" />
+          <span className="hidden xl:inline">Docs</span>
+        </button>
+
         {/* Color Accent Swatches (Desktop) */}
         <div className="hidden lg:flex items-center gap-0.5 bg-slate-100 dark:bg-[#1E293B]/80 p-1 rounded-xl">
           {(Object.keys(ACCENT_PALETTES) as AccentColor[]).map((key) => {

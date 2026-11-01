@@ -110,10 +110,21 @@ const SPOTLIGHT_QUICK_LINKS: SpotlightQuickLink[] = [
     targetSection: 'jx-290-component-suite',
   },
   {
+    id: 'spotlight-full-docs',
+    name: 'Component Docs',
+    subtitle: `Search and read API, usage, accessibility targets, and responsive notes for all ${UNIFIED_STATS.totalComponents} components`,
+    badge: `${UNIFIED_STATS.totalComponents} Docs`,
+    badgeColor:
+      'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border-indigo-200/60 dark:border-indigo-800/60',
+    icon: BookOpen,
+    keywords: ['docs', 'documentation', 'component reference', 'api', 'props', 'examples', 'guide'],
+    targetSection: 'docs',
+  },
+  {
     id: 'spotlight-encyclopedia',
-    name: 'Docs Encyclopedia',
-    subtitle: 'Full 61-component reference guide with legacy Material UI flaws vs JXUI upgrades',
-    badge: 'Docs Guide',
+    name: 'MUI Flaw Encyclopedia',
+    subtitle: 'Compare 61 showcase examples with their documented Material UI limitations and JXUI approaches',
+    badge: '61 Deltas',
     badgeColor:
       'bg-violet-50 dark:bg-violet-950/60 text-violet-600 dark:text-violet-400 border-violet-200/60 dark:border-violet-800/60',
     icon: BookOpen,

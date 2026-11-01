@@ -628,7 +628,7 @@ export const ComponentDocumentationModal: React.FC<ComponentDocumentationModalPr
                 <ShieldCheck className="w-8 h-8 text-emerald-500 shrink-0" />
                 <div>
                   <h4 className="font-bold text-emerald-900 dark:text-emerald-200 text-sm">
-                    {spec.quality.wcagScore} Certified
+                    {spec.quality.wcagScore}
                   </h4>
                   <p className="text-xs text-emerald-700 dark:text-emerald-400 mt-0.5">
                     This is a design target. Review the documented keyboard, focus, and ARIA behavior for this component.

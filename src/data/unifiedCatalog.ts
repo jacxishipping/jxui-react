@@ -282,7 +282,7 @@ function deriveMetadata(
       desktop: true,
       breakpointNotes: lowerName.includes('grid') || lowerName.includes('table')
         ? 'Fluid horizontal scroll with mobile card transform below 640px'
-        : 'Guaranteed 44px min touch target on mobile screens',
+        : 'Designed for a 44px minimum touch target on mobile screens; verify in the rendered component.',
     },
   };
 
@@ -365,9 +365,9 @@ function deriveMetadata(
     usageCode: jsxSnippet || `import { ${name} } from '@jacxishippingorg/jx-ui-react';\n\nexport default function Example() {\n  return (\n    <${name} variant="glass" size="md" />\n  );\n}`,
     props,
     accessibilityNotes: [
-      `100% compliant with WCAG 2.1 AA/AAA criteria with contrast exceeding 7.0:1.`,
-      `Supports keyboard navigation with visible 3px halo focus outlines.`,
-      `Includes programmatic ARIA bindings (${quality.ariaRoles.join(', ')}).`,
+      `Accessibility target: ${quality.wcagScore}. Run contrast and assistive-technology checks before claiming conformance.`,
+      `Review keyboard navigation and visible focus behavior for this component.`,
+      `Suggested ARIA roles to verify: ${quality.ariaRoles.join(', ')}.`,
     ],
     keyboardShortcuts: lowerName.includes('button')
       ? ['Space / Enter: Activate button action', 'Tab: Move focus to next control']
