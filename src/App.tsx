@@ -143,11 +143,11 @@ const WorkbenchShell: React.FC = () => {
   const handleCopyInstall = () => {
     tactile.playSuccess();
     tactile.triggerHaptic('success');
-    navigator.clipboard?.writeText('npm i jxui-react').catch(() => {});
+    navigator.clipboard?.writeText('npm i @jacxishippingorg/jx-ui-react').catch(() => {});
     setCopiedInstall(true);
     pushToast({
       title: 'Copied installation command',
-      description: '$ npm i jxui-react copied to clipboard',
+      description: '$ npm i @jacxishippingorg/jx-ui-react copied to clipboard',
       variant: 'success',
     });
     setTimeout(() => setCopiedInstall(false), 2000);

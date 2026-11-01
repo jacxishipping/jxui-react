@@ -137,7 +137,7 @@ test('formatCopyableJsxCode extracts JXUI component imports and formats JSX clea
     'JXAccordion',
     true
   );
-  assert.ok(formatted.startsWith("import { JXAccordion } from 'jxui-react';"));
+  assert.ok(formatted.startsWith("import { JXAccordion } from '@jacxishippingorg/jx-ui-react';"));
   assert.ok(formatted.includes('<JXAccordion variant="bento" iconMode="plus-cross" />'));
 
   const withoutImports = formatCopyableJsxCode(
@@ -317,7 +317,7 @@ test('Data architecture: all components conform to strictly typed v3.0.0 schema 
     // Quality Indicators
     assert.ok(comp.quality, `${comp.name} must have quality indicators`);
     assert.equal(comp.quality.version, '3.0.0', `${comp.name} quality version must be 3.0.0`);
-    assert.ok(comp.quality.dependencies.includes('jxui-react@3.0.0'), `${comp.name} must depend on jxui-react@3.0.0`);
+    assert.ok(comp.quality.dependencies.includes('@jacxishippingorg/jx-ui-react@3.0.0'), `${comp.name} must depend on @jacxishippingorg/jx-ui-react@3.0.0`);
     assert.ok(comp.quality.wcagScore.includes('WCAG'), `${comp.name} must have WCAG score`);
     assert.ok(comp.quality.responsive.mobile, `${comp.name} must support mobile`);
     assert.ok(comp.quality.responsive.tablet, `${comp.name} must support tablet`);
@@ -326,7 +326,7 @@ test('Data architecture: all components conform to strictly typed v3.0.0 schema 
 
     // Documentation
     assert.ok(comp.doc.summary.includes('JXUI v3.0.0'), `${comp.name} summary must reference JXUI v3.0.0`);
-    assert.ok(comp.doc.installation.includes('jxui-react@^3.0.0'), `${comp.name} must have v3.0.0 npm install guide`);
+    assert.ok(comp.doc.installation.includes('@jacxishippingorg/jx-ui-react@^3.0.0'), `${comp.name} must have v3.0.0 npm install guide`);
     assert.ok(comp.doc.usageCode.length > 0, `${comp.name} must have usageCode`);
     assert.ok(comp.doc.props.length >= 5, `${comp.name} must define at least 5 props including version`);
     assert.ok(comp.doc.accessibilityNotes.length > 0, `${comp.name} must have a11y notes`);
@@ -452,7 +452,7 @@ test('Copy Code Engine: supports copying both JSX usage snippets and raw TypeScr
     'jsx',
     true
   );
-  assert.ok(jsxWithImports.includes("import { JXButton } from 'jxui-react';"));
+  assert.ok(jsxWithImports.includes("import { JXButton } from '@jacxishippingorg/jx-ui-react';"));
   assert.ok(jsxWithImports.includes('<JXButton'));
 
   const rawGenerated = getCopyableComponentCode(
@@ -547,7 +547,7 @@ test('Live Playground Engine: serializes real-time props to JSX, CSS variables t
   };
 
   const jsx = serializePlaygroundJsx('JXButton', customProps, true);
-  assert.ok(jsx.includes("import { JXButton } from 'jxui-react';"));
+  assert.ok(jsx.includes("import { JXButton } from '@jacxishippingorg/jx-ui-react';"));
   assert.ok(jsx.includes('variant="glass"'));
   assert.ok(jsx.includes('color="success"'));
   assert.ok(jsx.includes('size="lg"'));

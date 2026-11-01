@@ -269,7 +269,7 @@ export function formatCopyableJsxCode(
 
   const importStatement =
     resolvedTags.length > 0
-      ? `import { ${resolvedTags.join(', ')} } from 'jxui-react';\n\n`
+      ? `import { ${resolvedTags.join(', ')} } from '@jacxishippingorg/jx-ui-react';\n\n`
       : '';
 
   return `${importStatement}${trimmed}`;
@@ -1659,7 +1659,7 @@ export function serializePlaygroundJsx(
     return jsxBody;
   }
 
-  return `import { ${cleanName} } from 'jxui-react';\n\n${jsxBody}`;
+  return `import { ${cleanName} } from '@jacxishippingorg/jx-ui-react';\n\n${jsxBody}`;
 }
 
 /**

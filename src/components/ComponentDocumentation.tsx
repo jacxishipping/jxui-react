@@ -123,7 +123,7 @@ export const ComponentDocumentation: React.FC<ComponentDocumentationProps> = ({
       description:
         targetMode === 'raw'
           ? 'Full TypeScript implementation copied to clipboard'
-          : 'Formatted jxui-react JSX code copied to clipboard',
+          : 'Formatted @jacxishippingorg/jx-ui-react JSX code copied to clipboard',
       variant: 'success',
     });
     setTimeout(() => setCopied(false), 1800);
@@ -360,7 +360,7 @@ export const ComponentDocumentation: React.FC<ComponentDocumentationProps> = ({
               <span className="font-semibold text-indigo-600 dark:text-indigo-400">
                 JXUI v3.0 Enhanced Interactive Surface
               </span>
-              <span className="font-mono">jxui-react@3.0.0</span>
+              <span className="font-mono">@jacxishippingorg/jx-ui-react@3.0.0</span>
             </div>
             <div style={showPlayground ? buildPlaygroundStageStyle(pgCssVars, pgProps) : undefined}>
               {children}

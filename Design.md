@@ -621,7 +621,7 @@ To guarantee **CLS = 0** across custom state-morphing interactions:
 
 ```tsx
 import React, { useState } from 'react';
-import { useLockGeometry, tactile } from 'jxui-react';
+import { useLockGeometry, tactile } from '@jacxishippingorg/jx-ui-react';
 
 export function MorphingAction() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');

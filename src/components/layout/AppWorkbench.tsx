@@ -622,7 +622,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               <div className="flex items-center justify-between gap-3 px-3.5 py-2 min-h-[44px] rounded-xl bg-slate-900 dark:bg-[#0B0F19] text-slate-100 font-mono text-xs border border-slate-800 shadow-md">
                 <div className="flex items-center gap-2 select-all overflow-x-auto">
                   <span className="text-indigo-400 select-none">$</span>
-                  <span className="text-slate-200 font-medium whitespace-nowrap">npm i jxui-react</span>
+                  <span className="text-slate-200 font-medium whitespace-nowrap">npm i @jacxishippingorg/jx-ui-react</span>
                 </div>
                 <button
                   type="button"

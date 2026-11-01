@@ -62,10 +62,10 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
   const [activeRepoTab, setActiveRepoTab] = useState<'code' | 'issues' | 'pulls' | 'actions' | 'releases'>('code');
 
   const installCommands = {
-    npm: 'npm install jxui-react motion lucide-react',
-    pnpm: 'pnpm add jxui-react motion lucide-react',
-    yarn: 'yarn add jxui-react motion lucide-react',
-    bun: 'bun add jxui-react motion lucide-react',
+    npm: 'npm install @jacxishippingorg/jx-ui-react motion lucide-react',
+    pnpm: 'pnpm add @jacxishippingorg/jx-ui-react motion lucide-react',
+    yarn: 'yarn add @jacxishippingorg/jx-ui-react motion lucide-react',
+    bun: 'bun add @jacxishippingorg/jx-ui-react motion lucide-react',
   };
 
   const handleCopyInstall = () => {
@@ -581,7 +581,7 @@ export const GitHubPage: React.FC<GitHubPageProps> = ({
                 <tr>
                   <th className="p-4 sm:px-6">Design Principle</th>
                   <th className="p-4 sm:px-6 text-[#f85149]">Material UI (MUI) Baseline</th>
-                  <th className="p-4 sm:px-6 text-[#3fb950]">JXUI (jxui-react) Standard</th>
+                  <th className="p-4 sm:px-6 text-[#3fb950]">JXUI (@jacxishippingorg/jx-ui-react) Standard</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#30363d]">
@@ -699,7 +699,7 @@ jobs:
             <a href="https://github.com/jacxishipping/jxui-react" target="_blank" rel="noreferrer" className="hover:text-white py-1">
               GitHub Repository
             </a>
-            <a href="https://www.npmjs.com/package/jxui-react" target="_blank" rel="noreferrer" className="hover:text-white py-1">
+            <a href="https://www.npmjs.com/package/@jacxishippingorg/jx-ui-react" target="_blank" rel="noreferrer" className="hover:text-white py-1">
               npm package
             </a>
             <a href="#interactive-demo" className="hover:text-white py-1">

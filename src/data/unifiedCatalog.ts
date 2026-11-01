@@ -273,8 +273,8 @@ function deriveMetadata(
       ? ['grid', 'row', 'gridcell']
       : ['region', 'group'],
     dependencies: lowerName.includes('motion') || tier === 'showcase'
-      ? ['jxui-react@3.0.0', 'motion/react', 'lucide-react']
-      : ['jxui-react@3.0.0', 'lucide-react'],
+      ? ['@jacxishippingorg/jx-ui-react@3.0.0', 'motion/react', 'lucide-react']
+      : ['@jacxishippingorg/jx-ui-react@3.0.0', 'lucide-react'],
     maturity: tier === 'showcase' ? 'Production Ready' : 'Stable',
     responsive: {
       mobile: true,
@@ -361,8 +361,8 @@ function deriveMetadata(
 
   const doc: ComponentDocSpec = {
     summary: `${name} (JXUI v3.0.0) is an enterprise-grade ${tier} component with tactile spring interactions and specular glass styling. Review its documented state behavior for geometry guidance.`,
-    installation: `npm install jxui-react@^3.0.0 motion lucide-react`,
-    usageCode: jsxSnippet || `import { ${name} } from 'jxui-react';\n\nexport default function Example() {\n  return (\n    <${name} variant="glass" size="md" />\n  );\n}`,
+    installation: `npm install @jacxishippingorg/jx-ui-react@^3.0.0 motion lucide-react`,
+    usageCode: jsxSnippet || `import { ${name} } from '@jacxishippingorg/jx-ui-react';\n\nexport default function Example() {\n  return (\n    <${name} variant="glass" size="md" />\n  );\n}`,
     props,
     accessibilityNotes: [
       `100% compliant with WCAG 2.1 AA/AAA criteria with contrast exceeding 7.0:1.`,

@@ -151,7 +151,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   v3.0.0
                 </span>
               </div>
-              <span className="font-mono text-[11px] text-slate-600 dark:text-slate-400">jxui-react · {UNIFIED_STATS.totalComponents} Components</span>
+              <span className="font-mono text-[11px] text-slate-600 dark:text-slate-400">@jacxishippingorg/jx-ui-react · {UNIFIED_STATS.totalComponents} Components</span>
             </div>
           </div>
           <button
