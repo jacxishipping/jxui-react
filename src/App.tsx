@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, Suspense, lazy } from 'react';
 import { Sparkles } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 import {
   JXThemeProvider,
   useJXTheme,
@@ -356,6 +357,7 @@ export default function App() {
   return (
     <JXThemeProvider>
       <WorkbenchShell />
+      <Analytics />
     </JXThemeProvider>
   );
 }
