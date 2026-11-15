@@ -143,6 +143,7 @@ const ITEMS_PER_PAGE = 24;
 const DeferredComponentPreview: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const stageRef = useRef<HTMLDivElement>(null);
   const [shouldRender, setShouldRender] = useState(false);
+  const [isClipped, setIsClipped] = useState(false);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -167,17 +168,37 @@ const DeferredComponentPreview: React.FC<{ children: React.ReactNode }> = ({ chi
     return () => observer.disconnect();
   }, []);
 
+  // The stage has a fixed height, so tall previews are clipped at the bottom
+  // (the full component lives in the Playground). Detect clipping so the card
+  // can show a fade that says "there is more inside" instead of a hard cut.
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage || !shouldRender) return;
+    const check = () => setIsClipped(stage.scrollHeight > stage.clientHeight + 4);
+    check();
+    if (!('ResizeObserver' in window)) return;
+    const ro = new ResizeObserver(check);
+    ro.observe(stage);
+    return () => ro.disconnect();
+  }, [shouldRender]);
+
   return (
     <div
       ref={stageRef}
       data-preview-state={shouldRender ? 'ready' : 'deferred'}
       data-testid="component-preview-stage"
-      className="w-full min-h-[120px]"
+      className="relative w-full min-h-[120px] max-h-full overflow-hidden"
     >
       {shouldRender ? (
         children
       ) : (
         <div aria-hidden="true" className="min-h-[120px] w-full rounded-lg jx-shimmer-wave opacity-30" />
+      )}
+      {isClipped && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white via-white/85 to-transparent dark:from-[#111827] dark:via-[#111827]/85 dark:to-transparent"
+        />
       )}
     </div>
   );
@@ -1272,7 +1293,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                       </span>
                     </div>
 
-                    <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed min-h-[40px]">
                       {spec.subtitle}
                     </p>
                   </div>
@@ -1408,7 +1429,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                     </div>
 
                     {/* Interactive Live Preview Stage */}
-                    <div className="min-h-[var(--jx-stage-min)] flex items-center justify-center p-2 relative overflow-hidden max-w-full">
+                    <div className="h-[var(--jx-stage-h)] flex items-center justify-center p-2 relative overflow-hidden max-w-full">
                       <DeferredComponentPreview>
                         <InteractiveComponentPreview
                           spec={spec}
@@ -1478,12 +1499,12 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
 
                   {/* Card Footer Actions & Quality Tags */}
                   <div className="space-y-2 pt-1.5 border-t border-slate-100 dark:border-slate-800/70">
-                    <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono">
-                      <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
-                        <CheckCircle2 className="w-3 h-3" />
-                        <span>{spec.quality.wcagScore}</span>
+                    <div className="flex items-center justify-between gap-2 text-[11px] text-slate-400 font-mono">
+                      <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1 min-w-0">
+                        <CheckCircle2 className="w-3 h-3 shrink-0" />
+                        <span className="truncate">{spec.quality.wcagScore}</span>
                       </span>
-                      <span className="capitalize">{spec.difficulty}</span>
+                      <span className="capitalize shrink-0">{spec.difficulty}</span>
                     </div>
 
                     <div className="flex items-center justify-between gap-2 pt-0.5">

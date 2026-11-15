@@ -184,8 +184,12 @@ function getInitialDensity(): Density {
 }
 
 /** Density drives the shell spacing tokens the workbench reads as CSS vars
-    (--jx-control-h, --jx-grid-gap, --jx-card-pad, --jx-stage-min,
-    --jx-sidebar-w, --jx-shell-gap). Compact is the dense SaaS default. */
+    (--jx-control-h, --jx-grid-gap, --jx-card-pad, --jx-stage-h,
+    --jx-sidebar-w, --jx-shell-gap). Compact is the dense SaaS default.
+    --jx-stage-h is the fixed preview-stage height: every card's preview
+    is capped at it (tall content clips with a fade), so all cards in the
+    grid come out the same size instead of the tallest preview in a row
+    dictating the row height. */
 function applyDensityToDocument(density: Density): void {
   if (typeof document === 'undefined') return;
   const root = document.documentElement;
@@ -194,7 +198,7 @@ function applyDensityToDocument(density: Density): void {
   root.style.setProperty('--jx-control-h', compact ? '32px' : '44px');
   root.style.setProperty('--jx-grid-gap', compact ? '12px' : '20px');
   root.style.setProperty('--jx-card-pad', compact ? '12px' : '20px');
-  root.style.setProperty('--jx-stage-min', compact ? '96px' : '120px');
+  root.style.setProperty('--jx-stage-h', compact ? '176px' : '208px');
   root.style.setProperty('--jx-sidebar-w', compact ? '240px' : '288px');
   root.style.setProperty('--jx-shell-gap', compact ? '16px' : '28px');
 }
