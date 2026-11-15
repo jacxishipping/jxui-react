@@ -61,6 +61,14 @@
     --jx-accent-halo: rgba(79, 70, 229, 0.2);
     --jx-radius-control: 16px;
     --jx-radius-card: 20px;
+    /* Dense SaaS shell spacing (compact density). JXThemeProvider overrides
+       these inline when the user switches to comfortable density. */
+    --jx-control-h: 32px;
+    --jx-grid-gap: 12px;
+    --jx-card-pad: 12px;
+    --jx-stage-min: 96px;
+    --jx-sidebar-w: 240px;
+    --jx-shell-gap: 16px;
     --jx-canvas: #F8FAFC;
     --jx-surface-elevated: #ffffff;
     --jx-surface-subtle: #F1F5F9;

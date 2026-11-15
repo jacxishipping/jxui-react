@@ -11,6 +11,9 @@ export type ThemeMode = 'light' | 'dark';
 export type AccentColor = 'indigo' | 'violet' | 'emerald' | 'rose' | 'ocean';
 export type RadiusScale = 'sharp' | 'sm' | 'md' | 'lg' | 'xl';
 export type CompareMode = 'jxui' | 'split';
+/** Workbench chrome density: 'compact' is the dense modern-SaaS default,
+    'comfortable' restores the roomier 44px-touch-target spacing. */
+export type Density = 'compact' | 'comfortable';
 
 export interface ToastItem {
   id: string;
@@ -111,6 +114,8 @@ interface JXThemeContextValue {
   getRadiusClass: (tier?: 'control' | 'card' | 'pill') => string;
   compareMode: CompareMode;
   setCompareMode: (c: CompareMode) => void;
+  density: Density;
+  setDensity: (d: Density) => void;
   toasts: ToastItem[];
   pushToast: (toast: Omit<ToastItem, 'id' | 'createdAt'>) => string;
   triggerPromiseToast: (actionLabel: string) => void;
@@ -167,6 +172,33 @@ function getInitialCompareMode(): CompareMode {
   return 'jxui';
 }
 
+function getInitialDensity(): Density {
+  if (typeof window === 'undefined') return 'compact';
+  try {
+    const saved = localStorage.getItem('jxui-density') as Density;
+    if (saved === 'compact' || saved === 'comfortable') return saved;
+  } catch {
+    // ignore
+  }
+  return 'compact';
+}
+
+/** Density drives the shell spacing tokens the workbench reads as CSS vars
+    (--jx-control-h, --jx-grid-gap, --jx-card-pad, --jx-stage-min,
+    --jx-sidebar-w, --jx-shell-gap). Compact is the dense SaaS default. */
+function applyDensityToDocument(density: Density): void {
+  if (typeof document === 'undefined') return;
+  const root = document.documentElement;
+  root.setAttribute('data-density', density);
+  const compact = density === 'compact';
+  root.style.setProperty('--jx-control-h', compact ? '32px' : '44px');
+  root.style.setProperty('--jx-grid-gap', compact ? '12px' : '20px');
+  root.style.setProperty('--jx-card-pad', compact ? '12px' : '20px');
+  root.style.setProperty('--jx-stage-min', compact ? '96px' : '120px');
+  root.style.setProperty('--jx-sidebar-w', compact ? '240px' : '288px');
+  root.style.setProperty('--jx-shell-gap', compact ? '16px' : '28px');
+}
+
 const JXThemeContext = createContext<JXThemeContextValue | null>(null);
 
 export const JXThemeProvider: React.FC<JXThemeProviderProps> = ({
@@ -182,6 +214,11 @@ export const JXThemeProvider: React.FC<JXThemeProviderProps> = ({
   const [accent, setAccent] = useState<AccentColor>(getInitialAccent);
   const [radiusScale, setRadiusScale] = useState<RadiusScale>(getInitialRadius);
   const [compareMode, setCompareMode] = useState<CompareMode>(getInitialCompareMode);
+  const [density, setDensity] = useState<Density>(() => {
+    const initial = getInitialDensity();
+    applyDensityToDocument(initial);
+    return initial;
+  });
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const [stackHovered, setStackHovered] = useState(false);
 
@@ -282,6 +319,15 @@ export const JXThemeProvider: React.FC<JXThemeProviderProps> = ({
     }
   }, [compareMode]);
 
+  useEffect(() => {
+    try {
+      localStorage.setItem('jxui-density', density);
+    } catch {
+      // ignore
+    }
+    applyDensityToDocument(density);
+  }, [density]);
+
   const getRadiusClass = useCallback(
     (tier: 'control' | 'card' | 'pill' = 'control') => {
       if (radiusScale === 'sharp') return 'rounded-none';
@@ -373,6 +419,8 @@ export const JXThemeProvider: React.FC<JXThemeProviderProps> = ({
         getRadiusClass,
         compareMode,
         setCompareMode,
+        density,
+        setDensity,
         toasts,
         pushToast,
         triggerPromiseToast,

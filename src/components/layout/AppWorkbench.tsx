@@ -41,6 +41,7 @@ import {
   ACCENT_PALETTES,
   AccentColor,
   RadiusScale,
+  Density,
 } from '../../context/JXThemeContext';
 import { tactile } from '../../utils/tactileAudio';
 import {
@@ -236,6 +237,8 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
     getRadiusClass,
     compareMode,
     setCompareMode,
+    density,
+    setDensity,
     pushToast,
   } = useJXTheme();
 
@@ -589,37 +592,37 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
   }
 
   return (
-    <main className="w-full flex-1 px-3 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-8 max-w-7xl mx-auto min-w-0">
+    <main className="w-full flex-1 px-3 sm:px-4 py-4 flex flex-col gap-[var(--jx-shell-gap)] max-w-[1440px] mx-auto min-w-0">
       {/* Top Specular Ambient Glow Layer */}
       <div className="relative w-full overflow-hidden pt-2">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[760px] max-w-full h-[340px] bg-gradient-to-b from-indigo-500/10 via-violet-500/5 to-transparent blur-3xl pointer-events-none rounded-full" />
+        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[560px] max-w-full h-[160px] bg-gradient-to-b from-indigo-500/5 via-violet-500/[0.03] to-transparent blur-3xl pointer-events-none rounded-full" />
 
         {/* 1. HERO HEADER WITH LIVE ARCHITECTURAL COMPARISON STATS */}
-        <div className="relative z-10 flex flex-col gap-6">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800/80">
-            <div className="space-y-3.5 max-w-3xl">
-              <div className={`flex flex-wrap items-center gap-x-2 gap-y-1 px-3.5 py-1.5 rounded-2xl sm:rounded-full ${palette.softBg} border ${palette.border} ${palette.text} text-xs font-semibold shadow-xs max-w-full`}>
+        <div className="relative z-10 flex flex-col gap-3">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-3 border-b border-slate-200/80 dark:border-slate-800/80">
+            <div className="space-y-1.5 max-w-3xl">
+              <div className={`flex flex-wrap items-center gap-x-2 gap-y-1 px-2.5 py-1 rounded-full ${palette.softBg} border ${palette.border} ${palette.text} text-xs font-semibold shadow-xs max-w-full`}>
                 <Sparkles className={`w-3.5 h-3.5 ${palette.text} animate-pulse shrink-0`} />
                 <span className="leading-snug">JXUI v3.0.0 · The Unified React 19 Component Suite</span>
                 <span className={`w-1.5 h-1.5 rounded-full ${palette.bg} shrink-0`} />
                 <span className="font-mono text-[11px] font-bold whitespace-nowrap">{UNIFIED_STATS.totalComponents} Total Components</span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+              <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
                 Explore {UNIFIED_STATS.totalComponents} React Components.{' '}
                 <span className={`bg-gradient-to-r ${palette.gradient} bg-clip-text text-transparent`}>
                   Unified &amp; Interactive.
                 </span>
               </h1>
 
-              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 font-normal leading-relaxed">
+              <p className="text-[13px] text-slate-600 dark:text-slate-300 font-normal leading-snug line-clamp-2">
                 {UNIFIED_STATS.totalShowcases} showcases and {UNIFIED_STATS.totalPrimitives} primitives across 18 categories. Browse interactive previews, compare patterns, and inspect implementation details.
               </p>
             </div>
 
             {/* Quick NPM Install Box */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
-              <div className="flex items-center justify-between gap-3 px-3.5 py-2 min-h-[44px] rounded-xl bg-slate-900 dark:bg-[#0B0F19] text-slate-100 font-mono text-xs border border-slate-800 shadow-md">
+              <div className="flex items-center justify-between gap-3 px-3 py-1.5 min-h-[var(--jx-control-h)] rounded-lg bg-slate-900 dark:bg-[#0B0F19] text-slate-100 font-mono text-xs border border-slate-800 shadow-md">
                 <div className="flex items-center gap-2 select-all overflow-x-auto">
                   <span className="text-indigo-400 select-none">$</span>
                   <span className="text-slate-200 font-medium whitespace-nowrap">npm i @jacxishippingorg/jx-ui-react</span>
@@ -628,7 +631,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                   type="button"
                   onClick={onCopyInstall}
                   aria-label="Copy npm install command"
-                  className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded-lg hover:bg-slate-800 dark:hover:bg-[#1E293B] text-slate-400 hover:text-white transition-colors cursor-pointer touch-manipulation active:scale-95 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+                  className="min-h-[var(--jx-control-h)] min-w-[var(--jx-control-h)] flex items-center justify-center p-1.5 rounded-md hover:bg-slate-800 dark:hover:bg-[#1E293B] text-slate-400 hover:text-white transition-colors cursor-pointer touch-manipulation active:scale-95 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                 >
                   {copiedInstall ? (
                     <Check className="w-4 h-4 text-emerald-400" />
@@ -640,7 +643,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
 
               <a
                 href="#unified-component-suite"
-                className={`min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 ${getRadiusClass('control')} text-xs font-semibold ${palette.bg} ${palette.bgHover} text-white transition-colors shadow-xs touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]`}
+                className={`min-h-[var(--jx-control-h)] inline-flex items-center justify-center gap-2 px-3 py-1.5 ${getRadiusClass('control')} text-xs font-semibold ${palette.bg} ${palette.bgHover} text-white transition-colors shadow-xs touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]`}
               >
                 <Search className="w-4 h-4" />
                 <span>Browse components</span>
@@ -649,19 +652,19 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
           </div>
 
           <details className="group space-y-4">
-            <summary className="min-h-[44px] cursor-pointer flex items-center justify-between gap-3 px-3 rounded-lg border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-[#111827]/70 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-[#111827]">
+            <summary className="min-h-[var(--jx-control-h)] cursor-pointer flex items-center justify-between gap-3 px-3 rounded-lg border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-[#111827]/70 text-[13px] font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-[#111827]">
               <span>System metrics and architecture</span>
               <ChevronDown aria-hidden="true" className="w-4 h-4 shrink-0 text-slate-400" />
             </summary>
             <div className="space-y-4">
           {/* Overview Telemetry KPI Metrics Strip */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-            <div className="p-3.5 sm:p-4 rounded-xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col justify-between">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div className="p-3 rounded-lg bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col justify-between">
               <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold font-mono">
                 Total Library
               </span>
               <div className="mt-1 flex items-baseline gap-1.5">
-                <span className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white font-mono">
+                <span className="text-lg font-extrabold text-slate-900 dark:text-white font-mono">
                   {UNIFIED_STATS.totalComponents}
                 </span>
                 <span className="text-[11px] text-slate-500 font-medium">primitives</span>
@@ -671,12 +674,12 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               </span>
             </div>
 
-            <div className="p-3.5 sm:p-4 rounded-xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col justify-between">
+            <div className="p-3 rounded-lg bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col justify-between">
               <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold font-mono">
                 Layout Shift
               </span>
               <div className="mt-1 flex items-baseline gap-1.5">
-                <span className="text-xl sm:text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
+                <span className="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
                   0.00
                 </span>
                 <span className="text-[11px] text-slate-500 font-medium">CLS</span>
@@ -686,12 +689,12 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               </span>
             </div>
 
-            <div className="p-3.5 sm:p-4 rounded-xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col justify-between">
+            <div className="p-3 rounded-lg bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col justify-between">
               <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold font-mono">
                 Haptic Physics
               </span>
               <div className="mt-1 flex items-baseline gap-1.5">
-                <span className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white font-mono">
+                <span className="text-lg font-extrabold text-slate-900 dark:text-white font-mono">
                   200ms
                 </span>
                 <span className="text-[11px] text-slate-500 font-medium">spring</span>
@@ -701,12 +704,12 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               </span>
             </div>
 
-            <div className="p-3.5 sm:p-4 rounded-xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col justify-between">
+            <div className="p-3 rounded-lg bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col justify-between">
               <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold font-mono">
                 Accessibility guidance
               </span>
               <div className="mt-1 flex items-baseline gap-1.5">
-                <span className="text-xl sm:text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
+                <span className="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
                   Audit matrix
                 </span>
                 <span className="text-[11px] text-slate-500 font-medium">Keyboard · ARIA</span>
@@ -718,8 +721,8 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
           </div>
 
           {/* 3 Key Pillar Callouts */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 rounded-2xl bg-white/70 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 shadow-xs space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="p-3 rounded-xl bg-white/70 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 shadow-xs space-y-1.5">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">
                   CSS Engine &amp; Styling
@@ -737,7 +740,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white/70 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 shadow-xs space-y-2">
+            <div className="p-3 rounded-xl bg-white/70 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 shadow-xs space-y-1.5">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">
                   Interactions &amp; Haptics
@@ -755,7 +758,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white/70 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 shadow-xs space-y-2">
+            <div className="p-3 rounded-xl bg-white/70 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 shadow-xs space-y-1.5">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">
                   TypeScript &amp; React 19
@@ -780,15 +783,15 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
 
       {/* 2. RUNTIME THEME STUDIO & CONTROLS TOOLBAR */}
       <details className="group space-y-3">
-        <summary className="min-h-[44px] cursor-pointer flex items-center justify-between gap-3 px-3 rounded-lg border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-[#111827]/70 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-[#111827]">
+        <summary className="min-h-[var(--jx-control-h)] cursor-pointer flex items-center justify-between gap-3 px-3 rounded-lg border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-[#111827]/70 text-[13px] font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-[#111827]">
           <span>Customize theme, motion, and comparison</span>
           <ChevronDown aria-hidden="true" className="w-4 h-4 shrink-0 text-slate-400" />
         </summary>
-      <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+      <div className="p-3 rounded-xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
           {/* Palette Selector */}
           <div className="flex items-center gap-2">
-            <span className="text-xs uppercase tracking-wider text-slate-400 font-bold font-mono">
+            <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold font-mono">
               Accent:
             </span>
             <div className="flex items-center gap-1 bg-slate-100 dark:bg-[#1E293B] p-1 rounded-xl">
@@ -805,11 +808,11 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                     }}
                     title={`${pal.name} Palette`}
                     aria-label={`Select ${pal.name} accent`}
-                    className="min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+                    className="min-h-[var(--jx-control-h)] min-w-[var(--jx-control-h)] flex items-center justify-center cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                   >
                     <span
                       style={{ backgroundColor: pal.hex }}
-                      className={`w-6 h-6 rounded-full transition-all ${
+                      className={`w-5 h-5 rounded-full transition-all ${
                         active
                           ? 'ring-2 ring-[var(--jx-accent)] ring-offset-2 scale-110 shadow-sm'
                           : 'opacity-70 hover:opacity-100 hover:scale-105'
@@ -823,7 +826,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
 
           {/* Radius Scale Multipliers */}
           <div className="flex items-center gap-2">
-            <span className="text-xs uppercase tracking-wider text-slate-400 font-bold font-mono">
+            <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold font-mono">
               Radius:
             </span>
             <div className="flex flex-wrap items-center bg-slate-100 dark:bg-[#1E293B] p-1 rounded-xl text-xs font-semibold gap-0.5">
@@ -835,7 +838,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                     tactile.playClick(800);
                     setRadiusScale(r.id);
                   }}
-                  className={`min-h-[44px] px-3.5 py-2 rounded-lg transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+                  className={`min-h-[var(--jx-control-h)] px-2.5 py-1.5 rounded-lg transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                     radiusScale === r.id
                       ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white shadow-xs font-bold'
                       : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -849,7 +852,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
 
           {/* Compare Mode */}
           <div className="flex items-center gap-2">
-            <span className="text-xs uppercase tracking-wider text-slate-400 font-bold font-mono">
+            <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold font-mono">
               View:
             </span>
             <div className="flex items-center bg-slate-100 dark:bg-[#1E293B] p-1 rounded-xl text-xs font-semibold gap-1">
@@ -859,7 +862,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                   tactile.playClick(750);
                   setCompareMode('jxui');
                 }}
-                className={`min-h-[44px] px-3.5 py-2 rounded-lg transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+                className={`min-h-[var(--jx-control-h)] px-2.5 py-1.5 rounded-lg transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                   compareMode === 'jxui'
                     ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white shadow-xs font-bold'
                     : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -873,7 +876,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                   tactile.playClick(750);
                   setCompareMode('split');
                 }}
-                className={`min-h-[44px] px-3.5 py-2 rounded-lg transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+                className={`min-h-[var(--jx-control-h)] px-2.5 py-1.5 rounded-lg transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                   compareMode === 'split'
                     ? 'bg-indigo-600 text-white shadow-xs font-bold'
                     : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -881,6 +884,33 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               >
                 MUI vs JXUI Split
               </button>
+            </div>
+          </div>
+
+          {/* Density */}
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold font-mono">
+              Density:
+            </span>
+            <div className="flex items-center bg-slate-100 dark:bg-[#1E293B] p-1 rounded-xl text-xs font-semibold gap-0.5" role="group" aria-label="Interface density">
+              {(['compact', 'comfortable'] as Density[]).map((d) => (
+                <button
+                  key={d}
+                  type="button"
+                  onClick={() => {
+                    tactile.playClick(750);
+                    setDensity(d);
+                  }}
+                  aria-pressed={density === d}
+                  className={`min-h-[var(--jx-control-h)] px-2.5 py-1.5 rounded-lg transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+                    density === d
+                      ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white shadow-xs font-bold'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  {d === 'compact' ? 'Compact' : 'Comfortable'}
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -894,7 +924,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               onToggleSpringPress();
             }}
             title={springPressActive ? 'Spring Press Physics Active (scale 0.98)' : 'Physics Springs Disabled'}
-            className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-medium border transition-all cursor-pointer flex items-center gap-2 touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+            className={`min-h-[var(--jx-control-h)] px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-all cursor-pointer flex items-center gap-2 touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
               springPressActive
                 ? 'bg-indigo-50 dark:bg-indigo-950/60 border-indigo-300 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300 font-bold ring-2 ring-[var(--jx-accent-halo)]'
                 : 'bg-slate-100 dark:bg-[#1E293B] border-slate-200 dark:border-slate-700 text-slate-500'
@@ -911,7 +941,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               onToggleHaloFocus();
             }}
             title={haloFocusActive ? '3px Roving Tactile Focus Halos Active' : 'Focus Halos Disabled'}
-            className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-medium border transition-all cursor-pointer flex items-center gap-2 touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+            className={`min-h-[var(--jx-control-h)] px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-all cursor-pointer flex items-center gap-2 touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
               haloFocusActive
                 ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 font-bold ring-2 ring-[var(--jx-accent-halo)]'
                 : 'bg-slate-100 dark:bg-[#1E293B] border-slate-200 dark:border-slate-700 text-slate-500'
@@ -927,7 +957,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               tactile.playClick(900);
               onTriggerToast();
             }}
-            className="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-medium bg-slate-100 dark:bg-[#1E293B] hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+            className="min-h-[var(--jx-control-h)] px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-[#1E293B] hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
           >
             Test 3D Toast
           </button>
@@ -939,11 +969,12 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               setAccent('indigo');
               setRadiusScale('md');
               setCompareMode('jxui');
+              setDensity('compact');
               if (!springPressActive) onToggleSpringPress();
               if (!haloFocusActive) onToggleHaloFocus();
             }}
             title="Reset Studio to Defaults"
-            className="min-h-[44px] px-3 py-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1E293B] transition-all flex items-center gap-1.5 text-xs cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+            className="min-h-[var(--jx-control-h)] px-2.5 py-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1E293B] transition-all flex items-center gap-1.5 text-xs cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset</span>
@@ -954,7 +985,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
 
       {/* Interactive Playground */}
       <details id="jx-live-playground" className="group space-y-3">
-        <summary className="min-h-[44px] cursor-pointer flex items-center justify-between gap-3 px-3 rounded-lg border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-[#111827]/70 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-[#111827]">
+        <summary className="min-h-[var(--jx-control-h)] cursor-pointer flex items-center justify-between gap-3 px-3 rounded-lg border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-[#111827]/70 text-[13px] font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-[#111827]">
           <span>Open the interactive component playground</span>
           <ChevronDown aria-hidden="true" className="w-4 h-4 shrink-0 text-slate-400" />
         </summary>
@@ -967,7 +998,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
 
       {/* 4. MASTER COMPONENT EXPLORER: FILTERS & CONTROLS BAR */}
       <div id="unified-component-suite" className="scroll-mt-24 space-y-4">
-        <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col lg:flex-row lg:flex-wrap items-stretch lg:items-center justify-between gap-4">
+        <div className="p-3 rounded-xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col lg:flex-row lg:flex-wrap items-stretch lg:items-center justify-between gap-3">
           {/* Left: Search input */}
           <div className="relative w-full lg:flex-1 lg:min-w-[260px] lg:max-w-md flex items-center">
             <Search className="w-4 h-4 absolute left-3.5 text-slate-400 pointer-events-none" />
@@ -976,14 +1007,14 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search components, tags, props..."
-              className="w-full pl-10 pr-9 py-2.5 min-h-[44px] rounded-xl text-xs bg-slate-50 dark:bg-[#1E293B]/60 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] transition-colors"
+              className="w-full pl-10 pr-9 py-1.5 min-h-[var(--jx-control-h)] rounded-lg text-xs bg-slate-50 dark:bg-[#1E293B]/60 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] transition-colors"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
                 aria-label="Clear search query"
-                className="min-h-[44px] min-w-[44px] absolute right-0 flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white text-xs font-bold touch-manipulation cursor-pointer"
+                className="min-h-[var(--jx-control-h)] min-w-[var(--jx-control-h)] absolute right-0 flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white text-xs font-bold touch-manipulation cursor-pointer"
               >
                 ✕
               </button>
@@ -994,7 +1025,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
             value={activeCategory}
             onChange={(event) => setActiveCategory(event.target.value)}
             aria-label="Filter by category"
-            className="lg:hidden min-h-[44px] w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#1E293B]/60 text-slate-700 dark:text-slate-200 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] cursor-pointer touch-manipulation"
+            className="lg:hidden min-h-[var(--jx-control-h)] w-full px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#1E293B]/60 text-slate-700 dark:text-slate-200 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] cursor-pointer touch-manipulation"
           >
             <option value="all">All categories</option>
             {UNIFIED_CATEGORIES_18.map((category) => (
@@ -1012,7 +1043,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                 tactile.playClick(750);
                 setActiveTier('all');
               }}
-              className={`min-h-[44px] px-3.5 py-2 rounded-lg transition-all cursor-pointer touch-manipulation active:scale-95 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+              className={`min-h-[var(--jx-control-h)] px-2.5 py-1.5 rounded-lg transition-all cursor-pointer touch-manipulation active:scale-95 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                 activeTier === 'all'
                   ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white shadow-xs font-bold'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -1026,7 +1057,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                 tactile.playClick(750);
                 setActiveTier('showcase');
               }}
-              className={`min-h-[44px] px-3.5 py-2 rounded-lg transition-all cursor-pointer flex items-center gap-1 touch-manipulation active:scale-95 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+              className={`min-h-[var(--jx-control-h)] px-2.5 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1 touch-manipulation active:scale-95 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                 activeTier === 'showcase'
                   ? 'bg-white dark:bg-[#111827] text-indigo-600 dark:text-indigo-400 shadow-xs font-bold'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -1041,7 +1072,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                 tactile.playClick(750);
                 setActiveTier('primitive');
               }}
-              className={`min-h-[44px] px-3.5 py-2 rounded-lg transition-all cursor-pointer touch-manipulation active:scale-95 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+              className={`min-h-[var(--jx-control-h)] px-2.5 py-1.5 rounded-lg transition-all cursor-pointer touch-manipulation active:scale-95 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                 activeTier === 'primitive'
                   ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white shadow-xs font-bold'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -1055,7 +1086,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                 tactile.playClick(750);
                 setActiveTier('favorites');
               }}
-              className={`min-h-[44px] px-3.5 py-2 rounded-lg transition-all cursor-pointer flex items-center gap-1 touch-manipulation active:scale-95 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+              className={`min-h-[var(--jx-control-h)] px-2.5 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1 touch-manipulation active:scale-95 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                 activeTier === 'favorites'
                   ? 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 shadow-xs font-bold'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -1073,7 +1104,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               value={selectedDifficulty}
               onChange={(e) => setSelectedDifficulty(e.target.value)}
               aria-label="Filter by difficulty"
-              className="min-h-[44px] px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#1E293B]/60 text-slate-700 dark:text-slate-200 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] cursor-pointer touch-manipulation"
+              className="min-h-[var(--jx-control-h)] px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#1E293B]/60 text-slate-700 dark:text-slate-200 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] cursor-pointer touch-manipulation"
             >
               <option value="all">All Difficulties</option>
               <option value="beginner">Beginner</option>
@@ -1087,7 +1118,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               value={selectedFramework}
               onChange={(e) => setSelectedFramework(e.target.value)}
               aria-label="Filter by framework"
-              className="min-h-[44px] px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#1E293B]/60 text-slate-700 dark:text-slate-200 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] cursor-pointer touch-manipulation"
+              className="min-h-[var(--jx-control-h)] px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#1E293B]/60 text-slate-700 dark:text-slate-200 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] cursor-pointer touch-manipulation"
             >
               <option value="all">All Frameworks</option>
               <option value="React 19">React 19</option>
@@ -1102,7 +1133,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                 tactile.playClick(800);
                 setShowManageCollections(true);
               }}
-              className="min-h-[44px] px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1E293B] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#1E293B]/80 transition-all flex items-center gap-2 font-medium cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+              className="min-h-[var(--jx-control-h)] px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1E293B] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#1E293B]/80 transition-all flex items-center gap-2 font-medium cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
             >
               <Layers className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
               <span>Collections ({collectionsState.collections.length})</span>
@@ -1119,7 +1150,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                 type="button"
                 onClick={filter.clear}
                 aria-label={`Remove ${filter.id} filter`}
-                className="min-h-[36px] inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#111827] text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-[#1E293B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+                className="min-h-[28px] inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#111827] text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-[#1E293B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
               >
                 <span>{filter.label}</span>
                 <X aria-hidden="true" className="w-3 h-3 shrink-0 text-slate-400" />
@@ -1128,7 +1159,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
             <button
               type="button"
               onClick={handleResetFilters}
-              className="min-h-[36px] px-2.5 py-1 text-xs font-semibold text-rose-600 dark:text-rose-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+              className="min-h-[28px] px-2.5 py-1 text-xs font-semibold text-rose-600 dark:text-rose-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
             >
               Clear all
             </button>
@@ -1138,7 +1169,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
         {/* Category Header & Filter Indicator */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
           <div>
-            <h2 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-base font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
               <span>{activeCategorySpec ? activeCategorySpec.title : `All ${UNIFIED_STATS.totalComponents} Components`}</span>
               <span data-testid="component-results-count" className="font-mono text-xs px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold">
                 {filteredComponents.length} results
@@ -1155,7 +1186,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
 
         {/* 5. MASTER UNIFIED COMPONENT GRID */}
         {visibleComponents.length === 0 ? (
-          <div className="w-full p-12 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 jx-elevation-1 text-center space-y-3">
+          <div className="w-full p-8 rounded-xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 jx-elevation-1 text-center space-y-3">
             <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-[#1E293B] flex items-center justify-center mx-auto text-slate-400">
               <Search className="w-6 h-6" />
             </div>
@@ -1171,14 +1202,14 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                 tactile.playClick(750);
                 handleResetFilters();
               }}
-              className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white cursor-pointer hover:bg-indigo-500 transition-all touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+              className="min-h-[var(--jx-control-h)] inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white cursor-pointer hover:bg-indigo-500 transition-all touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Reset All Filters</span>
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[var(--jx-grid-gap)]">
             {visibleComponents.map((spec) => {
               const isFav = collectionsState.favorites.includes(spec.id);
               const isCopied = copiedId === spec.id;
@@ -1208,11 +1239,11 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                   key={spec.id}
                   id={`spec-${spec.id}`}
                   data-jxui-version={spec.version}
-                  className="group relative rounded-2xl border bg-white dark:bg-[#111827] p-4 sm:p-5 jx-elevation-1 hover:shadow-md transition-all duration-200 flex flex-col justify-between gap-4 border-slate-200/80 dark:border-slate-800/80 hover:border-indigo-400 dark:hover:border-indigo-600 min-w-0"
+                  className="group relative rounded-xl border bg-white dark:bg-[#111827] p-[var(--jx-card-pad)] jx-elevation-1 hover:shadow-md transition-all duration-200 flex flex-col justify-between gap-2.5 border-slate-200/80 dark:border-slate-800/80 hover:border-indigo-400 dark:hover:border-indigo-600 min-w-0"
                 >
                   {/* Card Header */}
-                  <div className="space-y-2 min-w-0">
-                    <div className="flex flex-col gap-1.5 min-w-0">
+                  <div className="space-y-1.5 min-w-0">
+                    <div className="flex flex-col gap-1 min-w-0">
                       <div className="flex items-center justify-between gap-2 min-w-0">
                         <h3 className="text-sm font-bold text-slate-900 dark:text-white tracking-tight truncate">
                           &lt;{spec.name} /&gt;
@@ -1258,7 +1289,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                         <button
                           type="button"
                           onClick={() => handleSetCardMode(spec, 'jsx')}
-                          className={`min-h-[32px] px-2.5 py-1 rounded-md transition-colors whitespace-nowrap cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+                          className={`min-h-[28px] px-2 py-1 rounded-md transition-colors whitespace-nowrap cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                             currentMode === 'jsx'
                               ? 'bg-white dark:bg-[#0B0F19] text-slate-900 dark:text-white font-semibold shadow-2xs'
                               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -1269,7 +1300,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                         <button
                           type="button"
                           onClick={() => handleSetCardMode(spec, 'raw')}
-                          className={`min-h-[32px] px-2.5 py-1 rounded-md transition-colors whitespace-nowrap cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+                          className={`min-h-[28px] px-2 py-1 rounded-md transition-colors whitespace-nowrap cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                             currentMode === 'raw'
                               ? 'bg-white dark:bg-[#0B0F19] text-slate-900 dark:text-white font-semibold shadow-2xs'
                               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -1298,7 +1329,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                             isPlaygroundExpanded &&
                             (cardPlaygroundTabs[spec.id] || 'props') !== 'changelog'
                           }
-                          className={`min-h-[32px] inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-mono font-semibold border transition-all whitespace-nowrap cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+                          className={`min-h-[28px] inline-flex items-center gap-1 px-1.5 py-1 rounded-md text-[10px] font-mono font-semibold border transition-all whitespace-nowrap cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                             isPlaygroundExpanded &&
                             (cardPlaygroundTabs[spec.id] || 'props') !== 'changelog'
                               ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs'
@@ -1329,7 +1360,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                           aria-expanded={
                             isPlaygroundExpanded && cardPlaygroundTabs[spec.id] === 'changelog'
                           }
-                          className={`min-h-[32px] inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-mono font-semibold border transition-all whitespace-nowrap cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+                          className={`min-h-[28px] inline-flex items-center gap-1 px-1.5 py-1 rounded-md text-[10px] font-mono font-semibold border transition-all whitespace-nowrap cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                             isPlaygroundExpanded && cardPlaygroundTabs[spec.id] === 'changelog'
                               ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
                               : 'bg-white dark:bg-[#1E293B] text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/80 hover:bg-emerald-50 dark:hover:bg-emerald-950/60'
@@ -1342,7 +1373,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                         <button
                           type="button"
                           onClick={() => handleToggleCardCode(spec)}
-                          className={`min-h-[32px] inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-mono font-semibold border transition-all whitespace-nowrap cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+                          className={`min-h-[28px] inline-flex items-center gap-1 px-1.5 py-1 rounded-md text-[10px] font-mono font-semibold border transition-all whitespace-nowrap cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                             isCodeExpanded
                               ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border-transparent shadow-xs'
                               : 'bg-white dark:bg-[#1E293B] text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:text-slate-900 dark:hover:text-white'
@@ -1355,7 +1386,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                         <button
                           type="button"
                           onClick={() => handleCopyCode(spec)}
-                          className={`min-h-[32px] inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-semibold transition-all whitespace-nowrap cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+                          className={`min-h-[28px] inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-semibold transition-all whitespace-nowrap cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                             isCopied
                               ? 'bg-emerald-600 text-white shadow-xs'
                               : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-xs'
@@ -1377,7 +1408,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                     </div>
 
                     {/* Interactive Live Preview Stage */}
-                    <div className="min-h-[120px] flex items-center justify-center p-3 relative overflow-hidden max-w-full">
+                    <div className="min-h-[var(--jx-stage-min)] flex items-center justify-center p-2 relative overflow-hidden max-w-full">
                       <DeferredComponentPreview>
                         <InteractiveComponentPreview
                           spec={spec}
@@ -1446,7 +1477,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                   </div>
 
                   {/* Card Footer Actions & Quality Tags */}
-                  <div className="space-y-2.5 pt-2 border-t border-slate-100 dark:border-slate-800/70">
+                  <div className="space-y-2 pt-1.5 border-t border-slate-100 dark:border-slate-800/70">
                     <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono">
                       <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
                         <CheckCircle2 className="w-3 h-3" />
@@ -1463,7 +1494,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                           tactile.playClick(850);
                           setActiveDocSpec(spec);
                         }}
-                        className="flex-1 min-h-[44px] inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-[#1E293B] text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-indigo-950 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+                        className="flex-1 min-h-[var(--jx-control-h)] inline-flex items-center justify-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-[#1E293B] text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-indigo-950 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                       >
                         <BookOpen className="w-3.5 h-3.5" />
                         <span>Inspect Docs</span>
@@ -1474,7 +1505,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                         type="button"
                         onClick={() => handleCopyCode(spec)}
                         title={`Copy ${currentMode === 'raw' ? 'Raw Implementation' : 'JSX'} Code`}
-                        className={`min-h-[44px] inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-semibold transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+                        className={`min-h-[var(--jx-control-h)] inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-semibold transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                           isCopied
                             ? 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300'
                             : 'border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-[#1E293B] text-slate-700 dark:text-slate-200'
@@ -1499,7 +1530,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                         onClick={() => handleToggleFav(spec.id, spec.name)}
                         title={isFav ? 'Remove from bookmarks' : 'Add to bookmarks'}
                         aria-label={isFav ? `Remove ${spec.name} from bookmarks` : `Add ${spec.name} to bookmarks`}
-                        className={`min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded-xl border transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+                        className={`min-h-[var(--jx-control-h)] min-w-[var(--jx-control-h)] flex items-center justify-center p-1.5 rounded-lg border transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                           isFav
                             ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700 text-amber-500'
                             : 'border-slate-200 dark:border-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-white'
@@ -1524,7 +1555,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                 tactile.playClick(750);
                 setVisibleCount((prev) => prev + ITEMS_PER_PAGE);
               }}
-              className="min-h-[44px] px-6 py-2.5 rounded-xl text-xs font-bold bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 jx-elevation-1 text-slate-800 dark:text-slate-200 hover:border-indigo-400 dark:hover:border-indigo-600 hover:bg-slate-50 dark:hover:bg-[#1E293B] shadow-xs transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+              className="min-h-[var(--jx-control-h)] px-4 py-1.5 rounded-lg text-xs font-bold bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 jx-elevation-1 text-slate-800 dark:text-slate-200 hover:border-indigo-400 dark:hover:border-indigo-600 hover:bg-slate-50 dark:hover:bg-[#1E293B] shadow-xs transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
             >
               Load More Components ({filteredComponents.length - visibleCount} remaining)
             </button>
@@ -1541,7 +1572,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 360, damping: 32 }}
-            className="scroll-mt-24 overflow-hidden p-6 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-2 shadow-md space-y-4"
+            className="scroll-mt-24 overflow-hidden p-4 rounded-xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-2 shadow-md space-y-3"
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
@@ -1558,7 +1589,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                 onChange={(e) => onEncyclopediaFilterChange(e.target.value)}
                 placeholder="Search all 61 component specs..."
                 aria-label="Search all 61 component specifications"
-                className="w-full sm:w-72 min-h-[44px] px-3.5 py-2 text-xs bg-slate-50 dark:bg-[#1E293B]/60 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+                className="w-full sm:w-72 min-h-[var(--jx-control-h)] px-3.5 py-2 text-xs bg-slate-50 dark:bg-[#1E293B]/60 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
               />
             </div>
 
@@ -1603,7 +1634,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                         setActiveDocSpec(foundUnified);
                       }
                     }}
-                    className="self-start min-h-[44px] inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-indigo-400 shrink-0 cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+                    className="self-start min-h-[var(--jx-control-h)] inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-[#1E293B] border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-indigo-400 shrink-0 cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
                   >
                     <span>Inspect Docs</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
@@ -1651,7 +1682,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
           aria-labelledby="collections-modal-title"
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in"
         >
-          <div className="relative w-full max-w-lg bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl jx-elevation-3 p-6 space-y-5">
+          <div className="relative w-full max-w-lg bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl jx-elevation-3 p-4 space-y-3">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
               <div className="flex items-center gap-2.5">
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-white ${palette.bg}`}>
@@ -1670,7 +1701,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                 type="button"
                 onClick={() => setShowManageCollections(false)}
                 aria-label="Close collections dialog"
-                className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1E293B] transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+                className="min-h-[var(--jx-control-h)] min-w-[var(--jx-control-h)] flex items-center justify-center p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1E293B] transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1686,20 +1717,20 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                 value={newCollectionName}
                 onChange={(e) => setNewCollectionName(e.target.value)}
                 placeholder="Collection name (e.g. Design System V1)"
-                className="w-full min-h-[44px] px-3.5 py-2 text-xs bg-white dark:bg-[#1E293B]/80 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+                className="w-full min-h-[var(--jx-control-h)] px-3.5 py-2 text-xs bg-white dark:bg-[#1E293B]/80 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
               />
               <input
                 type="text"
                 value={newCollectionDesc}
                 onChange={(e) => setNewCollectionDesc(e.target.value)}
                 placeholder="Description (optional)"
-                className="w-full min-h-[44px] px-3.5 py-2 text-xs bg-white dark:bg-[#1E293B]/80 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+                className="w-full min-h-[var(--jx-control-h)] px-3.5 py-2 text-xs bg-white dark:bg-[#1E293B]/80 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
               />
               <button
                 type="button"
                 onClick={handleCreateCollection}
                 disabled={!newCollectionName.trim()}
-                className="w-full min-h-[44px] py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+                className="w-full min-h-[var(--jx-control-h)] py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
               >
                 <Plus className="w-4 h-4" />
                 <span>Create Collection</span>
@@ -1736,7 +1767,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
                         onClick={() => handleDeleteCollection(col.id, col.name)}
                         title="Delete collection"
                         aria-label={`Delete collection ${col.name}`}
-                        className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/30"
+                        className="min-h-[var(--jx-control-h)] min-w-[var(--jx-control-h)] flex items-center justify-center p-2 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/30"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -1751,13 +1782,13 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
               <button
                 type="button"
                 onClick={handleExportCollections}
-                className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#1E293B] transition-all cursor-pointer font-medium touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+                className="min-h-[var(--jx-control-h)] inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#1E293B] transition-all cursor-pointer font-medium touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
               >
                 <Download className="w-4 h-4" />
                 <span>Export JSON</span>
               </button>
 
-              <label className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#1E293B] transition-all cursor-pointer font-medium touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]">
+              <label className="min-h-[var(--jx-control-h)] inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#1E293B] transition-all cursor-pointer font-medium touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]">
                 <Upload className="w-4 h-4" />
                 <span>Import JSON</span>
                 <input
