@@ -13,6 +13,7 @@ import {
   ACCENT_PALETTES,
   AccentColor,
   RadiusScale,
+  Density,
 } from '../../context/JXThemeContext';
 import { tactile } from '../../utils/tactileAudio';
 
@@ -50,10 +51,12 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     setRadiusScale,
     compareMode,
     setCompareMode,
+    density,
+    setDensity,
   } = useJXTheme();
 
   return (
-    <header className="h-16 px-3 sm:px-6 lg:px-8 border-b border-slate-200/70 dark:border-slate-800/80 bg-white/85 dark:bg-[#0B0F19]/85 backdrop-blur-md flex items-center justify-between sticky top-0 z-30 w-full min-w-0">
+    <header className="h-12 px-3 sm:px-4 border-b border-slate-200/70 dark:border-slate-800/80 bg-white/85 dark:bg-[#0B0F19]/85 backdrop-blur-md flex items-center justify-between sticky top-0 z-30 w-full min-w-0">
       <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 mr-2 sm:mr-4">
         {/* Mobile Sidebar Hamburger */}
         <button
@@ -79,7 +82,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
             onOpenCmd();
           }}
           aria-label="Quick Find or Jump to Component (Command K)"
-          className="flex items-center gap-2 sm:gap-2.5 bg-slate-100 dark:bg-[#1E293B]/70 hover:bg-slate-200/70 dark:hover:bg-[#1E293B] px-3 py-2 min-h-[44px] rounded-xl cursor-pointer transition-all text-slate-500 dark:text-slate-400 text-xs flex-1 max-w-[220px] sm:max-w-xs md:max-w-sm border border-transparent hover:border-slate-300 dark:hover:border-slate-700 touch-manipulation active:scale-[0.98] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+          className="flex items-center gap-2 sm:gap-2.5 bg-slate-100 dark:bg-[#1E293B]/70 hover:bg-slate-200/70 dark:hover:bg-[#1E293B] px-3 py-1.5 min-h-[var(--jx-control-h)] rounded-lg cursor-pointer transition-all text-slate-500 dark:text-slate-400 text-xs flex-1 max-w-[220px] sm:max-w-xs md:max-w-sm border border-transparent hover:border-slate-300 dark:hover:border-slate-700 touch-manipulation active:scale-[0.98] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
         >
           <Terminal className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
           <span className="font-medium text-slate-600 dark:text-slate-300 truncate">
@@ -100,7 +103,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           aria-label="Open component documentation"
           aria-current={currentView === 'docs' ? 'page' : undefined}
           title="Component documentation"
-          className={`hidden sm:flex min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 rounded-xl px-3 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+          className={`hidden sm:flex min-h-[var(--jx-control-h)] min-w-[var(--jx-control-h)] items-center justify-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
             currentView === 'docs'
               ? 'bg-indigo-600 text-white'
               : 'bg-slate-100 text-slate-700 hover:bg-slate-200/70 dark:bg-[#1E293B] dark:text-slate-200 dark:hover:bg-[#1E293B]/80'
@@ -125,11 +128,11 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 }}
                 title={`${pal.name} Palette`}
                 aria-label={`Select ${pal.name} accent`}
-                className="min-h-[36px] min-w-[36px] flex items-center justify-center rounded-full cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+                className="min-h-[28px] min-w-[28px] flex items-center justify-center rounded-full cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
               >
                 <span
                   style={{ backgroundColor: pal.hex }}
-                  className={`w-5 h-5 rounded-full transition-transform ${
+                  className={`w-4 h-4 rounded-full transition-transform ${
                     active
                       ? 'ring-2 ring-[var(--jx-accent)] ring-offset-1 scale-110'
                       : 'opacity-70 hover:opacity-100 hover:scale-105'
@@ -150,13 +153,35 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 tactile.playClick(800);
                 setRadiusScale(r.id);
               }}
-              className={`min-h-[32px] px-2.5 py-1 rounded-md transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+              className={`min-h-[28px] px-2 py-1 rounded-md transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
                 radiusScale === r.id
                   ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white shadow-xs font-bold'
                   : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               {r.scaleLabel}
+            </button>
+          ))}
+        </div>
+
+        {/* Density Toggle (Compact / Comfortable) */}
+        <div className="hidden xl:flex items-center bg-slate-100 dark:bg-[#1E293B]/80 p-0.5 rounded-lg text-[11px] font-semibold" role="group" aria-label="Interface density">
+          {(['compact', 'comfortable'] as Density[]).map((d) => (
+            <button
+              key={d}
+              type="button"
+              onClick={() => {
+                tactile.playClick(750);
+                setDensity(d);
+              }}
+              aria-pressed={density === d}
+              className={`min-h-[28px] px-2 py-1 rounded-md transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+                density === d
+                  ? 'bg-white dark:bg-[#111827] text-slate-900 dark:text-white shadow-xs font-bold'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              {d === 'compact' ? 'Compact' : 'Comfortable'}
             </button>
           ))}
         </div>
@@ -170,7 +195,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           }}
           title="Toggle MUI vs JXUI Split Compare"
           aria-label="Toggle MUI vs JXUI Split Compare"
-          className={`min-h-[44px] min-w-[44px] p-2 sm:px-3 sm:py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+          className={`min-h-[var(--jx-control-h)] min-w-[var(--jx-control-h)] p-2 sm:px-2.5 sm:py-1.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
             compareMode === 'split'
               ? 'bg-indigo-600 text-white shadow-sm ring-2 ring-[var(--jx-accent-halo)]'
               : 'bg-slate-100 dark:bg-[#1E293B] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-[#1E293B]/80'
@@ -191,7 +216,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           aria-label={`Switch to ${mode === 'light' ? 'Dark' : 'Light'} mode (current: ${mode})`}
           aria-pressed={mode === 'dark'}
           title={`Switch to ${mode === 'light' ? 'Dark Obsidian' : 'Light Alabaster'} (Saved to localStorage)`}
-          className="min-h-[44px] min-w-[44px] rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-300 bg-slate-100/70 dark:bg-[#1E293B]/70 hover:bg-slate-200/80 dark:hover:bg-[#1E293B] transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+          className="min-h-[var(--jx-control-h)] min-w-[var(--jx-control-h)] rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 bg-slate-100/70 dark:bg-[#1E293B]/70 hover:bg-slate-200/80 dark:hover:bg-[#1E293B] transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
         >
           {mode === 'light' ? (
             <Sun className="w-4 h-4 text-amber-500" />
@@ -209,7 +234,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           }}
           title={currentView === 'workbench' ? 'Switch to GitHub Showcase Page' : 'Return to Interactive Workbench'}
           aria-label={currentView === 'workbench' ? 'Switch to GitHub Showcase Page' : 'Return to Interactive Workbench'}
-          className={`min-h-[44px] min-w-[44px] flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
+          className={`min-h-[var(--jx-control-h)] min-w-[var(--jx-control-h)] flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)] ${
             currentView === 'github-page'
               ? 'bg-[#238636] text-white shadow-sm ring-2 ring-[#238636]/30'
               : 'bg-slate-100 dark:bg-[#1E293B] hover:bg-slate-200/70 dark:hover:bg-[#1E293B]/80 text-slate-700 dark:text-slate-200'

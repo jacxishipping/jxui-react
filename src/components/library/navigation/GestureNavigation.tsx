@@ -9,6 +9,9 @@ const STEPS = [
   { id: 3, title: 'WCAG AAA', icon: Shield, desc: 'High-contrast ARIA audited' },
 ];
 
+// GestureNavigation — swipe/drag between steps, with arrow buttons, dot
+// indicators and keyboard support (Left/Right arrows). Already interactive;
+// this version adds labels, 36px targets, the theme accent and a live region.
 export const GestureNavigation: React.FC = () => {
   const { palette, getRadiusClass } = useJXTheme();
   const [activeStep, setActiveStep] = useState(0);
@@ -27,8 +30,7 @@ export const GestureNavigation: React.FC = () => {
 
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!isDragging) return;
-    const delta = e.clientX - startX.current;
-    setDragOffset(delta);
+    setDragOffset(e.clientX - startX.current);
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
@@ -51,8 +53,15 @@ export const GestureNavigation: React.FC = () => {
 
   return (
     <div className="w-full flex flex-col items-center gap-2 select-none">
-      {/* Swipeable Viewport */}
       <div
+        role="region"
+        aria-roledescription="carousel"
+        aria-label={`Gesture navigation, step ${activeStep + 1} of ${STEPS.length}`}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'ArrowLeft') prevStep();
+          if (e.key === 'ArrowRight') nextStep();
+        }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
@@ -65,20 +74,21 @@ export const GestureNavigation: React.FC = () => {
           type="button"
           onClick={(e) => { e.stopPropagation(); prevStep(); }}
           disabled={activeStep === 0}
-          className="p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-white disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+          aria-label="Previous step"
+          className="min-h-[36px] min-w-[36px] p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-white disabled:opacity-30 disabled:pointer-events-none cursor-pointer flex items-center justify-center"
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
+          <ArrowLeft className="w-4 h-4" />
         </button>
 
-        <div className="flex items-center gap-2 min-w-0 text-center">
-          <div className="w-6 h-6 rounded bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
-            <Icon className="w-3.5 h-3.5" />
+        <div className="flex items-center gap-2 min-w-0 text-center" aria-live="polite">
+          <div className={`w-9 h-9 rounded ${palette.softBg} ${palette.text} flex items-center justify-center shrink-0`}>
+            <Icon className="w-4 h-4" />
           </div>
-          <div className="min-w-0">
+          <div className="min-w-0 text-left">
             <span className="text-xs font-bold text-slate-900 dark:text-white block truncate">
               {current.title}
             </span>
-            <span className="text-[10px] text-slate-400 block truncate">
+            <span className="text-[11px] text-slate-400 block truncate">
               {current.desc}
             </span>
           </div>
@@ -88,26 +98,28 @@ export const GestureNavigation: React.FC = () => {
           type="button"
           onClick={(e) => { e.stopPropagation(); nextStep(); }}
           disabled={activeStep === STEPS.length - 1}
-          className="p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-white disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+          aria-label="Next step"
+          className="min-h-[36px] min-w-[36px] p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-white disabled:opacity-30 disabled:pointer-events-none cursor-pointer flex items-center justify-center"
         >
-          <ArrowRight className="w-3.5 h-3.5" />
+          <ArrowRight className="w-4 h-4" />
         </button>
       </div>
 
-      {/* Step Indicators & Gesture Hint */}
       <div className="flex items-center gap-1.5">
-        {STEPS.map((_, idx) => (
+        {STEPS.map((step, idx) => (
           <button
-            key={idx}
+            key={step.id}
             type="button"
             onClick={() => setActiveStep(idx)}
-            className={`h-1.5 rounded-full transition-all cursor-pointer ${
-              activeStep === idx ? 'w-4 bg-indigo-600' : 'w-1.5 bg-slate-300 dark:bg-slate-700'
+            aria-label={`Go to step ${idx + 1}: ${step.title}`}
+            aria-current={activeStep === idx}
+            className={`h-2 min-h-[8px] rounded-full transition-all cursor-pointer ${
+              activeStep === idx ? `w-5 ${palette.bg}` : 'w-2 bg-slate-300 dark:bg-slate-700'
             }`}
           />
         ))}
       </div>
-      <span className="text-[9px] font-mono text-slate-400">Swipe or drag left / right</span>
+      <span className="text-[11px] font-mono text-slate-400">Swipe, drag, or use arrow keys</span>
     </div>
   );
 };

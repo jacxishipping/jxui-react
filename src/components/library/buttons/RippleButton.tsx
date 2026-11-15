@@ -65,7 +65,7 @@ export const RippleButton: React.FC<RippleButtonProps> = ({
     <button
       type="button"
       onClick={handleClick}
-      className={`relative overflow-hidden px-4 py-2 text-xs font-semibold border ${toneMap[tone][variant]} ${getRadiusClass('control')} shadow-md cursor-pointer transition-all ${className}`}
+      className={`relative overflow-hidden min-h-[44px] px-4 py-2.5 text-xs font-semibold border ${toneMap[tone][variant]} ${getRadiusClass('control')} shadow-md cursor-pointer transition-all ${className}`}
       {...props}
     >
       <span className="relative z-10 inline-flex items-center gap-1.5">

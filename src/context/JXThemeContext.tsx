@@ -11,6 +11,9 @@ export type ThemeMode = 'light' | 'dark';
 export type AccentColor = 'indigo' | 'violet' | 'emerald' | 'rose' | 'ocean';
 export type RadiusScale = 'sharp' | 'sm' | 'md' | 'lg' | 'xl';
 export type CompareMode = 'jxui' | 'split';
+/** Workbench chrome density: 'compact' is the dense modern-SaaS default,
+    'comfortable' restores the roomier 44px-touch-target spacing. */
+export type Density = 'compact' | 'comfortable';
 
 export interface ToastItem {
   id: string;
@@ -111,6 +114,8 @@ interface JXThemeContextValue {
   getRadiusClass: (tier?: 'control' | 'card' | 'pill') => string;
   compareMode: CompareMode;
   setCompareMode: (c: CompareMode) => void;
+  density: Density;
+  setDensity: (d: Density) => void;
   toasts: ToastItem[];
   pushToast: (toast: Omit<ToastItem, 'id' | 'createdAt'>) => string;
   triggerPromiseToast: (actionLabel: string) => void;
@@ -167,6 +172,37 @@ function getInitialCompareMode(): CompareMode {
   return 'jxui';
 }
 
+function getInitialDensity(): Density {
+  if (typeof window === 'undefined') return 'compact';
+  try {
+    const saved = localStorage.getItem('jxui-density') as Density;
+    if (saved === 'compact' || saved === 'comfortable') return saved;
+  } catch {
+    // ignore
+  }
+  return 'compact';
+}
+
+/** Density drives the shell spacing tokens the workbench reads as CSS vars
+    (--jx-control-h, --jx-grid-gap, --jx-card-pad, --jx-stage-h,
+    --jx-sidebar-w, --jx-shell-gap). Compact is the dense SaaS default.
+    --jx-stage-h is the fixed preview-stage height: every card's preview
+    is capped at it (tall content clips with a fade), so all cards in the
+    grid come out the same size instead of the tallest preview in a row
+    dictating the row height. */
+function applyDensityToDocument(density: Density): void {
+  if (typeof document === 'undefined') return;
+  const root = document.documentElement;
+  root.setAttribute('data-density', density);
+  const compact = density === 'compact';
+  root.style.setProperty('--jx-control-h', compact ? '32px' : '44px');
+  root.style.setProperty('--jx-grid-gap', compact ? '12px' : '20px');
+  root.style.setProperty('--jx-card-pad', compact ? '12px' : '20px');
+  root.style.setProperty('--jx-stage-h', compact ? '176px' : '208px');
+  root.style.setProperty('--jx-sidebar-w', compact ? '240px' : '288px');
+  root.style.setProperty('--jx-shell-gap', compact ? '16px' : '28px');
+}
+
 const JXThemeContext = createContext<JXThemeContextValue | null>(null);
 
 export const JXThemeProvider: React.FC<JXThemeProviderProps> = ({
@@ -182,6 +218,11 @@ export const JXThemeProvider: React.FC<JXThemeProviderProps> = ({
   const [accent, setAccent] = useState<AccentColor>(getInitialAccent);
   const [radiusScale, setRadiusScale] = useState<RadiusScale>(getInitialRadius);
   const [compareMode, setCompareMode] = useState<CompareMode>(getInitialCompareMode);
+  const [density, setDensity] = useState<Density>(() => {
+    const initial = getInitialDensity();
+    applyDensityToDocument(initial);
+    return initial;
+  });
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const [stackHovered, setStackHovered] = useState(false);
 
@@ -234,6 +275,9 @@ export const JXThemeProvider: React.FC<JXThemeProviderProps> = ({
           document.documentElement.style.setProperty('--jx-accent', pal.hex);
           document.documentElement.style.setProperty('--jx-accent-halo', `${pal.hex}33`);
           document.documentElement.style.setProperty('--jx-accent-soft', `${pal.hex}1f`);
+          // Expose the accent as an attribute so CSS can theme hardcoded
+          // indigo elements via [data-accent="…"] rules in index.css.
+          document.documentElement.setAttribute('data-accent', accent);
         }
       }
     } catch {
@@ -244,6 +288,28 @@ export const JXThemeProvider: React.FC<JXThemeProviderProps> = ({
   useEffect(() => {
     try {
       localStorage.setItem('jxui-theme-radius', radiusScale);
+      if (typeof document !== 'undefined') {
+        // Mirror the radius scale into CSS vars so .jx-radius-* utilities
+        // (index.css) actually move when the user changes the scale.
+        // Values match getRadiusClass below: control / card tiers.
+        const control: Record<RadiusScale, string> = {
+          sharp: '0px',
+          sm: '8px',
+          md: '12px',
+          lg: '16px',
+          xl: '20px',
+        };
+        const card: Record<RadiusScale, string> = {
+          sharp: '0px',
+          sm: '12px',
+          md: '16px',
+          lg: '20px',
+          xl: '24px',
+        };
+        document.documentElement.style.setProperty('--jx-radius-control', control[radiusScale]);
+        document.documentElement.style.setProperty('--jx-radius-card', card[radiusScale]);
+        document.documentElement.setAttribute('data-radius', radiusScale);
+      }
     } catch {
       // ignore
     }
@@ -256,6 +322,15 @@ export const JXThemeProvider: React.FC<JXThemeProviderProps> = ({
       // ignore
     }
   }, [compareMode]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('jxui-density', density);
+    } catch {
+      // ignore
+    }
+    applyDensityToDocument(density);
+  }, [density]);
 
   const getRadiusClass = useCallback(
     (tier: 'control' | 'card' | 'pill' = 'control') => {
@@ -348,6 +423,8 @@ export const JXThemeProvider: React.FC<JXThemeProviderProps> = ({
         getRadiusClass,
         compareMode,
         setCompareMode,
+        density,
+        setDensity,
         toasts,
         pushToast,
         triggerPromiseToast,

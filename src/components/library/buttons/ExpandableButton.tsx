@@ -64,7 +64,7 @@ export const ExpandableButton: React.FC<ExpandableButtonProps> = ({
       onFocus={() => setExpanded(true)}
       onBlur={() => setExpanded(false)}
       onClick={handleClick}
-      className={`flex items-center gap-2 px-3.5 py-2 text-xs font-semibold ${toneMap[tone][variant]} ${getRadiusClass('pill')} shadow-md transition-all duration-300 cursor-pointer overflow-hidden`}
+      className={`min-h-[44px] flex items-center gap-2 px-3.5 py-2 text-xs font-semibold ${toneMap[tone][variant]} ${getRadiusClass('pill')} shadow-md transition-all duration-300 cursor-pointer overflow-hidden`}
     >
       {createdCount > 0 ? <Check className="w-4 h-4 shrink-0" /> : <Icon className="w-4 h-4 shrink-0" />}
       <span className={`transition-all duration-300 whitespace-nowrap overflow-hidden ${expanded || createdCount > 0 ? 'max-w-xs opacity-100 pr-1' : 'max-w-0 opacity-0'}`}>

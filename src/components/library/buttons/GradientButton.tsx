@@ -54,7 +54,7 @@ export const GradientButton: React.FC<GradientButtonProps> = ({
         setClicks((c) => c + 1);
         onClick?.(e);
       }}
-      className={`px-4 py-2 text-xs font-bold ${toneMap[tone][variant]} ${getRadiusClass('control')} shadow-lg hover:brightness-110 active:scale-95 transition-all duration-200 cursor-pointer inline-flex items-center gap-1.5 ${className}`}
+      className={`min-h-[44px] px-4 py-2.5 text-xs font-bold ${toneMap[tone][variant]} ${getRadiusClass('control')} shadow-lg hover:brightness-110 active:scale-95 transition-all duration-200 cursor-pointer inline-flex items-center gap-1.5 ${className}`}
       {...props}
     >
       <Sparkles className="w-3.5 h-3.5" />

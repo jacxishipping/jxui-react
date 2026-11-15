@@ -17,9 +17,6 @@ import {
   FileCode,
   ChevronRight,
   ChevronDown,
-  Clock,
-  Edit3,
-  Plus,
 } from 'lucide-react';
 import { UnifiedComponentSpec } from '../data/unifiedCatalog';
 import { useJXTheme } from '../context/JXThemeContext';
@@ -54,6 +51,27 @@ const CATEGORY_MODULE_LOADERS: Record<number, () => Promise<Record<string, any>>
 
 const categoryModuleCache: Record<number, Record<string, any>> = {};
 
+// Only these primitives actually accept `variant` / `tone` props (verified
+// against src/components/library — every other primitive is `React.FC = () =>`
+// and silently ignores style props). Showing variant/tone controls for any
+// other component is misleading: the controls move but the preview doesn't.
+const STYLE_PROP_COMPONENTS = new Set([
+  'CommandButton',
+  'ExpandableButton',
+  'GlowButton',
+  'GradientButton',
+  'HoldToConfirmButton',
+  'LiquidButton',
+  'MagneticButton',
+  'MagneticIconButton',
+  'MorphButton',
+  'ParticleButton',
+  'RippleButton',
+  'ShimmerButton',
+  'SplitButton',
+  'SpringButton',
+]);
+
 const SHOWCASE_LOADERS = {
   inputs: () => import('./inputs'),
   dataDisplay: () => import('./data-display'),
@@ -87,8 +105,11 @@ const LazyPrimitivePreview: React.FC<{
     return cached ? cached[spec.name] || null : null;
   });
   const [failed, setFailed] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const [styleVariant, setStyleVariant] = useState<PrimitiveStyleVariant>('solid');
   const [toneType, setToneType] = useState<PrimitiveToneType>('primary');
+  // Only style-prop components respond to variant/tone/size/disabled/loading.
+  const supportsStyleProps = STYLE_PROP_COMPONENTS.has(spec.name);
 
   useEffect(() => {
     if (!playgroundProps) return;
@@ -132,9 +153,35 @@ const LazyPrimitivePreview: React.FC<{
     return () => {
       active = false;
     };
-  }, [spec.categoryNumber, spec.name]);
+  }, [spec.categoryNumber, spec.name, retryCount]);
 
-  if (failed) return null;
+  if (failed) {
+    return (
+      <div
+        role="alert"
+        className="w-full rounded-xl border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/40 p-3 text-center space-y-2"
+      >
+        <p className="text-xs font-semibold text-rose-700 dark:text-rose-300">
+          Preview failed to load for {spec.name}
+        </p>
+        <p className="text-[11px] text-rose-600/80 dark:text-rose-300/70">
+          The component module could not be loaded. Nothing was rendered.
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            delete categoryModuleCache[spec.categoryNumber];
+            setFailed(false);
+            setComponent(null);
+            setRetryCount((c) => c + 1);
+          }}
+          className="min-h-[36px] px-3 py-1.5 rounded-lg bg-rose-600 text-white text-xs font-semibold cursor-pointer hover:bg-rose-500"
+        >
+          Retry preview
+        </button>
+      </div>
+    );
+  }
 
   if (!Component) {
     return (
@@ -144,21 +191,30 @@ const LazyPrimitivePreview: React.FC<{
     );
   }
 
-  const showButtonStyleControls =
-    spec.categoryNumber === 1 || spec.interactiveType === 'button';
+  const showButtonStyleControls = supportsStyleProps;
 
   return (
     <div className="w-full flex flex-col items-center justify-center gap-3 overflow-visible">
       <div className="w-full flex items-center justify-center py-1 overflow-visible">
-        <Component
-          variant={styleVariant}
-          tone={toneType}
-          size={playgroundProps?.size}
-          disabled={playgroundProps?.disabled}
-          loading={playgroundProps?.loading}
-          label={playgroundProps?.customLabel || undefined}
-        />
+        {supportsStyleProps ? (
+          <Component
+            variant={styleVariant}
+            tone={toneType}
+            size={playgroundProps?.size}
+            disabled={playgroundProps?.disabled}
+            loading={playgroundProps?.loading}
+            label={playgroundProps?.customLabel || undefined}
+          />
+        ) : (
+          <Component />
+        )}
       </div>
+
+      {!supportsStyleProps && (
+        <p className="text-[11px] text-slate-400 dark:text-slate-500">
+          Static preview — {spec.name} takes no props, so variant / tone controls don&apos;t apply.
+        </p>
+      )}
 
       {showButtonStyleControls && (
         <div className="w-full pt-2 border-t border-slate-200/60 dark:border-slate-800/70 flex flex-wrap items-center justify-between gap-1.5 text-[10px]">
@@ -224,7 +280,7 @@ const ShowcaseLivePreview: React.FC<{
   spec: UnifiedComponentSpec;
   playgroundProps?: PlaygroundPropValues;
 }> = ({ spec, playgroundProps }) => {
-  const { palette, pushToast } = useJXTheme();
+  const { palette, pushToast, setAccent } = useJXTheme();
   const num = spec.showcaseNumber || 2;
   const bucket = getShowcaseBucket(num);
 
@@ -290,15 +346,15 @@ const ShowcaseLivePreview: React.FC<{
   const [gridSortAsc, setGridSortAsc] = useState(true);
   const [gridSelected, setGridSelected] = useState<string[]>(['srv-01']);
   const [datePreset, setDatePreset] = useState<'7d' | '14d' | '30d' | '90d'>('14d');
-  const [timeHour, setTimeHour] = useState('09');
-  const [timeMin, setTimeMin] = useState('30');
-  const [timePeriod, setTimePeriod] = useState<'AM' | 'PM'>('AM');
   const [treeExpanded, setTreeExpanded] = useState<Record<string, boolean>>({ src: true, components: true });
   const [chartMetric, setChartMetric] = useState<'RPS' | 'Latency'>('RPS');
-  const [gaugeVal, setGaugeVal] = useState(84);
-  const [cmdQuery, setCmdQuery] = useState('');
   const [inlineEditing, setInlineEditing] = useState(false);
   const [inlineText, setInlineText] = useState('production-us-east-cluster');
+  // States for the corrected #55–#61 previews (see switch below).
+  const [trafficSplit, setTrafficSplit] = useState(25);
+  const [pricingCycle, setPricingCycle] = useState<'monthly' | 'annual'>('annual');
+  const [richText, setRichText] = useState('Ship the new dashboard with JXUI…');
+  const [dockActive, setDockActive] = useState('Terminal');
 
   useEffect(() => {
     if (bucket === 'enterprise') return;
@@ -1141,87 +1197,9 @@ const ShowcaseLivePreview: React.FC<{
       );
     }
     case 53: {
-      // JXTimePicker
-      return (
-        <div className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200">
-            <Clock className="w-4 h-4 text-indigo-500" />
-            <span className="font-mono text-sm">
-              {timeHour}:{timeMin} {timePeriod}
-            </span>
-          </div>
-          <div className="flex items-center gap-1 text-xs font-mono">
-            <select
-              aria-label="Hour"
-              value={timeHour}
-              onChange={(e) => setTimeHour(e.target.value)}
-              className="px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700"
-            >
-              {['08', '09', '10', '11', '12'].map((h) => (
-                <option key={h} value={h}>
-                  {h}
-                </option>
-              ))}
-            </select>
-            <span>:</span>
-            <select
-              aria-label="Minute"
-              value={timeMin}
-              onChange={(e) => setTimeMin(e.target.value)}
-              className="px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700"
-            >
-              {['00', '15', '30', '45'].map((m) => (
-                <option key={m} value={m}>
-                  {m}
-                </option>
-              ))}
-            </select>
-            <button
-              type="button"
-              onClick={() => setTimePeriod((p) => (p === 'AM' ? 'PM' : 'AM'))}
-              className={`px-2 py-1 rounded-lg font-bold text-white ${palette.bg} cursor-pointer`}
-            >
-              {timePeriod}
-            </button>
-          </div>
-        </div>
-      );
-    }
-    case 54: {
-      // JXRichTreeView
-      return (
-        <div className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 text-xs font-mono space-y-1">
-          <button
-            type="button"
-            onClick={() => setTreeExpanded((p) => ({ ...p, src: !p.src }))}
-            className="w-full flex items-center gap-1.5 py-1 px-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-left cursor-pointer"
-          >
-            {treeExpanded.src ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
-            {treeExpanded.src ? (
-              <FolderOpen className="w-3.5 h-3.5 text-indigo-500" />
-            ) : (
-              <Folder className="w-3.5 h-3.5 text-indigo-500" />
-            )}
-            <span className="font-semibold text-slate-800 dark:text-slate-200">src/components</span>
-          </button>
-          {treeExpanded.src && (
-            <div className="pl-5 space-y-1 border-l border-slate-200 dark:border-slate-800 ml-2">
-              <div className="flex items-center gap-1.5 py-0.5 text-slate-600 dark:text-slate-400">
-                <FileCode className="w-3.5 h-3.5 text-emerald-500" />
-                <span>JXButton.tsx</span>
-              </div>
-              <div className="flex items-center gap-1.5 py-0.5 text-slate-600 dark:text-slate-400">
-                <FileCode className="w-3.5 h-3.5 text-sky-500" />
-                <span>JXDataGrid.tsx</span>
-              </div>
-            </div>
-          )}
-        </div>
-      );
-    }
-    case 55:
-    case 56: {
-      // JXCharts / JXSparkline
+      // JXCharts (Line, Bar, Pie & Sparkline) — catalog #53.
+      // Was JXTimePicker here, which is why the JXCharts playground showed
+      // a 09:30 AM time picker instead of a chart.
       const bars = chartMetric === 'RPS' ? [42, 68, 55, 84, 76, 95, 88] : [28, 24, 19, 22, 16, 14, 12];
       return (
         <div className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 space-y-2">
@@ -1258,131 +1236,196 @@ const ShowcaseLivePreview: React.FC<{
         </div>
       );
     }
-    case 57: {
-      // JXGauge
+    case 54: {
+      // JXRichTreeView
       return (
-        <div className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 space-y-2">
-          <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-slate-700 dark:text-slate-300">Cluster Health Score</span>
-            <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">{gaugeVal}%</span>
-          </div>
-          <div className="w-full h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-indigo-500 to-emerald-500 transition-all duration-200"
-              style={{ width: `${gaugeVal}%` }}
-            />
-          </div>
-          <input
-            type="range"
-            aria-label="Gauge value"
-            min={10}
-            max={100}
-            value={gaugeVal}
-            onChange={(e) => setGaugeVal(Number(e.target.value))}
-            className="w-full accent-indigo-600 cursor-pointer h-1.5"
-          />
+        <div className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 text-xs font-mono space-y-1">
+          <button
+            type="button"
+            onClick={() => setTreeExpanded((p) => ({ ...p, src: !p.src }))}
+            className="w-full flex items-center gap-1.5 py-1 px-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-left cursor-pointer"
+          >
+            {treeExpanded.src ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+            {treeExpanded.src ? (
+              <FolderOpen className="w-3.5 h-3.5 text-indigo-500" />
+            ) : (
+              <Folder className="w-3.5 h-3.5 text-indigo-500" />
+            )}
+            <span className="font-semibold text-slate-800 dark:text-slate-200">src/components</span>
+          </button>
+          {treeExpanded.src && (
+            <div className="pl-5 space-y-1 border-l border-slate-200 dark:border-slate-800 ml-2">
+              <div className="flex items-center gap-1.5 py-0.5 text-slate-600 dark:text-slate-400">
+                <FileCode className="w-3.5 h-3.5 text-emerald-500" />
+                <span>JXButton.tsx</span>
+              </div>
+              <div className="flex items-center gap-1.5 py-0.5 text-slate-600 dark:text-slate-400">
+                <FileCode className="w-3.5 h-3.5 text-sky-500" />
+                <span>JXDataGrid.tsx</span>
+              </div>
+            </div>
+          )}
         </div>
       );
     }
-    case 58: {
-      // JXCommandPalette
-      const cmds = ['Deploy Production Cluster', 'Toggle Dark Mode', 'Export Figma Tokens'].filter((c) =>
-        c.toLowerCase().includes(cmdQuery.toLowerCase())
-      );
+    case 55: {
+      // JXRichTextEditor & JXUploadDropzone — catalog #55.
       return (
-        <div className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden text-xs">
-          <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
-            <Search className="w-3.5 h-3.5 text-slate-400" />
-            <input
-              type="text"
-              value={cmdQuery}
-              onChange={(e) => setCmdQuery(e.target.value)}
-              placeholder="Type a command (⌘K)..."
-              className="w-full bg-transparent text-slate-800 dark:text-slate-200 focus:outline-none text-xs"
-            />
-          </div>
-          <div className="p-1.5 space-y-0.5">
-            {cmds.map((c) => (
-              <button
-                key={c}
-                type="button"
-                onClick={() => pushToast({ title: `Executed: ${c}`, variant: 'success' })}
-                className="w-full px-2.5 py-1.5 rounded-lg flex items-center justify-between hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer"
-              >
-                <span>{c}</span>
-                <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500">
-                  ↵
-                </kbd>
+        <div className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 space-y-2">
+          <div className="flex items-center gap-1">
+            {['B', 'I', 'U'].map((f) => (
+              <button key={f} type="button" aria-label={`Format ${f}`} className="w-7 h-7 rounded-md bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-700 dark:text-slate-200 cursor-pointer">
+                {f}
               </button>
+            ))}
+            <span className="ml-2 text-[11px] text-slate-400">Rich text · slash commands</span>
+          </div>
+          <textarea
+            aria-label="Rich text editor"
+            value={richText}
+            onChange={(e) => setRichText(e.target.value)}
+            rows={2}
+            className="w-full px-2 py-1.5 text-xs rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none"
+          />
+          <div className="rounded-lg border border-dashed border-slate-300 dark:border-slate-700 p-3 text-center text-[11px] text-slate-500">
+            Drop files here to upload
+          </div>
+        </div>
+      );
+    }
+    case 56: {
+      // JXSpotlightDock — catalog #56.
+      const apps = [
+        { name: 'Terminal', icon: Terminal },
+        { name: 'Calendar', icon: Calendar },
+        { name: 'Activity', icon: Activity },
+        { name: 'Shield', icon: Shield },
+        { name: 'Search', icon: Search },
+      ];
+      return (
+        <div className="w-full flex items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3">
+          {apps.map((a) => (
+            <button
+              key={a.name}
+              type="button"
+              aria-label={a.name}
+              aria-pressed={dockActive === a.name}
+              onClick={() => setDockActive(a.name)}
+              className={`w-10 h-10 min-w-[40px] rounded-xl flex items-center justify-center cursor-pointer transition-all ${
+                dockActive === a.name ? `${palette.bg} text-white shadow-md scale-105` : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:scale-105'
+              }`}
+            >
+              <a.icon className="w-4 h-4" />
+            </button>
+          ))}
+        </div>
+      );
+    }
+    case 57: {
+      // JXPricingMatrix — catalog #57.
+      const tiers = [
+        { name: 'Starter', price: pricingCycle === 'annual' ? '$19' : '$24', per: '/mo' },
+        { name: 'Pro', price: pricingCycle === 'annual' ? '$49' : '$59', per: '/mo' },
+        { name: 'Enterprise', price: 'Custom', per: '' },
+      ];
+      return (
+        <div className="w-full space-y-2">
+          <div className="flex justify-center">
+            <div className="inline-flex rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 text-[11px]">
+              {(['monthly', 'annual'] as const).map((c) => (
+                <button key={c} type="button" onClick={() => setPricingCycle(c)} className={`px-2.5 py-1 rounded-md capitalize cursor-pointer ${pricingCycle === c ? 'bg-white dark:bg-slate-900 font-semibold shadow-2xs' : 'text-slate-500'}`}>
+                  {c}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="grid grid-cols-3 gap-2">
+            {tiers.map((tier) => (
+              <div key={tier.name} className={`rounded-xl border p-3 text-center ${tier.name === 'Pro' ? `${palette.border} ${palette.softBg}` : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900'}`}>
+                <div className="text-[11px] font-semibold text-slate-500">{tier.name}</div>
+                <div className="text-base font-extrabold text-slate-900 dark:text-white">
+                  {tier.price}
+                  <span className="text-[11px] font-medium text-slate-400">{tier.per}</span>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       );
     }
-    case 59: {
-      // JXBentoCard
+    case 58: {
+      // JXTrafficSplitter (canary deploy pipeline) — catalog #58.
       return (
-        <div className="w-full rounded-xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-3.5 shadow-xs hover:border-indigo-500/40 transition-all">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold text-slate-900 dark:text-white">Multi-Region Edge Mesh</span>
-            <span className="px-2 py-0.5 text-[10px] font-mono rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-              Active
-            </span>
+        <div className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 space-y-2">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-semibold text-slate-700 dark:text-slate-300">Canary traffic</span>
+            <span className="font-mono font-bold text-slate-900 dark:text-white">{trafficSplit}% canary · {100 - trafficSplit}% stable</span>
           </div>
-          <p className="text-[11px] text-slate-500 dark:text-slate-400">
-            310 global PoPs with hardware-accelerated TLS 1.3 termination.
-          </p>
+          <input
+            type="range"
+            aria-label="Canary traffic allocation percentage"
+            min={0}
+            max={100}
+            value={trafficSplit}
+            onChange={(e) => setTrafficSplit(Number(e.target.value))}
+            className="w-full accent-indigo-600"
+          />
+          <div className="flex h-2.5 rounded-full overflow-hidden">
+            <div className={`${palette.bg} transition-all`} style={{ width: `${trafficSplit}%` }} />
+            <div className="bg-slate-200 dark:bg-slate-700 flex-1" />
+          </div>
+        </div>
+      );
+    }
+    case 59: {
+      // JXAudioWaveformScrubber — catalog #59.
+      const wave = [30, 55, 40, 80, 65, 95, 50, 70, 35, 60, 85, 45, 75, 55, 90, 40];
+      return (
+        <div className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 space-y-2">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-semibold text-slate-700 dark:text-slate-300">Audio waveform</span>
+            <span className="font-mono text-slate-400">01:24 / 03:10</span>
+          </div>
+          <div className="h-12 flex items-center gap-1">
+            {wave.map((h, i) => (
+              <div key={i} style={{ height: `${h}%` }} className={`flex-1 rounded-full ${i < 9 ? palette.bg : 'bg-slate-300 dark:bg-slate-700'}`} />
+            ))}
+          </div>
         </div>
       );
     }
     case 60: {
-      // JXInlineEdit
+      // JXInteractiveColorStudio — catalog #60.
+      const swatches = ['#4f46e5', '#7c3aed', '#059669', '#e11d48', '#0284c7', '#d97706'];
       return (
-        <div className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 flex items-center justify-between gap-2">
-          {inlineEditing ? (
-            <input
-              type="text"
-              value={inlineText}
-              onChange={(e) => setInlineText(e.target.value)}
-              onBlur={() => setInlineEditing(false)}
-              onKeyDown={(e) => e.key === 'Enter' && setInlineEditing(false)}
-              autoFocus
-              className="flex-1 px-2 py-1 text-xs font-mono rounded border border-indigo-500 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none"
-            />
-          ) : (
-            <button
-              type="button"
-              onClick={() => setInlineEditing(true)}
-              className="flex-1 flex items-center justify-between px-2 py-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-left cursor-pointer"
-            >
-              <span className="text-xs font-mono font-semibold text-slate-800 dark:text-slate-200">
-                {inlineText}
-              </span>
-              <span className="inline-flex items-center gap-1 text-[10px] text-indigo-600 dark:text-indigo-400">
-                <Edit3 className="w-3 h-3" /> Edit
-              </span>
-            </button>
-          )}
+        <div className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 space-y-2">
+          <div className="text-xs font-semibold text-slate-700 dark:text-slate-300">Color studio</div>
+          <div className="flex items-center gap-2">
+            {swatches.map((hex) => (
+              <button key={hex} type="button" aria-label={`Colour ${hex}`} onClick={() => setAccent(hex === '#4f46e5' ? 'indigo' : hex === '#7c3aed' ? 'violet' : hex === '#059669' ? 'emerald' : hex === '#e11d48' ? 'rose' : hex === '#0284c7' ? 'ocean' : 'indigo')} className="w-8 h-8 min-w-[32px] rounded-lg cursor-pointer hover:scale-110 transition-transform" style={{ backgroundColor: hex }} />
+            ))}
+          </div>
+          <p className="text-[11px] text-slate-400">Tap a swatch to apply it as the workbench accent.</p>
+        </div>
+      );
+    }
+    case 61: {
+      // JXSecurityVaultCard — catalog #61.
+      return (
+        <div className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 space-y-2 text-center">
+          <Shield className={`w-6 h-6 mx-auto ${palette.text}`} />
+          <div className="text-xs font-semibold text-slate-800 dark:text-slate-200">Passkey security vault</div>
+          <p className="text-[11px] text-slate-500">Biometric unlock · zero stored passwords</p>
+          <button type="button" onClick={() => pushToast({ title: 'Passkey verified', description: 'Unlocked with device biometrics', variant: 'success' })} className={`min-h-[36px] px-4 py-1.5 rounded-lg text-xs font-semibold text-white ${palette.bg} cursor-pointer`}>
+            Unlock with passkey
+          </button>
         </div>
       );
     }
     default: {
-      // #61 JXEmptyState
       return (
-        <div className="w-full rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/40 p-4 text-center space-y-2">
-          <div className="text-xs font-semibold text-slate-800 dark:text-slate-200">
-            No Deployment Pipelines Configured
-          </div>
-          <p className="text-[11px] text-slate-500">
-            Start from a verified starter template or connect your repository.
-          </p>
-          <button
-            type="button"
-            onClick={() => pushToast({ title: 'Created starter pipeline', variant: 'success' })}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white ${palette.bg} cursor-pointer`}
-          >
-            <Plus className="w-3.5 h-3.5" /> Create Pipeline
-          </button>
+        <div className="w-full rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/40 p-4 text-center text-xs text-slate-500">
+          No preview implemented for showcase #{num}.
         </div>
       );
     }

@@ -80,7 +80,7 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
         transform: `translate(${offset.x}px, ${offset.y}px)`,
         transition: offset.x === 0 ? 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)' : 'transform 0.1s ease-out',
       }}
-      className={`px-4 py-2 font-semibold text-xs ${toneMap[tone][variant]} ${getRadiusClass('control')} shadow-md hover:shadow-lg active:scale-95 cursor-pointer inline-flex items-center gap-2 ${className}`}
+      className={`min-h-[44px] px-4 py-2.5 font-semibold text-xs ${toneMap[tone][variant]} ${getRadiusClass('control')} shadow-md hover:shadow-lg active:scale-95 cursor-pointer inline-flex items-center gap-2 ${className}`}
       {...props}
     >
       <Sparkles className="w-3.5 h-3.5" />

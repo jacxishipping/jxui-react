@@ -61,7 +61,7 @@ export const SplitButton: React.FC<SplitButtonProps> = ({
           setExecutedCount((c) => c + 1);
           onPrimaryClick?.();
         }}
-        className={`inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold ${toneMap[tone][variant]} rounded-l-lg border-r border-white/20 hover:brightness-105 active:scale-98 transition-all cursor-pointer`}
+        className={`min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold ${toneMap[tone][variant]} rounded-l-lg border-r border-white/20 hover:brightness-105 active:scale-98 transition-all cursor-pointer`}
       >
         {executedCount > 0 && <Check className="w-3.5 h-3.5" />}
         <span>{selectedLabel}</span>

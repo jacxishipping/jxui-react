@@ -56,7 +56,7 @@ export const MagneticIconButton: React.FC<MagneticIconButtonProps> = ({
           setActive((a) => !a);
           onClick?.(e);
         }}
-        className={`w-10 h-10 flex items-center justify-center ${
+        className={`w-11 h-11 min-h-[44px] min-w-[44px] flex items-center justify-center ${
           active ? 'bg-emerald-600 text-white ring-4 ring-emerald-500/20' : toneMap[tone][variant]
         } ${getRadiusClass('pill')} shadow-md hover:scale-110 active:scale-90 transition-all duration-200 cursor-pointer ${className}`}
         {...props}
