@@ -85,7 +85,7 @@ export const MorphButton: React.FC<MorphButtonProps> = ({
       type="button"
       onClick={handleClick}
       disabled={currentStatus === 'loading'}
-      className={`relative min-w-[148px] px-4 py-2 text-xs font-semibold transition-all duration-300 ${getRadiusClass('control')} cursor-pointer active:scale-95 ${getVariantStyle()} ${className}`}
+      className={`relative min-w-[148px] min-h-[44px] px-4 py-2.5 text-xs font-semibold transition-all duration-300 ${getRadiusClass('control')} cursor-pointer active:scale-95 ${getVariantStyle()} ${className}`}
       {...props}
     >
       <div className="flex items-center justify-center gap-2 min-h-[20px]">

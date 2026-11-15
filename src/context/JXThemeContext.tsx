@@ -234,6 +234,9 @@ export const JXThemeProvider: React.FC<JXThemeProviderProps> = ({
           document.documentElement.style.setProperty('--jx-accent', pal.hex);
           document.documentElement.style.setProperty('--jx-accent-halo', `${pal.hex}33`);
           document.documentElement.style.setProperty('--jx-accent-soft', `${pal.hex}1f`);
+          // Expose the accent as an attribute so CSS can theme hardcoded
+          // indigo elements via [data-accent="…"] rules in index.css.
+          document.documentElement.setAttribute('data-accent', accent);
         }
       }
     } catch {
@@ -244,6 +247,28 @@ export const JXThemeProvider: React.FC<JXThemeProviderProps> = ({
   useEffect(() => {
     try {
       localStorage.setItem('jxui-theme-radius', radiusScale);
+      if (typeof document !== 'undefined') {
+        // Mirror the radius scale into CSS vars so .jx-radius-* utilities
+        // (index.css) actually move when the user changes the scale.
+        // Values match getRadiusClass below: control / card tiers.
+        const control: Record<RadiusScale, string> = {
+          sharp: '0px',
+          sm: '8px',
+          md: '12px',
+          lg: '16px',
+          xl: '20px',
+        };
+        const card: Record<RadiusScale, string> = {
+          sharp: '0px',
+          sm: '12px',
+          md: '16px',
+          lg: '20px',
+          xl: '24px',
+        };
+        document.documentElement.style.setProperty('--jx-radius-control', control[radiusScale]);
+        document.documentElement.style.setProperty('--jx-radius-card', card[radiusScale]);
+        document.documentElement.setAttribute('data-radius', radiusScale);
+      }
     } catch {
       // ignore
     }

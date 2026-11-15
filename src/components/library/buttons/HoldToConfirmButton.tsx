@@ -67,7 +67,7 @@ export const HoldToConfirmButton: React.FC<HoldToConfirmButtonProps> = ({
       onMouseLeave={handleEnd}
       onTouchStart={handleStart}
       onTouchEnd={handleEnd}
-      className={`relative overflow-hidden px-4 py-2 text-xs font-semibold border ${
+      className={`relative overflow-hidden min-h-[44px] px-4 py-2.5 text-xs font-semibold border ${
         confirmed
           ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800'
           : toneStyles[tone]

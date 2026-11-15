@@ -244,8 +244,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   }`}>
                     <Icon className="w-3.5 h-3.5" />
                   </div>
-                  <div className="flex flex-col min-w-0 truncate">
-                    <span className="text-xs truncate font-medium">
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-xs font-medium leading-tight">
                       {cat.title.replace(/^Category \d+:\s*/, '')}
                     </span>
                     <span className="text-[10px] text-slate-600 dark:text-slate-400 font-mono">

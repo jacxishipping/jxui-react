@@ -54,7 +54,7 @@ export const LiquidButton: React.FC<LiquidButtonProps> = ({
         setClicks((c) => c + 1);
         onClick?.(e);
       }}
-      className={`relative overflow-hidden px-4 py-2 font-semibold text-xs ${toneMap[tone][variant]} ${getRadiusClass('pill')} shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 group cursor-pointer ${className}`}
+      className={`relative overflow-hidden min-h-[44px] px-4 py-2.5 font-semibold text-xs ${toneMap[tone][variant]} ${getRadiusClass('pill')} shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 group cursor-pointer ${className}`}
       {...props}
     >
       <span className="relative z-10 flex items-center justify-center gap-2">

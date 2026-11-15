@@ -54,7 +54,7 @@ export const GlowButton: React.FC<GlowButtonProps> = ({
         setClicks((c) => c + 1);
         onClick?.(e);
       }}
-      className={`relative group px-4 py-2 text-xs font-semibold ${toneMap[tone][variant]} ${getRadiusClass('control')} cursor-pointer transition-all duration-300 active:scale-95 inline-flex items-center gap-1.5 ${className}`}
+      className={`relative group min-h-[44px] px-4 py-2.5 text-xs font-semibold ${toneMap[tone][variant]} ${getRadiusClass('control')} cursor-pointer transition-all duration-300 active:scale-95 inline-flex items-center gap-1.5 ${className}`}
       {...props}
     >
       <Flame className="w-3.5 h-3.5" />

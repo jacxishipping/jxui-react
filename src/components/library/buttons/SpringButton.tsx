@@ -53,7 +53,7 @@ export const SpringButton: React.FC<SpringButtonProps> = ({
         setClicks((c) => c + 1);
         onClick?.(e);
       }}
-      className={`px-4 py-2 text-xs font-semibold ${toneMap[tone][variant]} ${getRadiusClass('control')} shadow-md hover:-translate-y-0.5 active:translate-y-1 active:scale-90 transition-all duration-150 ease-[cubic-bezier(0.34,1.56,0.64,1)] cursor-pointer inline-flex items-center gap-1.5 ${className}`}
+      className={`min-h-[44px] px-4 py-2.5 text-xs font-semibold ${toneMap[tone][variant]} ${getRadiusClass('control')} shadow-md hover:-translate-y-0.5 active:translate-y-1 active:scale-90 transition-all duration-150 ease-[cubic-bezier(0.34,1.56,0.64,1)] cursor-pointer inline-flex items-center gap-1.5 ${className}`}
       {...props}
     >
       <span>{children}</span>

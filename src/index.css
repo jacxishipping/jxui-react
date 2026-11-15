@@ -59,6 +59,8 @@
     --jx-accent: #4f46e5;
     --jx-accent-soft: rgba(79, 70, 229, 0.12);
     --jx-accent-halo: rgba(79, 70, 229, 0.2);
+    --jx-radius-control: 16px;
+    --jx-radius-card: 20px;
     --jx-canvas: #F8FAFC;
     --jx-surface-elevated: #ffffff;
     --jx-surface-subtle: #F1F5F9;
@@ -88,6 +90,61 @@
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
   }
+}
+
+/* Theme-token utilities: these read the live CSS vars set by JXThemeProvider,
+   so changing accent / radius in the workbench actually repaints the UI
+   instead of only changing the exported token JSON. */
+.jx-accent-bg {
+  background-color: var(--jx-accent);
+}
+.jx-accent-text {
+  color: var(--jx-accent);
+}
+.jx-accent-border {
+  border-color: var(--jx-accent);
+}
+.jx-accent-soft-bg {
+  background-color: var(--jx-accent-soft);
+}
+.jx-radius-control {
+  border-radius: var(--jx-radius-control);
+}
+.jx-radius-card {
+  border-radius: var(--jx-radius-card);
+}
+
+/* Accessibility baseline for the whole library: many primitives set
+   focus:outline-none and ship no focus style at all, so keyboard users get
+   nothing. This gives every interactive element a visible accent-coloured
+   focus ring, and honours prefers-reduced-motion (previously only claimed
+   in a11y text, never implemented). */
+:focus-visible {
+  outline: 2px solid var(--jx-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Preview-stage controls were 10px text on 20px-tall buttons. Give controls
+   inside a component preview a usable touch target and readable size — but
+   never shrink a button that already declares its own min-height (e.g. the
+   44px library buttons): the :not() keeps their taller target intact. */
+[data-testid='component-preview-stage'] button:not([class*='min-h-']) {
+  min-height: 36px;
+}
+[data-testid='component-preview-stage'] button,
+[data-testid^='playground-stage-'] button {
+  font-size: 12px;
 }
 
 .jx-elevation-1 {

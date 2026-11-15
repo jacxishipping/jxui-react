@@ -54,7 +54,7 @@ export const ShimmerButton: React.FC<ShimmerButtonProps> = ({
         setClicks((c) => c + 1);
         onClick?.(e);
       }}
-      className={`relative overflow-hidden px-4 py-2 text-xs font-semibold ${toneMap[tone][variant]} ${getRadiusClass('control')} shadow-sm active:scale-95 transition-all cursor-pointer group inline-flex items-center gap-1.5 ${className}`}
+      className={`relative overflow-hidden min-h-[44px] px-4 py-2.5 text-xs font-semibold ${toneMap[tone][variant]} ${getRadiusClass('control')} shadow-sm active:scale-95 transition-all cursor-pointer group inline-flex items-center gap-1.5 ${className}`}
       {...props}
     >
       <Sparkles className="w-3.5 h-3.5" />

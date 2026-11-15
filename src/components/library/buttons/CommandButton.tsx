@@ -57,7 +57,7 @@ export const CommandButton: React.FC<CommandButtonProps> = ({
         setTimeout(() => setTriggered(false), 1200);
         onClick?.(e);
       }}
-      className={`inline-flex items-center gap-2.5 px-3 py-1.5 text-xs font-medium ${
+      className={`min-h-[44px] inline-flex items-center gap-2.5 px-3 py-1.5 text-xs font-medium ${
         triggered
           ? 'text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border-emerald-500'
           : toneMap[tone][variant]

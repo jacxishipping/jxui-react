@@ -61,7 +61,7 @@ export const ParticleButton: React.FC<ParticleButtonProps> = ({
       <button
         type="button"
         onClick={handleClick}
-        className={`inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold border ${toneMap[tone][variant]} ${getRadiusClass('control')} shadow-md active:scale-95 transition-all cursor-pointer ${className}`}
+        className={`inline-flex items-center gap-2 min-h-[44px] px-4 py-2.5 text-xs font-semibold border ${toneMap[tone][variant]} ${getRadiusClass('control')} shadow-md active:scale-95 transition-all cursor-pointer ${className}`}
         {...props}
       >
         <Sparkles className="w-3.5 h-3.5" />

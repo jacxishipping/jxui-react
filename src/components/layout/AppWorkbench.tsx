@@ -598,16 +598,16 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
         <div className="relative z-10 flex flex-col gap-6">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800/80">
             <div className="space-y-3.5 max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50/90 dark:bg-indigo-950/70 border border-indigo-200/70 dark:border-indigo-800/70 text-indigo-700 dark:text-indigo-300 text-xs font-semibold shadow-xs">
-                <Sparkles className="w-3.5 h-3.5 text-indigo-500 animate-pulse shrink-0" />
-                <span className="truncate">JXUI v3.0.0 · The Unified React 19 Component Suite</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0" />
-                <span className="font-mono text-[11px] font-bold">{UNIFIED_STATS.totalComponents} Total Components</span>
+              <div className={`flex flex-wrap items-center gap-x-2 gap-y-1 px-3.5 py-1.5 rounded-2xl sm:rounded-full ${palette.softBg} border ${palette.border} ${palette.text} text-xs font-semibold shadow-xs max-w-full`}>
+                <Sparkles className={`w-3.5 h-3.5 ${palette.text} animate-pulse shrink-0`} />
+                <span className="leading-snug">JXUI v3.0.0 · The Unified React 19 Component Suite</span>
+                <span className={`w-1.5 h-1.5 rounded-full ${palette.bg} shrink-0`} />
+                <span className="font-mono text-[11px] font-bold whitespace-nowrap">{UNIFIED_STATS.totalComponents} Total Components</span>
               </div>
 
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
                 Explore {UNIFIED_STATS.totalComponents} React Components.{' '}
-                <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-500 bg-clip-text text-transparent">
+                <span className={`bg-gradient-to-r ${palette.gradient} bg-clip-text text-transparent`}>
                   Unified &amp; Interactive.
                 </span>
               </h1>
@@ -640,7 +640,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
 
               <a
                 href="#unified-component-suite"
-                className="min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors shadow-xs touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]"
+                className={`min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 ${getRadiusClass('control')} text-xs font-semibold ${palette.bg} ${palette.bgHover} text-white transition-colors shadow-xs touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--jx-accent-halo)]`}
               >
                 <Search className="w-4 h-4" />
                 <span>Browse components</span>
@@ -967,9 +967,9 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
 
       {/* 4. MASTER COMPONENT EXPLORER: FILTERS & CONTROLS BAR */}
       <div id="unified-component-suite" className="scroll-mt-24 space-y-4">
-        <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+        <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800/80 jx-elevation-1 flex flex-col lg:flex-row lg:flex-wrap items-stretch lg:items-center justify-between gap-4">
           {/* Left: Search input */}
-          <div className="relative w-full lg:w-80 flex items-center">
+          <div className="relative w-full lg:flex-1 lg:min-w-[260px] lg:max-w-md flex items-center">
             <Search className="w-4 h-4 absolute left-3.5 text-slate-400 pointer-events-none" />
             <input
               type="text"
@@ -1005,7 +1005,7 @@ export const AppWorkbench: React.FC<AppWorkbenchProps> = ({
           </select>
 
           {/* Center: Tier Tabs */}
-          <div className="flex items-center gap-1 bg-slate-100 dark:bg-[#1E293B] p-1 rounded-xl text-xs font-semibold w-full lg:w-auto overflow-x-auto scrollbar-thin">
+          <div className="flex items-center gap-1 bg-slate-100 dark:bg-[#1E293B] p-1 rounded-xl text-xs font-semibold w-full lg:w-auto lg:flex-1 lg:min-w-0 overflow-x-auto scrollbar-thin">
             <button
               type="button"
               onClick={() => {
