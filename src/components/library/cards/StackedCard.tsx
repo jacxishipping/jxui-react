@@ -1,7 +1,7 @@
 // @jxui/react v3.0.0 — StackedCard (JXUI v3.0 Unified Component Suite)
 import React, { useState } from 'react';
 import { useJXTheme } from '../../../context/JXThemeContext';
-import { Layers, Sparkles } from 'lucide-react';
+// (No icon imports needed — the deck is pure layout.)
 
 interface DeckItem {
   id: number;
@@ -28,8 +28,18 @@ export const StackedCard: React.FC = () => {
   };
 
   return (
+    <div className="flex flex-col gap-1">
     <div
+      role="button"
+      tabIndex={0}
+      aria-label={`Card deck, top card is ${deck[0].title}. Activate to cycle the deck.`}
       onClick={cycleTopCard}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          cycleTopCard();
+        }
+      }}
       className="relative w-48 h-28 cursor-pointer select-none group my-1"
       title="Click to cycle card deck"
     >
@@ -68,6 +78,10 @@ export const StackedCard: React.FC = () => {
           </div>
         );
       })}
+    </div>
+    <span className="text-[11px] text-slate-400" aria-live="polite">
+      Top card: {deck[0].title} — click or press Enter to cycle the deck
+    </span>
     </div>
   );
 };

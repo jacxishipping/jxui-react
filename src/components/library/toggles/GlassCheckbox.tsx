@@ -1,17 +1,34 @@
 // @jxui/react v3.0.0 — GlassCheckbox (JXUI v3.0 Unified Component Suite)
-import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useJXTheme } from '../../../context/JXThemeContext';
-import { Check, Minus, X, Trash2, Copy, Sparkles } from 'lucide-react';
+import { Check } from 'lucide-react';
 
-// 5. GlassCheckbox
+// 5. GlassCheckbox — a frosted-glass labelled checkbox: backdrop blur, a
+// palette-coloured animated check, a 36px row target and proper checkbox
+// semantics.
 export const GlassCheckbox: React.FC = () => {
   const [checked, setChecked] = useState(true);
+  const { palette } = useJXTheme();
   return (
     <button
+      type="button"
       onClick={() => setChecked(!checked)}
-      className="w-5 h-5 rounded bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/50 dark:border-slate-700 flex items-center justify-center cursor-pointer"
+      role="checkbox"
+      aria-checked={checked}
+      aria-label="Enable glass notifications"
+      className="min-h-[36px] flex items-center gap-2.5 px-1 cursor-pointer text-left"
     >
-      {checked && <span className="w-2.5 h-2.5 bg-indigo-500 rounded-sm" />}
+      <span
+        className={`w-6 h-6 min-w-[24px] rounded-md bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border flex items-center justify-center transition-all ${
+          checked ? 'border-transparent' : 'border-white/50 dark:border-slate-700'
+        }`}
+        style={checked ? { backgroundColor: palette.hex } : undefined}
+      >
+        {checked && <Check className="w-4 h-4 text-white animate-scale-in" />}
+      </span>
+      <span className="text-xs font-medium text-slate-700 dark:text-slate-200">
+        Glass notifications {checked ? '· on' : '· off'}
+      </span>
     </button>
   );
 };

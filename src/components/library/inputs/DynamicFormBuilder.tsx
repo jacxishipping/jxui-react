@@ -1,7 +1,7 @@
 // @jxui/react v3.0.0 — DynamicFormBuilder (JXUI v3.0 Unified Component Suite)
 import React, { useState } from 'react';
 import { useJXTheme } from '../../../context/JXThemeContext';
-import { Sparkles, Check, Send } from 'lucide-react';
+import { Sparkles, Check, Send, RotateCcw } from 'lucide-react';
 
 interface SchemaField {
   id: string;
@@ -19,18 +19,31 @@ const DEFAULT_SCHEMA: SchemaField[] = [
   { id: 'agreed', label: 'Opt in to design system releases', type: 'checkbox' },
 ];
 
+const INITIAL: Record<string, string | boolean> = {
+  fullName: '',
+  workEmail: '',
+  tier: 'Engineering',
+  agreed: true,
+};
+
 export const DynamicFormBuilder: React.FC = () => {
   const { palette, getRadiusClass, pushToast } = useJXTheme();
-  const [formData, setFormData] = useState<Record<string, any>>({
-    fullName: '',
-    workEmail: '',
-    tier: 'Engineering',
-    agreed: true,
-  });
+  const [formData, setFormData] = useState<Record<string, string | boolean>>(INITIAL);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+
+  const validate = () => {
+    const next: Record<string, string> = {};
+    if (String(formData.fullName).trim().length < 2) next.fullName = 'Enter a name (at least 2 characters).';
+    const email = String(formData.workEmail).trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.workEmail = 'Enter a valid email address.';
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
     setSubmitted(true);
     pushToast({
       title: 'Schema Form Validated',
@@ -40,11 +53,16 @@ export const DynamicFormBuilder: React.FC = () => {
     setTimeout(() => setSubmitted(false), 2500);
   };
 
+  const set = (id: string, v: string | boolean) => {
+    setFormData((d) => ({ ...d, [id]: v }));
+    setErrors((e) => ({ ...e, [id]: '' }));
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="w-full flex flex-col gap-2.5 text-xs text-left">
+    <form onSubmit={handleSubmit} className="w-full flex flex-col gap-2.5 text-xs text-left" noValidate>
       <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-1.5 mb-1">
         <span className="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
-          <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
+          <Sparkles className="w-3.5 h-3.5" style={{ color: palette.hex }} />
           <span>Dynamic Schema Engine</span>
         </span>
         <span className="font-mono text-[10px] text-slate-400">4 fields</span>
@@ -53,12 +71,13 @@ export const DynamicFormBuilder: React.FC = () => {
       {DEFAULT_SCHEMA.map((field) => {
         if (field.type === 'checkbox') {
           return (
-            <label key={field.id} className="flex items-center gap-2 cursor-pointer pt-0.5">
+            <label key={field.id} className="flex items-center gap-2 cursor-pointer pt-0.5 min-h-[36px]">
               <input
                 type="checkbox"
                 checked={Boolean(formData[field.id])}
-                onChange={(e) => setFormData({ ...formData, [field.id]: e.target.checked })}
-                className="w-3.5 h-3.5 accent-indigo-600 rounded"
+                onChange={(e) => set(field.id, e.target.checked)}
+                className="w-4 h-4 rounded"
+                style={{ accentColor: palette.hex }}
               />
               <span className="text-[11px] text-slate-600 dark:text-slate-400">{field.label}</span>
             </label>
@@ -68,11 +87,12 @@ export const DynamicFormBuilder: React.FC = () => {
         if (field.type === 'select') {
           return (
             <div key={field.id} className="flex flex-col gap-1">
-              <label className="text-[11px] font-medium text-slate-600 dark:text-slate-400">{field.label}</label>
+              <label htmlFor={`jx-dfb-${field.id}`} className="text-[11px] font-medium text-slate-600 dark:text-slate-400">{field.label}</label>
               <select
-                value={formData[field.id]}
-                onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })}
-                className={`px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white ${getRadiusClass('control')} text-xs focus:outline-none focus:border-indigo-500`}
+                id={`jx-dfb-${field.id}`}
+                value={String(formData[field.id])}
+                onChange={(e) => set(field.id, e.target.value)}
+                className={`min-h-[44px] px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white ${getRadiusClass('control')} text-xs`}
               >
                 {field.options?.map((opt) => (
                   <option key={opt} value={opt}>{opt}</option>
@@ -84,27 +104,53 @@ export const DynamicFormBuilder: React.FC = () => {
 
         return (
           <div key={field.id} className="flex flex-col gap-1">
-            <label className="text-[11px] font-medium text-slate-600 dark:text-slate-400">{field.label}</label>
+            <label htmlFor={`jx-dfb-${field.id}`} className="text-[11px] font-medium text-slate-600 dark:text-slate-400">
+              {field.label}{field.required && ' *'}
+            </label>
             <input
+              id={`jx-dfb-${field.id}`}
               type={field.type}
-              value={formData[field.id]}
+              value={String(formData[field.id])}
               placeholder={field.placeholder}
-              onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })}
-              className={`px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white ${getRadiusClass('control')} text-xs focus:outline-none focus:border-indigo-500`}
+              aria-invalid={Boolean(errors[field.id])}
+              onChange={(e) => set(field.id, e.target.value)}
+              className={`min-h-[44px] px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border text-slate-900 dark:text-white ${getRadiusClass('control')} text-xs ${
+                errors[field.id] ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
+              }`}
             />
+            {errors[field.id] && <span className="text-[11px] text-rose-600 dark:text-rose-400">{errors[field.id]}</span>}
           </div>
         );
       })}
 
-      <button
-        type="submit"
-        className={`mt-1 py-1.5 px-3 rounded-lg text-white font-medium text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
-          submitted ? 'bg-emerald-600' : 'bg-indigo-600 hover:bg-indigo-700'
-        }`}
-      >
-        {submitted ? <Check className="w-3.5 h-3.5" /> : <Send className="w-3.5 h-3.5" />}
-        <span>{submitted ? 'Validated' : 'Submit Schema'}</span>
-      </button>
+      <div className="flex gap-2">
+        <button
+          type="submit"
+          className={`flex-1 min-h-[44px] py-1.5 px-3 rounded-lg text-white font-medium text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
+            submitted ? 'bg-emerald-600' : ''
+          }`}
+          style={submitted ? undefined : { backgroundColor: palette.hex }}
+        >
+          {submitted ? <Check className="w-3.5 h-3.5" /> : <Send className="w-3.5 h-3.5" />}
+          <span>{submitted ? 'Validated' : 'Submit Schema'}</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setFormData(INITIAL);
+            setErrors({});
+          }}
+          aria-label="Reset form"
+          className="min-w-[44px] min-h-[44px] px-3 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center gap-1 cursor-pointer"
+        >
+          <RotateCcw className="w-3.5 h-3.5" /> Reset
+        </button>
+      </div>
+      {submitted && (
+        <pre className="px-2.5 py-2 rounded-lg bg-slate-950 text-emerald-400 font-mono text-[11px] overflow-x-auto">
+          {JSON.stringify(formData, null, 2)}
+        </pre>
+      )}
     </form>
   );
 };
