@@ -1,72 +1,73 @@
 // @jxui/react v3.0.0 — QRCodeGenerator (JXUI v3.0 Unified Component Suite)
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import QRCode from 'qrcode';
 import { useJXTheme } from '../../../context/JXThemeContext';
 
-// 9. QRCodeGenerator — renders a deterministic QR-style matrix for the typed
-// text: real finder patterns in three corners, timing patterns and data
-// modules seeded by a hash of the text, so editing the text regenerates a
-// new code. (Pattern only — not a standards-compliant QR payload.)
-const SIZE = 25;
-
-function hashText(text: string): number {
-  let h = 2166136261;
-  for (let i = 0; i < text.length; i++) {
-    h ^= text.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return h >>> 0;
-}
-
-function isFinder(x: number, y: number): boolean {
-  const inCorner =
-    (x < 8 && y < 8) || (x >= SIZE - 8 && y < 8) || (x < 8 && y >= SIZE - 8);
-  return inCorner;
-}
-
-function finderCell(x: number, y: number): boolean {
-  const cx = x < 8 ? x : x >= SIZE - 8 ? x - (SIZE - 8) : x;
-  const cy = y < 8 ? y : y >= SIZE - 8 ? y - (SIZE - 8) : y;
-  if (cx === 0 || cx === 6 || cy === 0 || cy === 6) return true;
-  if (cx >= 2 && cx <= 4 && cy >= 2 && cy <= 4) return true;
-  return false;
-}
+// 9. QRCodeGenerator — renders a real, standards-compliant QR code for the
+// typed text using the `qrcode` encoder (byte mode, auto version, selectable
+// error-correction level). The matrix is drawn as SVG with the required
+// 4-module quiet zone, so it scans with a phone camera. Editing the text
+// regenerates a new code; text that is empty or too long for QR version 40
+// shows an error instead of a fake pattern.
+const QUIET_ZONE = 4;
+const LEVELS = ['L', 'M', 'Q', 'H'] as const;
+type ECLevel = (typeof LEVELS)[number];
 
 export const QRCodeGenerator: React.FC = () => {
   const { palette } = useJXTheme();
   const [text, setText] = useState('jxui.dev/spec');
   const [dark, setDark] = useState(true);
-  const seed = hashText(text || 'jxui');
+  const [level, setLevel] = useState<ECLevel>('M');
 
-  const cell = (x: number, y: number): boolean => {
-    if (isFinder(x, y)) return finderCell(x, y);
-    if (y === 6 || x === 6) return (x + y) % 2 === 0; // timing patterns
-    if (x === 8 && y === 8) return true; // alignment-ish anchor
-    let n = seed ^ Math.imul(x + 1, 2654435761) ^ Math.imul(y + 1, 40503);
-    n ^= n >>> 13;
-    n = Math.imul(n, 0x5bd1e995);
-    n ^= n >>> 15;
-    return (n >>> 0) % 2 === 0;
-  };
+  const qr = useMemo(() => {
+    if (!text) return { error: 'Type something to encode.' as string | null, code: null };
+    try {
+      const code = QRCode.create(text, { errorCorrectionLevel: level });
+      return { error: null, code };
+    } catch {
+      return {
+        error: 'Text is too long for a QR code (max ~2,953 bytes). Shorten it.',
+        code: null,
+      };
+    }
+  }, [text, level]);
+
+  const size = qr.code?.modules.size ?? 0;
+  const viewSize = size + QUIET_ZONE * 2;
+  const fill = dark ? '#0f172a' : palette.hex;
 
   return (
     <div className="inline-flex flex-col items-start gap-2">
       <div className="p-2.5 bg-white rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-        <svg
-          viewBox={`0 0 ${SIZE} ${SIZE}`}
-          className="w-32 h-32"
-          role="img"
-          aria-label={`QR-style code for ${text}`}
-          shapeRendering="crispEdges"
-        >
-          <rect width={SIZE} height={SIZE} fill="white" />
-          {Array.from({ length: SIZE }, (_, y) =>
-            Array.from({ length: SIZE }, (_, x) =>
-              cell(x, y) ? (
-                <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill={dark ? '#0f172a' : palette.hex} />
-              ) : null
-            )
-          )}
-        </svg>
+        {qr.code ? (
+          <svg
+            viewBox={`0 0 ${viewSize} ${viewSize}`}
+            className="w-32 h-32"
+            role="img"
+            aria-label={`QR code for ${text}`}
+            shapeRendering="crispEdges"
+          >
+            <rect width={viewSize} height={viewSize} fill="white" />
+            {Array.from({ length: size }, (_, y) =>
+              Array.from({ length: size }, (_, x) =>
+                qr.code!.modules.data[y * size + x] ? (
+                  <rect
+                    key={`${x}-${y}`}
+                    x={x + QUIET_ZONE}
+                    y={y + QUIET_ZONE}
+                    width={1}
+                    height={1}
+                    fill={fill}
+                  />
+                ) : null
+              )
+            )}
+          </svg>
+        ) : (
+          <div className="w-32 h-32 flex items-center justify-center px-3 text-center text-xs text-slate-500">
+            {qr.error}
+          </div>
+        )}
       </div>
       <label className="w-full max-w-[11rem] text-xs">
         <span className="text-slate-500 font-medium">Encode text</span>
@@ -88,8 +89,27 @@ export const QRCodeGenerator: React.FC = () => {
         >
           {dark ? 'Dark modules' : 'Accent modules'}
         </button>
-        <span className="font-mono text-[10px] text-slate-400">25 × 25 modules</span>
+        <label className="flex items-center gap-1 text-xs text-slate-500">
+          <span>EC</span>
+          <select
+            value={level}
+            onChange={(e) => setLevel(e.target.value as ECLevel)}
+            aria-label="Error correction level"
+            className="min-h-[36px] px-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-xs font-semibold cursor-pointer"
+          >
+            {LEVELS.map((l) => (
+              <option key={l} value={l}>
+                {l}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
+      <span className="font-mono text-[10px] text-slate-400">
+        {qr.code
+          ? `Version ${qr.code.version} · ${size} × ${size} modules · EC ${level}`
+          : 'No code — see above'}
+      </span>
     </div>
   );
 };
